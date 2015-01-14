@@ -30,7 +30,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String create_tasks_table = "CREATE TABLE " + TABLE_TASKS + "( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+        String create_tasks_table = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_COMPLETED + " INTEGER)";
         db.execSQL(create_tasks_table);
     }
