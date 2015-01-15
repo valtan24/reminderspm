@@ -56,20 +56,11 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return getReadableDatabase().query(TABLE_TASKS, projection, null, null, null, null, ordered_by);
     }
 
-    //============ CRUD ============//
-    //add new task
-    /*public void addTask(Task task){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_TASKTITLE, task.getTaskTitle());
-        values.put(KEY_TASKDATE, task.getTaskDate().toString());
-        values.put(KEY_TASKTIME, task.getTaskTime().toString());
-        values.put(KEY_COMPLETED, (task.isCompleted() ? 1 : 0));
-        // Inserting Row
-        db.insert(TABLE_TASKS, null, values);
-        db.close(); // Closing database connection
-    }*/
+    public Cursor getTasksForDate(int year, int month, int day, String ordered_by){
+        String target_date = day+"-"+month+"-"+year;
+        String[] select_columns = {KEY_TASKID, KEY_TASKTITLE, KEY_TASKDATE};
+        return getReadableDatabase().query(TABLE_TASKS, select_columns, null, null, null, null, ordered_by);
+    }
 
 
 

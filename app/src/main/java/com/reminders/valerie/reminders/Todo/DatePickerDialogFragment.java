@@ -1,14 +1,15 @@
 package com.reminders.valerie.reminders.Todo;
 
-import android.app.Activity;
+
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.app.DatePickerDialog.OnDateSetListener;
 
 
 public class DatePickerDialogFragment extends DialogFragment {
-    DatePickerDialog.OnDateSetListener date_set_listener;
+    OnDateSetListener date_set_listener;
     private int year, month, day;
 
     public DatePickerDialogFragment() {
