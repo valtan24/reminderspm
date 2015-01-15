@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
@@ -40,10 +42,21 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
     //date picker items
     int year;
     int month;
-    String month_name;
     int day;
     private Button button_date_picker;
-    private static final int DATE_PICKER_ID = 1111;
+
+    DatePickerDialog.OnDateSetListener date_set_listener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int listener_year, int listener_month, int listener_day) {
+            year = listener_year;
+            month = listener_month;
+            day = listener_day;
+            if(button_date_picker != null){
+                //display text on button
+                button_date_picker.setText( day + " " + month + " " + year);
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -58,11 +71,14 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         month = cal.get(Calendar.MONTH);
         day = cal.get(Calendar.DAY_OF_MONTH);
 
-        SimpleDateFormat month_date = new SimpleDateFormat("MMMMMMMMM");
-        month_name = month_date.format(cal.getTime());
+        //button on click listener
+        button_date_picker.setOnClickListener(new View.OnClickListener(){
 
-        //display text on button
-        button_date_picker.setText( day + " " + month_name + " " + year);
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
 
         try {
             dbhandler = new TaskDBHandler(getActivity());
@@ -78,6 +94,21 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
             return rootView;
         }
 
+    }
+
+    private void showDatePicker() {
+        DatePickerDialogFragment date_picker = new DatePickerDialogFragment();
+        Bundle date_args = new Bundle();
+        date_args.putInt("year", year);
+        date_args.putInt("month", month);
+        date_args.putInt("day", day);
+        date_picker.setArguments(date_args);
+        date_picker.setCallBack(date_set_listener);
+
+        //showering fragment
+        FragmentManager fragment_mgr = getActivity().getSupportFragmentManager();
+        DialogFragment dialog = new DatePickerDialogFragment(); // creating new object
+        dialog.show(fragment_mgr, "dialog");
     }
 
     @Override
