@@ -6,13 +6,13 @@
         android:minSdkVersion="11"
         android:targetSdkVersion="21" />
 
-    <android:uses-permission
+    <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
+        android:maxSdkVersion="21" />
 
     <application
         android:allowBackup="true"
@@ -27,6 +27,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".NewTaskActivity"
+            android:label="@string/title_activity_new_task" >
         </activity>
     </application>
 

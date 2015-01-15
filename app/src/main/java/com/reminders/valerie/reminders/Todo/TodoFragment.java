@@ -1,13 +1,13 @@
 package com.reminders.valerie.reminders.Todo;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.text.format.DateFormat;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -23,10 +25,10 @@ import com.reminders.valerie.reminders.NewTaskActivity;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class TodoFragment extends ListFragment implements View.OnClickListener {
 
@@ -35,23 +37,35 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
     ArrayList todoList = new ArrayList();
     TaskDBHandler dbhandler;
 
+    //date picker items
+    int year;
+    int month;
+    String month_name;
+    int day;
+    private Button button_date_picker;
+    private static final int DATE_PICKER_ID = 1111;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
-        /*for (int i = 0; i < 10; i++){
-            todoList.add(i);
-        }
         View rootView = inflater.inflate(R.layout.todo_fragment, container, false);
-        todoArrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, todoList);
-        setListAdapter(todoArrayAdapter);*/
+        //pick date
+        button_date_picker = (Button) rootView.findViewById(R.id.button_task_list_date);
+
+        //get current date by calendar
+        final Calendar cal = Calendar.getInstance();
+        year = cal.get(Calendar.YEAR);
+        month = cal.get(Calendar.MONTH);
+        day = cal.get(Calendar.DAY_OF_MONTH);
+
+        SimpleDateFormat month_date = new SimpleDateFormat("MMMMMMMMM");
+        month_name = month_date.format(cal.getTime());
+
+        //display text on button
+        button_date_picker.setText( day + " " + month_name + " " + year);
 
         try {
             dbhandler = new TaskDBHandler(getActivity());
-
-            addNewTask("task1");
-            addNewTask("task2");
-            addNewTask("task3");
-
             Cursor cursor = dbhandler.query(dbhandler.TABLE_TASKS, dbhandler.KEY_TASKID);
             String[] from = new String[]{dbhandler.KEY_TASKID, dbhandler.KEY_TASKTITLE};
             int[] to = {android.R.id.text1, android.R.id.text2};
@@ -59,29 +73,11 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
             setListAdapter(adapter);
         }
         catch(Exception e) {
-            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
         }
         finally {
-            View rootView = inflater.inflate(R.layout.todo_fragment, container, false);
             return rootView;
         }
 
-    }
-
-    //temp original data
-    public void addNewTask(String title) throws Exception {
-        ContentValues values = new ContentValues();
-        values.put(dbhandler.KEY_TASKTITLE, title);
-        //values.put(dbhandler.KEY_TASKDATE, time.toString());
-        //values.put(dbhandler.KEY_TASKTIME, date.toString());
-        values.put(dbhandler.KEY_COMPLETED, 0);
-
-        dbhandler.insert(dbhandler.TABLE_TASKS, values);
-    }
-
-    @Override
-    public void onClick(View v) {
-        //date selector
     }
 
     @Override
@@ -112,5 +108,10 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

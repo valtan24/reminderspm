@@ -7,10 +7,10 @@
     tools:context=".TodoFragment">
 
     <Button
-        android:id="@+id/task_list_date_button"
-        android:layout_width="match_parent"
+        android:id="@+id/button_task_list_date"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/task_list_date" />
+        android:text="@string/default_date"/>
 
     <ListView
         android:id="@android:id/list"
