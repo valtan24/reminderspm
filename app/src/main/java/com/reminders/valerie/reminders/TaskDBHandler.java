@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class TaskDBHandler extends SQLiteOpenHelper {
 
@@ -57,9 +58,10 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     }
 
     public Cursor getTasksForDate(int year, int month, int day, String ordered_by){
-        String target_date = day+"-"+month+"-"+year;
+        String target_date = day+"-"+ (month+1) +"-"+year;
+        String[] whereArgs = {target_date};
         String[] select_columns = {KEY_TASKID, KEY_TASKTITLE, KEY_TASKDATE};
-        return getReadableDatabase().query(TABLE_TASKS, select_columns, null, null, null, null, ordered_by);
+        return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_TASKDATE + " LIKE ? ", whereArgs, null, null, ordered_by);
     }
 
 

@@ -18,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.reminders.valerie.reminders.NewTaskActivity;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
@@ -46,6 +48,11 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
             month = listener_month;
             day = listener_day;
             setDateButtonText();
+            try {
+                updateTaskList();
+            } catch (Exception e) {
+                Toast.makeText(getActivity().getApplicationContext(), "Could not retrieve tasks", Toast.LENGTH_SHORT);
+            }
         }
     };
 
@@ -82,15 +89,10 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         });
 
         try {
-            dbhandler = new TaskDBHandler(getActivity());
-            Cursor cursor = dbhandler.getTasksForDate(year, month, day, dbhandler.KEY_TASKID);
-            Log.d("num", String.valueOf(cursor.getCount()));
-            String[] from = new String[]{dbhandler.KEY_TASKTITLE, dbhandler.KEY_TASKDATE};
-            int[] to = {android.R.id.text1, android.R.id.text2};
-            SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_2, cursor, from, to, 0);
-            setListAdapter(adapter);
+            updateTaskList();
         }
         catch(Exception e) {
+
         }
         finally {
             return rootView;
