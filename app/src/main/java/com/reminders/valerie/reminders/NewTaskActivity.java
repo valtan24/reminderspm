@@ -1,99 +1,83 @@
 package com.reminders.valerie.reminders;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.support.v7.app.ActionBarActivity;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
-
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.TextView;
-
-import java.util.Calendar;
+import android.widget.TimePicker;
 
 
 public class NewTaskActivity extends ActionBarActivity {
 
-    private TextView text_date_output;
-    private Button button_change_date;
-    private int year;
-    private int month;
-    private int day;
+    private TimePicker time_picker;
+    private Button time_button;
+    private int task_hour, task_minute;
 
+    TimePickerDialog.OnTimeSetListener time_set_listener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
+            task_hour = hourOfDay;
+            task_minute = minuteOfHour;
+            setTimeButtonText();
+        }
+    };
 
+    private String buildTimeText(){
+        String time_text = "";
+        if(task_hour < 10){
+            time_text = time_text + "0" + task_hour;
+        }
+        else{
+            time_text = time_text + task_hour;
+        }
+        if(task_minute < 10){
+            time_text = time_text + ":0" + task_minute;
+        }
+        else{
+            time_text = time_text + ":" + task_minute;
+        }
+        return time_text;
+    }
 
-    static final int DATE_PICKER_ID = 1111;
+    private void setTimeButtonText() {
+        String time_text = buildTimeText();
+        if(time_button != null){
+            time_button.setText(time_text);
+        }
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
-/*
-        text_date_output = (TextView) findViewById(R.id.date_output);
-        button_change_date = (Button) findViewById(R.id.change_date);
 
-        //get current date by calendar
-        final Calendar cal = Calendar.getInstance();
-        year = cal.get(Calendar.YEAR);
-        month = cal.get(Calendar.MONTH);
-        day = cal.get(Calendar.DAY_OF_MONTH);
-
-        //show current date
-        text_date_output.setText(month+1 + "-" + day + "-" + year);
-
-        //button listener to show date picker dialog
-        button_change_date.setOnClickListener(new View.OnClickListener() {
+        time_button = (Button) findViewById(R.id.button_task_time);
+        time_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(DATE_PICKER_ID);
+                showTimePicker();
             }
-        });*/
+        });
+        setTimeButtonText();
+
+        //get current time
+        task_hour = Time.HOUR;
+        task_minute = Time.MINUTE;
     }
 
-/*
-    @Override
-    protected Dialog onCreateDialog(int id){
-        switch(id){
-            case DATE_PICKER_ID:
-                return new DatePickerDialog(this, pickerListener, year, month, day);
-        }
-        return null;
+    private void showTimePicker(){
+        TimePickerDialogFragment time_picker = new TimePickerDialogFragment();
+        Bundle time_args = new Bundle();
+        time_args.putInt("task_hour", task_hour);
+        time_args.putInt("task_minute", task_minute);
+        time_picker.setArguments(time_args);
+        time_picker.setCallBack(time_set_listener);
+
+        FragmentManager fragment_mgr = getSupportFragmentManager();
+        time_picker.show(fragment_mgr, "dialog");
     }
 
-    private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener(){
-        @Override
-        public void onDateSet(DatePicker view, int selected_year, int monthOfYear, int dayOfMonth) {
-            year = selected_year;
-            month = monthOfYear;
-            day = dayOfMonth;
-
-            //show selected date
-            text_date_output.setText(month+1 + "-" + day + "-" + year);
-        }
-    };*/
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_task, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    */
 }

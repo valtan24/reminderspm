@@ -23,15 +23,12 @@ import android.widget.Toast;
 import com.reminders.valerie.reminders.NewTaskActivity;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.text.DateFormatSymbols;
 
 public class TodoFragment extends ListFragment implements View.OnClickListener {
 
-    ListView todoListView;
-    ArrayAdapter todoArrayAdapter;
-    ArrayList todoList = new ArrayList();
+
     TaskDBHandler dbhandler;
 
     //date picker items
@@ -102,8 +99,8 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
 
     private void updateTaskList() throws Exception{
         dbhandler = new TaskDBHandler(getActivity());
-        Cursor cursor = dbhandler.getTasksForDate(year, month, day, dbhandler.KEY_TASKID);
-        String[] from = new String[]{dbhandler.KEY_TASKTITLE, dbhandler.KEY_TASKDATE};
+        Cursor cursor = dbhandler.getTasksForDate(year, month, day, dbhandler.KEY_TASKTIME);
+        String[] from = new String[]{dbhandler.KEY_TASKTITLE, dbhandler.KEY_TASKTIME};
         int[] to = {android.R.id.text1, android.R.id.text2};
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_2, cursor, from, to, 0);
         setListAdapter(adapter);

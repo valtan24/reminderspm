@@ -37,33 +37,11 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public long insert(String table_name, ContentValues values) throws Exception {
-        validate(values);
-        return getWritableDatabase().insert(table_name, null, values);
-    }
-
-    private void validate(ContentValues values) throws Exception {
-        if (!values.containsKey(KEY_TASKTITLE) || values.getAsString(KEY_TASKTITLE) == null || values.getAsString(KEY_TASKTITLE).isEmpty()) {
-
-            throw new Exception("There must be task title");
-
-        }
-    }
-
-    public Cursor query(String table_name, String ordered_by) {
-
-        String[] projection = {KEY_TASKID, KEY_TASKTITLE};
-
-        return getReadableDatabase().query(TABLE_TASKS, projection, null, null, null, null, ordered_by);
-    }
-
     public Cursor getTasksForDate(int year, int month, int day, String ordered_by){
         String target_date = day+"-"+ (month+1) +"-"+year;
         String[] whereArgs = {target_date};
-        String[] select_columns = {KEY_TASKID, KEY_TASKTITLE, KEY_TASKDATE};
+        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID};
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_TASKDATE + " LIKE ? ", whereArgs, null, null, ordered_by);
     }
-
-
 
 }
