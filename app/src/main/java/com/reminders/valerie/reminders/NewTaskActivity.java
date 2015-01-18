@@ -13,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import java.text.DateFormatSymbols;
+import java.util.Calendar;
 
 
 public class NewTaskActivity extends ActionBarActivity {
@@ -25,7 +26,8 @@ public class NewTaskActivity extends ActionBarActivity {
 
     //date picker items
     private Button date_button;
-    private DateTimeButtonMgr date_button_mgr, time_button_mgr;
+    private DateButtonManager date_button_mgr;
+    private TimeButtonManager time_button_mgr;
     private int task_day, task_month, task_year;
     private String task_month_name;
 
@@ -45,6 +47,22 @@ public class NewTaskActivity extends ActionBarActivity {
         }
     };
 
+
+    TimePickerDialog.OnTimeSetListener time_set_listener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
+            task_hour = hourOfDay;
+            task_minute = minuteOfHour;
+            if(time_button_mgr != null){
+                String time_text = time_button_mgr.buildButtonText(task_hour, task_minute, 0);
+                time_button_mgr.setButtonText(time_button, time_text);
+            }
+            else{
+                Log.d("null", "time button manager not found");
+            }
+        }
+    };
+
     private void setDateButtonText() {
         task_month_name = new DateFormatSymbols().getMonths()[task_month];
         if(date_button != null){
@@ -52,14 +70,6 @@ public class NewTaskActivity extends ActionBarActivity {
         }
     }
 
-    TimePickerDialog.OnTimeSetListener time_set_listener = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
-            task_hour = hourOfDay;
-            task_minute = minuteOfHour;
-            setTimeButtonText();
-        }
-    };
 
     private String buildTimeText(){
         String time_text = "";
@@ -90,19 +100,43 @@ public class NewTaskActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
+        //date button
         date_button_mgr = new DateButtonManager();
+        date_button = (Button) findViewById(R.id.task_date_button);
+        date_button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Bundle date_args = new Bundle();
+                date_args.putInt("year", task_year);
+                date_args.putInt("month", task_month);
+                date_args.putInt("day", task_day);
+                date_button_mgr.showPickerFragment(getSupportFragmentManager(), date_set_listener, date_args);
+            }
+        });
+        task_year = Calendar.getInstance().YEAR;
+        task_month = Calendar.getInstance().MONTH;
+        task_day = Calendar.getInstance().DAY_OF_MONTH;
+        date_button_mgr.setButtonText(date_button, date_button_mgr.buildButtonText(task_year, task_month, task_day));
+
+        //time button
         time_button = (Button) findViewById(R.id.task_time_button);
+        time_button_mgr = new TimeButtonManager();
         time_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showTimePicker();
+                Bundle time_args = new Bundle();
+                time_args.putInt("task_hour", task_hour);
+                time_args.putInt("task_minute", task_minute);
+                time_button_mgr.showPickerFragment(getSupportFragmentManager(), time_set_listener, time_args);
             }
         });
-        setTimeButtonText();
 
         //get current time
         task_hour = Time.HOUR;
         task_minute = Time.MINUTE;
+
+        time_button_mgr.setButtonText(time_button, time_button_mgr.buildButtonText(task_hour, task_minute, 0));
+
     }
 
     private void showTimePicker(){

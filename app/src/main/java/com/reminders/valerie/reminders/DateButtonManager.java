@@ -1,6 +1,10 @@
 package com.reminders.valerie.reminders;
 
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Button;
 
@@ -23,5 +27,18 @@ public class DateButtonManager implements DateTimeButtonMgr {
         else{
             Log.d("null", "Button not found.");
         }
+    }
+
+    @Override
+    public void showPickerFragment(FragmentManager fragment_mgr, Object listener, Bundle args){
+        DatePickerDialogFragment date_picker = new DatePickerDialogFragment();
+        date_picker.setArguments(args);
+        if(listener instanceof DatePickerDialog.OnDateSetListener) {
+            date_picker.setCallBack( (DatePickerDialog.OnDateSetListener) listener);
+        }
+        else{
+            Log.d("error", "unable to case listener to ondatesetlistener");
+        }
+        date_picker.show(fragment_mgr, "dialog");
     }
 }
