@@ -1,4 +1,4 @@
-package com.reminders.valerie.reminders.Todo;
+package com.reminders.valerie.reminders;
 
 
 import android.app.DatePickerDialog;

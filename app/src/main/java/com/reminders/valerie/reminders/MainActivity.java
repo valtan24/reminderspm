@@ -1,12 +1,9 @@
 package com.reminders.valerie.reminders;
 
-import android.content.ContentValues;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-
-import com.reminders.valerie.reminders.Todo.TodoFragment;
 
 public class MainActivity extends ActionBarActivity{
 

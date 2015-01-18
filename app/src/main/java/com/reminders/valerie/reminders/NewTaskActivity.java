@@ -12,6 +12,8 @@ import android.widget.TimePicker;
 
 public class NewTaskActivity extends ActionBarActivity {
 
+    //Navigation bar items
+
     private TimePicker time_picker;
     private Button time_button;
     private int task_hour, task_minute;

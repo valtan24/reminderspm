@@ -1,25 +1,25 @@
-package com.reminders.valerie.reminders.Todo;
+package com.reminders.valerie.reminders;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import com.reminders.valerie.reminders.DatePickerDialogFragment;
 import com.reminders.valerie.reminders.NewTaskActivity;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
@@ -135,21 +135,25 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        /*
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_new_task) {
             Intent new_task_intent = new Intent(getActivity(), NewTaskActivity.class);
-            //startActivityForResult(new_task_intent, 1); -- 2nd param is the request code, need to look up
             startActivity(new_task_intent);
             return true;
-        }
+        }*/
+
+        FragmentManager fragment_mgr =  getFragmentManager();
+        FragmentTransaction fragment_transaction = fragment_mgr.beginTransaction();
+        Fragment new_task_fragment = new NewTaskFragment();
+        fragment_transaction.replace(R.id.new_task_input, new_task_fragment);
+        fragment_transaction.commit();
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public void onClick(View v) {
