@@ -3,14 +3,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_paddingLeft="20dp"
+    android:layou_paddingRight="20dp">
 
-
-    <Button
-        android:id="@+id/button_task_time"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_time"/>
+        android:layout_marginTop="20dp"
+        android:theme="@style/Base.TextAppearance.AppCompat.Headline"
+        android:text="@string/new_task_title"/>
+
+    <EditText
+        android:id="@+id/task_title_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/new_task_date"/>
+
+        <Button
+            android:id="@+id/task_date_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/default_date"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/new_task_time"/>
+
+        <Button
+            android:id="@+id/task_time_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/default_time"/>
+    </LinearLayout>
 
 
 

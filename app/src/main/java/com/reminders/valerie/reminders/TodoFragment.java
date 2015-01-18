@@ -135,20 +135,14 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*
+
         int id = item.getItemId();
 
         if (id == R.id.action_new_task) {
             Intent new_task_intent = new Intent(getActivity(), NewTaskActivity.class);
             startActivity(new_task_intent);
             return true;
-        }*/
-
-        FragmentManager fragment_mgr =  getFragmentManager();
-        FragmentTransaction fragment_transaction = fragment_mgr.beginTransaction();
-        Fragment new_task_fragment = new NewTaskFragment();
-        fragment_transaction.replace(R.id.new_task_input, new_task_fragment);
-        fragment_transaction.commit();
+        }
 
         return super.onOptionsItemSelected(item);
     }

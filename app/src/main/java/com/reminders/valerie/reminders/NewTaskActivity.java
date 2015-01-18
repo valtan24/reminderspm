@@ -56,7 +56,7 @@ public class NewTaskActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
-        time_button = (Button) findViewById(R.id.button_task_time);
+        time_button = (Button) findViewById(R.id.task_time_button);
         time_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -8,5 +8,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="default_date">1 January 2014</string>
     <string name="default_time">00:00</string>
+    <string name="new_task_title">Task Title</string>
+    <string name="new_task_date">Date of Task</string>
+    <string name="new_task_time">Time of Task</string>
 
 </resources>
