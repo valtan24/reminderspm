@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Bundle;
 import android.util.Log;
 
 public class TaskDBHandler extends SQLiteOpenHelper {
@@ -42,6 +43,15 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         String[] whereArgs = {target_date};
         String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID};
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_TASKDATE + " LIKE ? ", whereArgs, null, null, ordered_by);
+    }
+
+    public void addNewTask(Bundle args){
+        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( '" + KEY_TASKTITLE + "', '" +
+                KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
+                args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
+                args.getString("task_time") + "', 0)";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(insert_query);
     }
 
 }

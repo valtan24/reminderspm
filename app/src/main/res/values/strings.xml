@@ -12,5 +12,6 @@
     <string name="new_task_date">Date of Task</string>
     <string name="new_task_time">Time of Task</string>
     <string name="date_time_header">Date and Time of Task</string>
+    <string name="save_button">Save</string>
 
 </resources>

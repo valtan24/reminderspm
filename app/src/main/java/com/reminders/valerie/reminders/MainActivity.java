@@ -4,8 +4,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.View;
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity {
 
     ActionBar.Tab history_tab, todo_tab, settings_tab;
     Fragment history_fragment = new HistoryFragment();
@@ -38,8 +39,5 @@ public class MainActivity extends ActionBarActivity{
 
 
     }
-
-
-
 
 }
