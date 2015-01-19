@@ -38,19 +38,30 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="20dp">
+        <!--
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/new_task_date"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/new_task_date"/>
 
-        <Button
+                <Button
+                    android:id="@+id/task_date_button"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/PickerButton"
+                    android:text="@string/default_date"/>
+                    -->
+        <EditText
             android:id="@+id/task_date_button"
             android:layout_width="0dp"
             android:layout_weight="1"
-            style="@style/PickerButton"
-            android:text="@string/default_date"/>
+            android:focusable="false"
+            android:clickable="true"
+            android:hint="Date of Task"
+            style="@style/TextFieldWithIcon"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -102,6 +113,7 @@
             android:layout_gravity="center"
             android:text="@string/save_button"
             style="@style/BlueButton"/>
+
 
     </LinearLayout>
 

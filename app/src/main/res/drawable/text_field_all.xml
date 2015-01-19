@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <solid android:color="#ffffff" />
-    <stroke
-        android:width="2dip"
-        android:color="#ffe1e1e1" />
-    <corners android:radius= "0dp" />
-    <size
-        android:height="@dimen/text_field_height"
-        />
-    <padding
-        android:top="@dimen/text_field_padding"
-        android:left="@dimen/text_field_padding"
-        android:bottom="@dimen/text_field_padding" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <item>
+        <shape>
+            <solid android:color="#ffffff" />
+            <stroke
+                android:width="1dip"
+                android:color="#ffbababa" />
+            <corners android:radius= "0dp" />
+        </shape>
+    </item>
+    <item android:bottom="@dimen/text_field_shadow" android:left="@dimen/text_field_shadow">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+            <solid android:color="#ffffff" />
+            <stroke
+                android:width="1dip"
+                android:color="#ffe1e1e1" />
+            <corners android:radius= "0dp" />
+            <size
+                android:height="@dimen/text_field_height"/>
+            <padding
+                android:top="@dimen/text_field_padding"
+                android:left="@dimen/text_field_padding"
+                android:bottom="@dimen/text_field_padding" />
+        </shape>
+    </item>
+</layer-list>

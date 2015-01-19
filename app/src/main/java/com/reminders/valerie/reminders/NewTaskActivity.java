@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -23,6 +24,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
     //date picker items
     private Button task_date_button;
+    private EditText task_date_edittext;
     private DateButtonManager date_button_mgr;
     private TimeButtonManager time_button_mgr;
     private int task_day, task_month, task_year;
@@ -32,6 +34,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
     private Button save_task_button;
     private Button cancel_task_button;
 
+    /*(
     DatePickerDialog.OnDateSetListener date_set_listener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -45,6 +48,16 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
             else{
                 Toast.makeText(getApplicationContext(), "date_button_mgr is null", Toast.LENGTH_SHORT);
             }
+        }
+    };*/
+    DatePickerDialog.OnDateSetListener date_set_listener = new DatePickerDialog.OnDateSetListener(){
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            task_day = dayOfMonth;
+            task_month = monthOfYear;
+            task_year = year;
+            String date_text = task_day + "-" + (task_month+1) + "-" + task_year;
+            task_date_edittext.setText(date_text);
         }
     };
 
@@ -71,10 +84,26 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
         //task title
         task_title_edittext = (EditText) findViewById(R.id.task_title_edittext);
+        task_date_edittext = (EditText) findViewById(R.id.task_date_button);
+        task_date_edittext.setClickable(true);
+        task_date_edittext.setOnClickListener(new View.OnClickListener(){
 
-        //date button
+            @Override
+            public void onClick(View v) {
+                DatePickerDialogFragment date_picker = new DatePickerDialogFragment();
+                Bundle date_args = new Bundle();
+                date_args.putInt("year", task_year);
+                date_args.putInt("month", task_month);
+                date_args.putInt("day", task_day);
+                date_picker.setArguments(date_args);
+                date_picker.setCallBack(date_set_listener);
+                date_picker.show(getSupportFragmentManager(), "dialog");
+            }
+        });
+
+        /*date button
         date_button_mgr = new DateButtonManager();
-        task_date_button = (Button) findViewById(R.id.task_date_button);
+        task_date_edittext = (EditText) findViewById(R.id.task_date_button);
         task_date_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,7 +118,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
         task_month = Calendar.getInstance().get(Calendar.MONTH);
         task_day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         String date_text = date_button_mgr.buildButtonText(task_year, task_month, task_day);
-        date_button_mgr.setButtonText(task_date_button, date_text);
+        date_button_mgr.setButtonText(task_date_button, date_text);*/
 
         //time button
         task_time_button = (Button) findViewById(R.id.task_time_button);

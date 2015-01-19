@@ -28,10 +28,6 @@
         <item name="android:textColorHint">#ffe5e5e5</item>
         <item name="android:layout_height">@dimen/text_field_height</item>
         <item name="android:background">@drawable/text_field</item>
-        <item name="android:shadowRadius">0.5</item>
-        <item name="android:shadowColor">#ff000000</item>
-        <item name="android:shadowDx">-1</item>
-        <item name="android:shadowDy">-1</item>
         <item name="android:paddingTop">@dimen/text_field_padding</item>
         <item name="android:paddingLeft">@dimen/text_field_padding</item>
         <item name="android:paddingBottom">@dimen/text_field_padding</item>
