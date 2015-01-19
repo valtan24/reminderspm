@@ -5,25 +5,14 @@
     android:layout_width="fill_parent"
     android:orientation="vertical"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    style="@style/AppTheme">
+    android:paddingRight="20dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:textAllCaps="true"
-        android:layout_marginTop="20dp"
-        style="@style/SectionHeader"
-        android:text="@string/task_details"/>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#ff4f4f4f"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/TextAppearance.AppCompat.Headline"
         android:text="@string/new_task_title"/>
 
     <EditText
@@ -31,6 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="true"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:text="@string/date_time_header"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,8 +44,8 @@
         <Button
             android:id="@+id/task_date_button"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            style="@style/PickerButton"
             android:text="@string/default_date"/>
     </LinearLayout>
 
@@ -68,40 +65,16 @@
             android:id="@+id/task_time_button"
             android:layout_width="0dp"
             android:layout_weight="1"
-            style="@style/PickerButton"
+            android:layout_height="wrap_content"
             android:text="@string/default_time"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="1">
-
-        <Button
-            android:id="@+id/cancel_task_button"
-            android:layout_width="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/cancel_button"
-            style="@style/GreyButton"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+    <Button
+        android:id="@+id/save_task_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save_button"/>
 
 
-        <Button
-            android:id="@+id/save_task_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:text="@string/save_button"
-            style="@style/BlueButton"/>
-
-    </LinearLayout>
 
 </LinearLayout>

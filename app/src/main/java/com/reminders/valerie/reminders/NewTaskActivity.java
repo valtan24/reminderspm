@@ -18,6 +18,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
     TaskDBHandler dbhandler;
 
+    private TimePicker time_picker;
     private Button task_time_button;
     private int task_hour, task_minute;
 
@@ -30,7 +31,6 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
     private EditText task_title_edittext;
     private Button save_task_button;
-    private Button cancel_task_button;
 
     DatePickerDialog.OnDateSetListener date_set_listener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -110,27 +110,15 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
         //save task button
         save_task_button = (Button) findViewById(R.id.save_task_button);
         save_task_button.setOnClickListener(this);
-
-        //cancel task button
-        cancel_task_button = (Button) findViewById(R.id.cancel_task_button);
-        cancel_task_button.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == save_task_button.getId()) {
-            Bundle new_task_args = new Bundle();
-            new_task_args.putString("task_title", task_title_edittext.getText().toString());
-            new_task_args.putString("task_date", task_day + "-" + (task_month + 1) + "-" + task_year);
-            new_task_args.putString("task_time", time_button_mgr.buildButtonText(task_hour, task_minute, 0));
-            dbhandler = new TaskDBHandler(this);
-            dbhandler.addNewTask(new_task_args);
-
-            setResult(RESULT_OK);
-        }
-        else{
-            setResult(RESULT_CANCELED);
-        }
-        finish();
+        Bundle new_task_args = new Bundle();
+        new_task_args.putString("task_title", task_title_edittext.getText().toString());
+        new_task_args.putString("task_date", task_day + "-" + (task_month+1) + "-" + task_year);
+        new_task_args.putString("task_time", time_button_mgr.buildButtonText(task_hour, task_minute, 0));
+        dbhandler = new TaskDBHandler(this);
+        dbhandler.addNewTask(new_task_args);
     }
 }
