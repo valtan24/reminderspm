@@ -12,5 +12,5 @@
     <padding
         android:top="@dimen/text_field_padding"
         android:left="@dimen/text_field_padding"
-        android:botton="@dimen/text_field_padding" />
+        android:bottom="@dimen/text_field_padding" />
 </shape>
