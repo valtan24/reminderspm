@@ -28,7 +28,7 @@ import java.text.DateFormatSymbols;
 
 public class TodoFragment extends ListFragment implements View.OnClickListener {
 
-
+    private final static int TODO_FRAGMENT = 100;
     TaskDBHandler dbhandler;
 
     //date picker items
@@ -140,14 +140,25 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
 
         if (id == R.id.action_new_task) {
             Intent new_task_intent = new Intent(getActivity(), NewTaskActivity.class);
-            startActivity(new_task_intent);
+            startActivityForResult(new_task_intent, TODO_FRAGMENT);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        if(requestCode == TodoFragment.TODO_FRAGMENT){
+            if(resultCode == getActivity().RESULT_OK){
+                try {
+                    updateTaskList();
+                } catch (Exception e) {
+                    Toast.makeText(getActivity().getApplicationContext(), "Unable to retrieve tasks", Toast.LENGTH_SHORT);
+                }
+            }
+        }
+    }
 
     @Override
     public void onClick(View v) {
