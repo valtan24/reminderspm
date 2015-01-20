@@ -1,18 +1,18 @@
 package com.reminders.valerie.reminders;
 
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.text.DateFormatSymbols;
 
-public class DateButtonManager implements DateTimeButtonMgr {
+public class DateEditTextManager implements DateTimeEditTextMgr {
     @Override
-    public String buildButtonText(int arg1, int arg2, int arg3) {
+    public String buildText(int arg1, int arg2, int arg3) {
         //arg1  = year, arg2 = month, arg3 = day
         String month_name = new DateFormatSymbols().getMonths()[arg2];
         String date_text = arg3 + " " + month_name + " " + arg1;
@@ -20,9 +20,9 @@ public class DateButtonManager implements DateTimeButtonMgr {
     }
 
     @Override
-    public void setButtonText(Button button, String text){
-        if(button != null){
-            button.setText(text);
+    public void setText(EditText edit_text, String text){
+        if(edit_text != null){
+            edit_text.setText(text);
         }
         else{
             Log.d("null", "Button not found.");

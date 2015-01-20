@@ -6,11 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 
-public class TimeButtonManager implements DateTimeButtonMgr{
+public class TimeEditTextManager implements DateTimeEditTextMgr {
 
     @Override
-    public String buildButtonText(int arg1, int arg2, int arg3) {
+    public String buildText(int arg1, int arg2, int arg3) {
         //arg1 = hour, arg2 = minute, arg3 is unused, can be used to indicate format
         String time_text = "";
         if(arg1 < 10){
@@ -29,9 +30,9 @@ public class TimeButtonManager implements DateTimeButtonMgr{
     }
 
     @Override
-    public void setButtonText(Button button, String text) {
-        if(button != null){
-            button.setText(text);
+    public void setText(EditText edit_text, String text) {
+        if(edit_text != null){
+            edit_text.setText(text);
         }
     }
 

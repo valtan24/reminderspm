@@ -14,5 +14,7 @@
     <string name="save_button">SAVE</string>
     <string name="cancel_button">CANCEL</string>
     <string name="task_details">Task Details</string>
+    <string name="task_date_hint">Date of Task</string>
+    <string name="task_time_hint">Time of Task</string>
 
 </resources>

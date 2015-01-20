@@ -10,6 +10,7 @@
         android:id="@+id/button_task_list_date"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        style="@style/PickerButton"
         android:text="@string/default_date"/>
 
     <ListView

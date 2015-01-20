@@ -20,12 +20,6 @@
         android:layout_height="1dp"
         android:background="#ff4f4f4f"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/new_task_title"/>
-
     <EditText
         android:id="@+id/task_title_edittext"
         android:layout_width="match_parent"
@@ -33,56 +27,26 @@
         android:hint="@string/new_task_title"
         android:layout_marginTop="20dp"/>
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/task_date_edittext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-        <!--
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/new_task_date"/>
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="20dp"
+        android:hint="@string/task_date_hint"
+        style="@style/TextFieldWithIcon"/>
 
 
-                <Button
-                    android:id="@+id/task_date_button"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    style="@style/PickerButton"
-                    android:text="@string/default_date"/>
-                    -->
-        <EditText
-            android:id="@+id/task_date_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:focusable="false"
-            android:clickable="true"
-            android:hint="Date of Task"
-            style="@style/TextFieldWithIcon"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/task_time_edittext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/new_task_time"/>
-
-        <Button
-            android:id="@+id/task_time_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            style="@style/PickerButton"
-            android:text="@string/default_time"/>
-    </LinearLayout>
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="-2dp"
+        android:hint="@string/task_time_hint"
+        style="@style/TextFieldWithIcon"/>
 
     <LinearLayout
         android:orientation="horizontal"
