@@ -25,7 +25,7 @@
 
     <style name="TextFieldWithIcon" parent="@android:style/Widget.EditText">
         <item name="android:textSize">15sp</item>
-        <item name="android:textColorHint">#ffe5e5e5</item>
+        <item name="android:textColorHint">#ffdbdbdb</item>
         <item name="android:textColor">#ff0d73bb</item>
         <item name="android:layout_height">@dimen/text_field_height</item>
         <item name="android:background">@drawable/text_field</item>
