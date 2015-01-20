@@ -32,6 +32,7 @@
         <item name="android:paddingTop">@dimen/text_field_padding</item>
         <item name="android:paddingLeft">@dimen/text_field_padding</item>
         <item name="android:paddingBottom">@dimen/text_field_padding</item>
+        <item name="android:drawablePadding">@dimen/text_field_padding</item>
     </style>
 
     <style name="GreyButton" parent="ActionButton">
