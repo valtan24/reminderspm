@@ -16,5 +16,8 @@
     <string name="task_details">Task Details</string>
     <string name="task_date_hint">Date of Task</string>
     <string name="task_time_hint">Time of Task</string>
+    <string name="first_reminder_details">First Reminder</string>
+    <string name="reminder_date_hint">Date of First Reminder</string>
+    <string name="reminder_time_hint">Time of First Reminder</string>
 
 </resources>

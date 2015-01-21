@@ -8,6 +8,7 @@
     android:paddingRight="20dp"
     style="@style/AppTheme">
 
+    <!-- task details -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,6 +25,7 @@
         android:id="@+id/task_title_edittext"
         android:layout_width="match_parent"
         style="@style/TextFieldWithIcon"
+        android:singleLine="true"
         android:hint="@string/new_task_title"
         android:layout_marginTop="20dp"/>
 
@@ -50,6 +52,44 @@
         android:hint="@string/task_time_hint"
         style="@style/TextFieldWithIcon"/>
 
+    <!-- first reminder details -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:layout_marginTop="30dp"
+        style="@style/SectionHeader"
+        android:text="@string/first_reminder_details"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#ff4f4f4f"/>
+
+    <EditText
+        android:id="@+id/first_rem_date_edittext"
+        android:layout_width="match_parent"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/ic_date_picker"
+        android:hint="@string/reminder_date_hint"
+        style="@style/TextFieldWithIcon"/>
+
+
+    <EditText
+        android:id="@+id/first_rem_time_edittext"
+        android:layout_width="match_parent"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="-2dp"
+        android:drawableLeft="@drawable/ic_rem_time_picker"
+        android:hint="@string/reminder_time_hint"
+        style="@style/TextFieldWithIcon"/>
+
+    <!-- save or cancel -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
@@ -79,6 +119,7 @@
             android:layout_gravity="center"
             android:text="@string/save_button"
             style="@style/BlueButton"/>
+
 
 
     </LinearLayout>

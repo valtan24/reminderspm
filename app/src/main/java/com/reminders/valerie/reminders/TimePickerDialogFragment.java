@@ -19,8 +19,8 @@ public class TimePickerDialogFragment extends DialogFragment {
     @Override
     public void setArguments(Bundle args){
         super.setArguments(args);
-        hour = args.getInt("task_hour");
-        minute = args.getInt("task_minute");
+        hour = args.getInt("hour");
+        minute = args.getInt("minute");
     }
 
     @Override

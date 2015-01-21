@@ -46,7 +46,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     }
 
     public void addNewTask(Bundle args){
-        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( '" + KEY_TASKTITLE + "', '" +
+        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
                 KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
                 args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
                 args.getString("task_time") + "', 0)";
