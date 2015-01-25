@@ -27,6 +27,7 @@
     <string name="reminder_task_same">Remind me at this date and time</string>
     <string name="task_notes">Notes</string>
     <string name="continue_button">Continue</string>
+    <string name="reminder_schedule">Reminder Schedule</string>
 
     <string-array name="category_list">
         <item>General</item>
