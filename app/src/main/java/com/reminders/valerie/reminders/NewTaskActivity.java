@@ -3,8 +3,8 @@ package com.reminders.valerie.reminders;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,7 +29,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
     //UI
     private EditText task_title_edittext, task_time_edittext, task_date_edittext;;
-    private Button save_task_button;
+    private Button continue_task_button;
     private Button cancel_task_button;
 
     //reminder items
@@ -104,7 +104,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_task);
+        setContentView(R.layout.activity_task_input);
 
         //initialization of values
         final Calendar cal = Calendar.getInstance();
@@ -181,14 +181,14 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
         });
 
         //category spinner
-        category_spinner = (Spinner) findViewById(R.id.new_task_category_spinner);
+        category_spinner = (Spinner) findViewById(R.id.task_category_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category_spinner.setAdapter(adapter);
 
         //save task button
-        save_task_button = (Button) findViewById(R.id.save_task_button);
-        save_task_button.setOnClickListener(this);
+        continue_task_button = (Button) findViewById(R.id.continue_task_button);
+        continue_task_button.setOnClickListener(this);
 
         //cancel task button
         cancel_task_button = (Button) findViewById(R.id.cancel_task_button);
@@ -197,9 +197,10 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == save_task_button.getId()) {
-            //check dates and timings
+        if(v.getId() == continue_task_button.getId()) {
+            //checks
 
+            /*
             Bundle new_task_args = new Bundle();
             new_task_args.putString("task_title", task_title_edittext.getText().toString());
             new_task_args.putString("task_date", task_day + "-" + (task_month + 1) + "-" + task_year);
@@ -207,7 +208,10 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
             dbhandler = new TaskDBHandler(this);
             dbhandler.addNewTask(new_task_args);
 
-            setResult(RESULT_OK);
+            setResult(RESULT_OK);*/
+            Fragment schedule_fragment = new ScheduleFragment();
+            this.getSupportFragmentManager().beginTransaction().add(R.id.reminder_schedule_fragment, schedule_fragment, null).commit();
+
         }
         else{
             setResult(RESULT_CANCELED);

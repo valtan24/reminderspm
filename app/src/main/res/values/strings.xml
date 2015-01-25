@@ -21,10 +21,13 @@
     <string name="reminder_time_hint">Time of First Reminder</string>
     <string name="radio_high">High</string>
     <string name="radio_medium">Medium</string>
-    <string name="new_task_importance">Importance</string>
+    <string name="task_importance">Importance</string>
     <string name="radio_low">Low</string>
-    <string name="new_task_category">Category</string>
-    
+    <string name="task_category">Category</string>
+    <string name="reminder_task_same">Remind me at this date and time</string>
+    <string name="task_notes">Notes</string>
+    <string name="continue_button">Continue</string>
+
     <string-array name="category_list">
         <item>General</item>
         <item>Study</item>
