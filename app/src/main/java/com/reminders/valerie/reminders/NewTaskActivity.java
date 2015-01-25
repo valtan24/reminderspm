@@ -215,7 +215,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
         }
         else{
             setResult(RESULT_CANCELED);
+            finish();
         }
-        finish();
     }
 }

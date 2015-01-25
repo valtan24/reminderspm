@@ -22,9 +22,9 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        /*if(v.getId() == save_button.getId()){
+        if(v.getId() == save_button.getId()){
             getActivity().setResult(getActivity().RESULT_OK);
             getActivity().finish();
-        }*/
+        }
     }
 }
