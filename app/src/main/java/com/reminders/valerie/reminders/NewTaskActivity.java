@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -209,8 +210,11 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
             dbhandler.addNewTask(new_task_args);
 
             setResult(RESULT_OK);*/
+            Toast.makeText(getApplicationContext(), "clicked continue", Toast.LENGTH_SHORT);
             Fragment schedule_fragment = new ScheduleFragment();
-            this.getSupportFragmentManager().beginTransaction().replace(R.id.reminder_schedule_fragment, schedule_fragment, null).commit();
+            FragmentTransaction fragment_transaction = this.getSupportFragmentManager().beginTransaction();
+            fragment_transaction.add(R.id.reminder_schedule_fragment, schedule_fragment, null);
+            fragment_transaction.commit();
 
         }
         else{
