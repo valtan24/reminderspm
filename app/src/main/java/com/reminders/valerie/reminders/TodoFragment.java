@@ -152,6 +152,7 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         if(requestCode == TodoFragment.TODO_FRAGMENT){
             if(resultCode == getActivity().RESULT_OK){
                 try {
+                    Toast.makeText(getActivity().getApplicationContext(), "Result saved", Toast.LENGTH_SHORT);
                     updateTaskList();
                 } catch (Exception e) {
                     Toast.makeText(getActivity().getApplicationContext(), "Unable to retrieve tasks", Toast.LENGTH_SHORT);
