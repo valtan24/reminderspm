@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             style="@style/SectionHeader"
             android:text="@string/reminder_schedule"
-            android:marginTop="20dp"
+            android:layout_marginTop="20dp"
             android:textAllCaps="true"/>
 
         <View
