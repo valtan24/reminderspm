@@ -1,196 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent"
-    android:orientation="vertical"
-    android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    style="@style/AppTheme">
-
-    <!-- task details -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:layout_marginTop="20dp"
-        style="@style/SectionHeader"
-        android:text="@string/task_details"/>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#ff4f4f4f"/>
-
-    <EditText
-        android:id="@+id/task_title_edittext"
-        android:layout_width="match_parent"
-        style="@style/TextFieldWithIcon"
-        android:singleLine="true"
-        android:hint="@string/new_task_title"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/task_date_edittext"
-        android:layout_width="match_parent"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:clickable="true"
-        android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/ic_date_picker"
-        android:hint="@string/task_date_hint"
-        style="@style/TextFieldWithIcon"/>
-
-
-    <EditText
-        android:id="@+id/task_time_edittext"
-        android:layout_width="match_parent"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:clickable="true"
-        android:layout_marginTop="-2dp"
-        android:drawableLeft="@drawable/ic_time_picker"
-        android:hint="@string/task_time_hint"
-        style="@style/TextFieldWithIcon"/>
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reminder_task_same"
-        android:textColor="#ff57646a"/>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_height="fill_parent"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        style="@style/AppTheme">
+
+        <!-- task details -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            android:layout_marginTop="20dp"
+            style="@style/SectionHeader"
+            android:text="@string/task_details"/>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ff4f4f4f"/>
+
+        <EditText
+            android:id="@+id/task_title_edittext"
+            android:layout_width="match_parent"
+            style="@style/TextFieldWithIcon"
+            android:singleLine="true"
+            android:hint="@string/new_task_title"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/task_date_edittext"
+            android:layout_width="match_parent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_date_picker"
+            android:hint="@string/task_date_hint"
+            style="@style/TextFieldWithIcon"/>
+
+
+        <EditText
+            android:id="@+id/task_time_edittext"
+            android:layout_width="match_parent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginTop="-2dp"
+            android:drawableLeft="@drawable/ic_time_picker"
+            android:hint="@string/task_time_hint"
+            style="@style/TextFieldWithIcon"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reminder_task_same"
+            android:textColor="#ff57646a"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/SubsectionHeader"
+                android:gravity="center"
+                android:text="@string/task_category"/>
+
+            <Spinner
+                android:id="@+id/task_category_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginTop="20dp"
             style="@style/SubsectionHeader"
-            android:gravity="center"
-            android:text="@string/task_category"/>
+            android:text="@string/task_importance"/>
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ff4f4f4f"/>
 
-        <Spinner
-            android:id="@+id/task_category_spinner"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:orientation="horizontal">
 
-    </LinearLayout>
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radio_high"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        style="@style/SubsectionHeader"
-        android:text="@string/task_importance"/>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#ff4f4f4f"/>
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radio_medium"/>
 
-    <RadioGroup
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radio_low"/>
 
-        <RadioButton
-            android:layout_width="0dp"
+        </RadioGroup>
+
+
+        <!-- first reminder details -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/radio_high"/>
-
-        <RadioButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/radio_medium"/>
-
-        <RadioButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/radio_low"/>
-
-    </RadioGroup>
-
-
-    <!-- first reminder details -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAllCaps="true"
-        android:layout_marginTop="30dp"
-        style="@style/SectionHeader"
-        android:text="@string/first_reminder_details"/>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#ff4f4f4f"/>
-
-    <EditText
-        android:id="@+id/first_rem_date_edittext"
-        android:layout_width="match_parent"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:clickable="true"
-        android:layout_marginTop="20dp"
-        android:drawableLeft="@drawable/ic_date_picker"
-        android:hint="@string/reminder_date_hint"
-        style="@style/TextFieldWithIcon"/>
-
-
-    <EditText
-        android:id="@+id/first_rem_time_edittext"
-        android:layout_width="match_parent"
-        android:cursorVisible="false"
-        android:focusable="false"
-        android:clickable="true"
-        android:layout_marginTop="-2dp"
-        android:drawableLeft="@drawable/ic_rem_time_picker"
-        android:hint="@string/reminder_time_hint"
-        style="@style/TextFieldWithIcon"/>
-
-    <!-- save or cancel -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="1">
-
-        <Button
-            android:id="@+id/cancel_task_button"
-            android:layout_width="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/cancel_button"
-            style="@style/GreyButton"/>
+            android:textAllCaps="true"
+            android:layout_marginTop="30dp"
+            style="@style/SectionHeader"
+            android:text="@string/first_reminder_details"/>
 
         <View
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#ff4f4f4f"/>
+
+        <EditText
+            android:id="@+id/first_rem_date_edittext"
+            android:layout_width="match_parent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_date_picker"
+            android:hint="@string/reminder_date_hint"
+            style="@style/TextFieldWithIcon"/>
+
+
+        <EditText
+            android:id="@+id/first_rem_time_edittext"
+            android:layout_width="match_parent"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginTop="-2dp"
+            android:drawableLeft="@drawable/ic_rem_time_picker"
+            android:hint="@string/reminder_time_hint"
+            style="@style/TextFieldWithIcon"/>
+
+        <!-- save or cancel -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"/>
+            android:layout_marginTop="20dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/cancel_task_button"
+                android:layout_width="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/cancel_button"
+                style="@style/GreyButton"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"/>
 
 
-        <Button
-            android:id="@+id/continue_task_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:text="@string/continue_button"
-            style="@style/BlueButton"/>
+            <Button
+                android:id="@+id/continue_task_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="@string/continue_button"
+                style="@style/BlueButton"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/reminder_schedule_fragment"/>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/reminder_schedule_fragment"/>
-
-</LinearLayout>
+</ScrollView>
