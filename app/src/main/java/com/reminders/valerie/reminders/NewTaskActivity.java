@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
     //task details
     private int task_hour, task_minute;
     private int task_day, task_month, task_year;
-
+    private Spinner category_spinner;
     private DateTimeEditTextMgr date_edittext_mgr, time_edittext_mgr;
 
     //UI
@@ -177,6 +179,12 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
                 time_edittext_mgr.showPickerFragment(getSupportFragmentManager(), reminder_time_listener, time_args);
             }
         });
+
+        //category spinner
+        category_spinner = (Spinner) findViewById(R.id.new_task_category_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.category_list, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category_spinner.setAdapter(adapter);
 
         //save task button
         save_task_button = (Button) findViewById(R.id.save_task_button);

@@ -19,5 +19,17 @@
     <string name="first_reminder_details">First Reminder</string>
     <string name="reminder_date_hint">Date of First Reminder</string>
     <string name="reminder_time_hint">Time of First Reminder</string>
+    <string name="radio_high">High</string>
+    <string name="radio_medium">Medium</string>
+    <string name="new_task_importance">Importance</string>
+    <string name="radio_low">Low</string>
+    <string name="new_task_category">Category</string>
+    
+    <string-array name="category_list">
+        <item>General</item>
+        <item>Study</item>
+        <item>Work</item>
+        <item>Social</item>
+    </string-array>
 
 </resources>
