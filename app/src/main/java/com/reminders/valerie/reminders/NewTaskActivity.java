@@ -210,7 +210,7 @@ public class NewTaskActivity extends ActionBarActivity implements View.OnClickLi
 
             setResult(RESULT_OK);*/
             Fragment schedule_fragment = new ScheduleFragment();
-            this.getSupportFragmentManager().beginTransaction().add(R.id.reminder_schedule_fragment, schedule_fragment, null).commit();
+            this.getSupportFragmentManager().beginTransaction().replace(R.id.reminder_schedule_fragment, schedule_fragment, null).commit();
 
         }
         else{
