@@ -19,6 +19,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
     private ArrayList<String> reminder_string_arraylist;
     private ListView reminder_listview;
     private ArrayAdapter reminder_adapter;
+    private ScheduleListAdapter list_adapter;
     private Button save_button;
 
     private DateTimeEditTextMgr date_et_mgr, time_et_mgr;
@@ -34,9 +35,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         //populate list
         reminder_string_arraylist = new ArrayList<String>();
         reminder_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, reminder_string_arraylist);
-        reminder_listview.setAdapter(reminder_adapter);
-
-        populateStringArrayList();
+        list_adapter = new ScheduleListAdapter(getActivity(), reminder_arraylist);
+        reminder_listview.setAdapter(list_adapter);
         return rootView;
     }
 
@@ -50,15 +50,5 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
 
     public void setReminderArrayList(ArrayList<Reminder> rem_list) {
         this.reminder_arraylist = rem_list;
-    }
-
-    public void populateStringArrayList(){
-        for(int i = 0; i < reminder_arraylist.size(); i++){
-            Reminder rem_tmp = reminder_arraylist.get(i);
-            String date_text = date_et_mgr.buildText(rem_tmp.getYear(), rem_tmp.getMonth(), rem_tmp.getDay());
-            String time_text = time_et_mgr.buildText(rem_tmp.getHour(), rem_tmp.getMinute(), 0);
-            reminder_string_arraylist.add(date_text + ", " + time_text);
-            reminder_adapter.notifyDataSetChanged();
-        }
     }
 }
