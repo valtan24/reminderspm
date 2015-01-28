@@ -260,6 +260,7 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
             rem_2.setMonth(task_month);
             rem_2.setYear(task_year);
             rem_2.setMinute(task_minute-1);
+            rem_2.setHour(task_hour);
             rem_2.setWith_audio(1);
             reminder_list.add(rem_2);
         }
