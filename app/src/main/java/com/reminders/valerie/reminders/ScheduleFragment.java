@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -13,7 +14,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-public class ScheduleFragment extends Fragment implements View.OnClickListener {
+public class ScheduleFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ArrayList<Reminder> reminder_arraylist;
     private ArrayList<String> reminder_string_arraylist;
@@ -37,6 +38,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
         reminder_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, reminder_string_arraylist);
         list_adapter = new ScheduleListAdapter(getActivity(), reminder_arraylist);
         reminder_listview.setAdapter(list_adapter);
+
+        reminder_listview.setOnItemClickListener(this);
         return rootView;
     }
 
@@ -50,5 +53,10 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener {
 
     public void setReminderArrayList(ArrayList<Reminder> rem_list) {
         this.reminder_arraylist = rem_list;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }
