@@ -40,25 +40,16 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="40dp"
             android:text="@string/cancel_button"/>
 
-        <Button
-            android:id="@+id/back_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_gravity="center"
-            android:text="@string/back_button"
-            style="@style/BlueButton"/>
 
         <Button
             android:id="@+id/save_task_button"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="40dp"
             android:layout_gravity="center"
             android:text="@string/save_button"
             style="@style/BlueButton"/>

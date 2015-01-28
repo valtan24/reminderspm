@@ -3,6 +3,7 @@ package com.reminders.valerie.reminders;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,12 @@ public class ScheduleListAdapter extends BaseAdapter {
         //check if audio
         if(reminder.getWith_audio() == 0){
             audio_icon.setVisibility(View.INVISIBLE);
+        }
+        else if(reminder.getWith_audio() == 1){
+            audio_icon.setVisibility(View.VISIBLE);
+        }
+        else{
+            Log.d("error", "invalid reminder with_audio value");
         }
         return list_row;
     }

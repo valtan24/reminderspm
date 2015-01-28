@@ -46,7 +46,7 @@ public class DateTimeDialogFragment extends DialogFragment {
     };
 
     public interface OnDateTimeSetListener{
-        public void OnDateTimeSet(String date, String time);
+        public void OnDateTimeSet(Bundle args);
     }
 
     @Override
@@ -100,7 +100,18 @@ public class DateTimeDialogFragment extends DialogFragment {
         builder.setPositiveButton(R.string.save_button, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //call ondatetimesetlistener on parent
+                Bundle args = new Bundle();
+                args.putInt("hour", hour);
+                args.putInt("minute", minute);
+                args.putInt("year", year);
+                args.putInt("month", month);
+                args.putInt("day", day);
+                if(listener != null && listener instanceof OnDateTimeSetListener){
+                    listener.OnDateTimeSet(args);
+                }
+                else{
+                    dialog.dismiss();
+                }
             }
         });
         builder.setNegativeButton(R.string.cancel_button, new DialogInterface.OnClickListener(){

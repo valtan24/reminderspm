@@ -224,8 +224,9 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
             ScheduleFragment schedule_fragment = new ScheduleFragment();
             schedule_fragment.setReminderArrayList(reminder_list);
             FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
-            fragment_transaction.replace(R.id.task_fragment_container, schedule_fragment, null);
+            fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
             fragment_transaction.addToBackStack(null);
+            fragment_transaction.hide(this);
             fragment_transaction.commit();
         }
         else{
