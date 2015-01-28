@@ -28,6 +28,7 @@
     <string name="task_notes">Notes</string>
     <string name="continue_button">Continue</string>
     <string name="reminder_schedule">Reminder Schedule</string>
+    <string name="back_button">BACK</string>
 
     <string-array name="category_list">
         <item>General</item>
