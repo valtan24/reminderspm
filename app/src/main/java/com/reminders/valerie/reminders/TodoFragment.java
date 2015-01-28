@@ -4,9 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
@@ -19,10 +17,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
-import com.reminders.valerie.reminders.DatePickerDialogFragment;
-import com.reminders.valerie.reminders.NewTaskActivity;
-import com.reminders.valerie.reminders.R;
-import com.reminders.valerie.reminders.TaskDBHandler;
 import java.util.Calendar;
 import java.text.DateFormatSymbols;
 

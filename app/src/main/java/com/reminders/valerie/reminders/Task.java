@@ -1,55 +1,104 @@
 package com.reminders.valerie.reminders;
 
-
-import android.text.format.Time;
-
-import java.util.Date;
-
+/**
+ * Created by valerie on 1/27/2015.
+ */
 public class Task {
 
-    private String task_title;
-    private Time task_time;
-    private Date task_date;
-    private boolean completed;
-
-    public Task(){
-
+    public int getTask_id() {
+        return task_id;
     }
 
-    //============ Getters ===============//
-    public String getTaskTitle(){
-        return task_title;
+    public void setTask_id(int task_id) {
+        this.task_id = task_id;
     }
 
-    public Time getTaskTime(){
-        return task_time;
+    public String getTitle() {
+        return title;
     }
 
-    public Date getTaskDate(){
-        return task_date;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public boolean isCompleted(){
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getHour() {
+        return hour;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public int getMinute() {
+        return minute;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public int getCompleted() {
         return completed;
     }
 
-    //============= Setters =============//
-
-    public void setTaskTitle(String title){
-        task_title = title;
-    }
-
-    public void setTaskTime(Time time){
-        task_time = time;
-    }
-
-    public void setTaskDate(Date date){
-        task_date = date;
-    }
-
-    public void markCompleted(boolean completed){
+    public void setCompleted(int completed) {
         this.completed = completed;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public double getImportance() {
+        return importance;
+    }
+
+    public void setImportance(double importance) {
+        this.importance = importance;
+    }
+
+    private int task_id;
+    private String title;
+    //date
+    private int year;
+    private int month;
+    private int day;
+
+    //time in 24-h format
+    private int hour;
+    private int minute;
+
+    private int completed;
+    private String category;
+    private double importance;
 
 
 }

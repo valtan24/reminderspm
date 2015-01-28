@@ -20,6 +20,18 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public static final String KEY_TASKDATE = "taskdate";
     public static final String KEY_TASKTIME = "tasktime";
     public static final String KEY_COMPLETED = "completed";
+    public static final String KEY_IMPORTANCE = "importance";
+    public static final String KEY_CATEGORY = "category";
+
+    //category table
+    public static final String TABLE_CATEGORIES = "reminders_categories";
+
+    //reminders table
+    public static final String TABLE_REMINDERS = "reminders_reminders";
+    public static final String KEY_REMDATE = "remdate";
+    public static final String KEY_REMTIME = "remtime";
+    public static final String KEY_TASKFK = "task_id";
+    public static final String KEY_AUDIO = "with_audio";
 
     public TaskDBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -27,9 +39,22 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY )";
+        db.execSQL(create_category_table);
+
+        //add default
+        Bundle args = new Bundle();
+        args.putString("cat_name", "General");
+        addNewCategory(args);
+        args.putString("cat_name", "Study");
+        addNewCategory(args);
         String create_tasks_table = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_COMPLETED + " INTEGER)";
+                + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_IMPORTANCE + " REAL, " + KEY_CATEGORY +" TEXT FOREIGN KEY, "
+                + KEY_COMPLETED + " INTEGER)";
         db.execSQL(create_tasks_table);
+        String create_reminders_table = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_REMDATE + " TEXT, "
+                + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER FOREIGN KEY, " + KEY_AUDIO + " INTEGER)";
+        db.execSQL(create_reminders_table);
     }
 
     @Override
@@ -52,6 +77,13 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 args.getString("task_time") + "', 0)";
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(insert_query);
+    }
+
+    public void addNewCategory(Bundle args){
+        ContentValues cv = new ContentValues();
+        cv.put("_id", args.getString("cat_name"));
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_CATEGORIES, null, cv);
     }
 
 }
