@@ -9,7 +9,7 @@
         android:id="@+id/schedule_item_datetime"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:textAlignment="center"
+        android:gravity="center_vertical"
         android:layout_weight="4"/>
 
     <ImageView
@@ -24,8 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:src="@drawable/ic_action_edit"
-        android:paddingRight="10dp"/>
+        android:src="@drawable/ic_action_edit"/>
 
 
 </LinearLayout>
