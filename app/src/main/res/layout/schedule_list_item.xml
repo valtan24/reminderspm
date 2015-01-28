@@ -9,7 +9,7 @@
         android:id="@+id/schedule_item_datetime"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
+        android:textAlignment="center"
         android:layout_weight="4"/>
 
     <ImageView
