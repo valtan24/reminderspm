@@ -29,6 +29,9 @@
     <string name="continue_button">Continue</string>
     <string name="reminder_schedule">Reminder Schedule</string>
     <string name="back_button">BACK</string>
+    <string name="change_datetime_header">Edit Date / Time</string>
+    <string name="date_of_reminder">Date:</string>
+    <string name="time_of_reminder">Time:</string>
 
     <string-array name="category_list">
         <item>General</item>

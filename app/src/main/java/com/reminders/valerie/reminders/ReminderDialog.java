@@ -15,7 +15,7 @@ public class ReminderDialog extends DialogFragment {
     private String[] action_list;
 
     public interface OnActionSelectedListener{
-        public void onActionSelected(int position);
+        public void onActionSelected(int position, int reminder_position);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ReminderDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(listener_callback != null){
-                    listener_callback.onActionSelected(which);
+                    listener_callback.onActionSelected(which, getArguments().getInt("position"));
                 }
                 else{
                     Toast.makeText(getActivity().getApplicationContext(), "no listener", Toast.LENGTH_SHORT);

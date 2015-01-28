@@ -30,38 +30,11 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
     int month;
     int day;
     String month_name;
-    private Button button_date_picker;
-
-    DatePickerDialog.OnDateSetListener date_set_listener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int listener_year, int listener_month, int listener_day) {
-            year = listener_year;
-            month = listener_month;
-            day = listener_day;
-            setDateButtonText();
-            try {
-                updateTaskList();
-            } catch (Exception e) {
-                Toast.makeText(getActivity().getApplicationContext(), "Could not retrieve tasks", Toast.LENGTH_SHORT);
-            }
-        }
-    };
-
-    //set button date text
-    private void setDateButtonText(){
-        month_name = new DateFormatSymbols().getMonths()[month];
-        if(button_date_picker != null){
-            //display text on button
-            button_date_picker.setText( day + " " + month_name + " " + year);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 
         View rootView = inflater.inflate(R.layout.todo_fragment, container, false);
-        //pick date
-        button_date_picker = (Button) rootView.findViewById(R.id.button_task_list_date);
 
         //get current date by calendar
         final Calendar cal = Calendar.getInstance();
@@ -69,15 +42,6 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         month = cal.get(Calendar.MONTH);
         day = cal.get(Calendar.DAY_OF_MONTH);
 
-        setDateButtonText();
-
-        //button on click listener
-        button_date_picker.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                showDatePicker();
-            }
-        });
 
         try {
             updateTaskList();
@@ -100,20 +64,6 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         setListAdapter(adapter);
     }
 
-    private void showDatePicker() {
-        DatePickerDialogFragment date_picker = new DatePickerDialogFragment();
-        Bundle date_args = new Bundle();
-        date_args.putInt("year", year);
-        date_args.putInt("month", month);
-        date_args.putInt("day", day);
-        date_picker.setArguments(date_args);
-        date_picker.setCallBack(date_set_listener);
-
-
-        //show fragment
-        FragmentManager fragment_mgr = getActivity().getSupportFragmentManager();
-        date_picker.show(fragment_mgr, "dialog");
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState){

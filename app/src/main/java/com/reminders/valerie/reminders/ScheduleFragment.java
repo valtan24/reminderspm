@@ -22,14 +22,30 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     private ArrayList<Reminder> reminder_arraylist;
     private ArrayList<String> reminder_string_arraylist;
     private ListView reminder_listview;
-    private ArrayAdapter reminder_adapter;
     private ScheduleListAdapter list_adapter;
     private Button save_button;
 
+    DateTimeDialogFragment.OnDateTimeSetListener datetime_listener = new DateTimeDialogFragment.OnDateTimeSetListener() {
+        @Override
+        public void OnDateTimeSet(String date, String time) {
+
+        }
+    };
     ReminderDialog.OnActionSelectedListener action_listener = new ReminderDialog.OnActionSelectedListener() {
         @Override
-        public void onActionSelected(int position) {
-            Log.d("selected", ""+position);
+        public void onActionSelected(int position, int reminder_position) {
+            if(position == 1){
+                Bundle args =  new Bundle();
+                args.putInt("year", reminder_arraylist.get(reminder_position).getYear());
+                args.putInt("month", reminder_arraylist.get(reminder_position).getMonth());
+                args.putInt("day", reminder_arraylist.get(reminder_position).getDay());
+                args.putInt("hour", reminder_arraylist.get(reminder_position).getHour());
+                args.putInt("minute", reminder_arraylist.get(reminder_position).getMinute());
+                DateTimeDialogFragment datetime_fragment = new DateTimeDialogFragment();
+                datetime_fragment.setArguments(args);
+                datetime_fragment.setCallBack(datetime_listener);
+                datetime_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
+            }
         }
     };
 
@@ -45,7 +61,6 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
 
         //populate list
         reminder_string_arraylist = new ArrayList<String>();
-        reminder_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, reminder_string_arraylist);
         list_adapter = new ScheduleListAdapter(getActivity(), reminder_arraylist);
         reminder_listview.setAdapter(list_adapter);
 
@@ -71,7 +86,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
             TextView dialog_title = (TextView) view.findViewById(R.id.schedule_item_datetime);
             Bundle args =  new Bundle();
             args.putString("date_time", dialog_title.getText().toString());
-            args.putInt("with_audio", reminder_arraylist.get((int) id).getWith_audio());
+            args.putInt("with_audio", reminder_arraylist.get(position).getWith_audio());
+            args.putInt("position", position);
             ReminderDialog action_fragment = new ReminderDialog();
             action_fragment.setArguments(args);
             action_fragment.setCallBack(action_listener);
