@@ -58,7 +58,7 @@ public class ScheduleListAdapter extends BaseAdapter {
         Reminder reminder = reminder_list.get(position);
         String date_text = date_et_mgr.buildText(reminder.getYear(), reminder.getMonth(), reminder.getDay());
         String time_text = time_et_mgr.buildText(reminder.getHour(), reminder.getMinute(), 0);
-        date_time.setText(date_text + " " + time_text);
+        date_time.setText(date_text + ", " + time_text);
 
         //check if audio
         if(reminder.getWith_audio() == 0){

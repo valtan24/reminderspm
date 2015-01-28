@@ -254,15 +254,17 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
         rem_1.setWith_audio(0);
         reminder_list.add(rem_1);
         //2nd reminder
-        if(task_minute != 0) {
+        int tmp = task_minute;
+        while(tmp != 0) {
             Reminder rem_2 = new Reminder();
             rem_2.setDay(task_day);
             rem_2.setMonth(task_month);
             rem_2.setYear(task_year);
-            rem_2.setMinute(task_minute-1);
+            rem_2.setMinute(tmp-1);
             rem_2.setHour(task_hour);
             rem_2.setWith_audio(1);
             reminder_list.add(rem_2);
+            tmp -= 1;
         }
 
         //last reminder during task

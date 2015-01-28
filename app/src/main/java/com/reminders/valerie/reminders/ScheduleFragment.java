@@ -1,6 +1,7 @@
 package com.reminders.valerie.reminders;
 
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,13 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     private ArrayAdapter reminder_adapter;
     private ScheduleListAdapter list_adapter;
     private Button save_button;
+
+    ReminderDialog.OnActionSelectedListener action_listener = new ReminderDialog.OnActionSelectedListener() {
+        @Override
+        public void onActionSelected(int position) {
+            Log.d("selected", ""+position);
+        }
+    };
 
     private DateTimeEditTextMgr date_et_mgr, time_et_mgr;
     @Override
@@ -57,6 +67,16 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        if(view.findViewById(R.id.schedule_item_datetime) != null){
+            TextView dialog_title = (TextView) view.findViewById(R.id.schedule_item_datetime);
+            Bundle args =  new Bundle();
+            args.putString("date_time", dialog_title.getText().toString());
+            args.putInt("with_audio", reminder_arraylist.get((int) id).getWith_audio());
+            ReminderDialog action_fragment = new ReminderDialog();
+            action_fragment.setArguments(args);
+            action_fragment.setCallBack(action_listener);
+            action_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
+        }
     }
+
 }
