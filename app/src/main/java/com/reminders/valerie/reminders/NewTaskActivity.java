@@ -3,7 +3,11 @@ package com.reminders.valerie.reminders;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.MenuItem;
 
 import com.reminders.valerie.reminders.taskinputview.NewTaskFragment;
 
@@ -29,6 +33,25 @@ public class NewTaskActivity extends ActionBarActivity{
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.task_fragment_container, task_input_fragment).commit();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                FragmentManager fm = getSupportFragmentManager();
+                if(fm.getBackStackEntryCount()>0){
+                    fm.popBackStack();
+                    return true;
+                }
+                else{
+                    NavUtils.navigateUpFromSameTask(this);
+                    return true;
+                }
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

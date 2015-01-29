@@ -4,8 +4,13 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -43,7 +48,6 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
     //UI
     private EditText task_title_edittext, task_time_edittext, task_date_edittext;;
     private Button continue_task_button;
-    private Button cancel_task_button;
 
     //reminder items
     private int reminder_day, reminder_month, reminder_year;
@@ -117,6 +121,8 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.task_input_fragment, container, false);
+        ActionBar actionbar = ((ActionBarActivity) getActivity()).getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
         //initialization of values
         final Calendar cal = Calendar.getInstance();
         task_year = cal.get(Calendar.YEAR);
@@ -202,32 +208,12 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
         continue_task_button.setOnClickListener(this);
 
         //cancel task button
-        cancel_task_button = (Button) rootView.findViewById(R.id.cancel_task_button);
-        cancel_task_button.setOnClickListener(this);
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.continue_task_button) {
-            //checks
-
-            /*
-            String month_text = "";
-            if(task_month < 9){
-                month_text = month_text + "0" + (task_month+1);
-            }
-            else{
-                month_text = month_text + (task_month + 1);
-            }
-            Bundle new_task_args = new Bundle();
-            new_task_args.putString("task_title", task_title_edittext.getText().toString());
-            new_task_args.putString("task_date", task_year + "-" + month_text + "-" + task_day);
-            new_task_args.putString("task_time", time_edittext_mgr.buildText(task_hour, task_minute, 0));
-            dbhandler = new TaskDBHandler(this);
-            dbhandler.addNewTask(new_task_args);
-
-            setResult(RESULT_OK);*/
             ArrayList<Reminder> reminder_list = setDummyData();
             ScheduleFragment schedule_fragment = new ScheduleFragment();
             schedule_fragment.setReminderArrayList(reminder_list);
@@ -236,10 +222,6 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
             fragment_transaction.addToBackStack(null);
             fragment_transaction.hide(this);
             fragment_transaction.commit();
-        }
-        else{
-            getActivity().setResult(getActivity().RESULT_CANCELED);
-            getActivity().finish();
         }
     }
 
@@ -286,5 +268,17 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
         rem_3.setWith_audio(1);
         reminder_list.add(rem_3);
         return reminder_list;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(getActivity());
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

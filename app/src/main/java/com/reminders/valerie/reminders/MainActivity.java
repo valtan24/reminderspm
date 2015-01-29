@@ -55,6 +55,8 @@ public class MainActivity extends ActionBarActivity {
         DrawerAdapter adapter = new DrawerAdapter(this, R.layout.drawer_list_item, drawer_items);
         drawer_list.setAdapter(adapter);
         drawer_list.setOnItemClickListener(new DrawerItemClickListener());
+
+        selectItem(0);
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
