@@ -46,21 +46,40 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         }
     };
 
+    DeleteDialogFragment.OnDeleteSetListener delete_listener = new DeleteDialogFragment.OnDeleteSetListener(){
+        @Override
+        public void OnDeleteSet(int choice) {
+            if(reminder_selected != -1) {
+                switch (choice) {
+                    case 0: //cancel
+                        //do nothing;
+                        break;
+                    case 1:
+                        reminder_arraylist.remove(reminder_selected);
+                        list_adapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        Log.d("Error", "invalid choice");
+                }
+                reminder_selected = -1;
+            }
+            else{
+                Log.d("Error","No reminder selected");
+            }
+        }
+    };
+
     ReminderDialog.OnActionSelectedListener action_listener = new ReminderDialog.OnActionSelectedListener() {
         @Override
         public void onActionSelected(int position) {
-            switch(position) {
-                case 0:
-                    if(reminder_selected != -1){
-                        Reminder rem = reminder_arraylist.get(reminder_selected);
-                        int tmp = rem.getWith_audio();
-                        tmp = tmp + (int)Math.pow(-1, tmp);
-                        rem.setWith_audio(tmp);
-                        list_adapter.notifyDataSetChanged();
-                    }
-                    else{
-                        Log.d("error", "no reminder selected");
-                    }
+            if (reminder_selected != -1) {
+                switch (position) {
+                    case 0:
+                    Reminder rem = reminder_arraylist.get(reminder_selected);
+                    int tmp = rem.getWith_audio();
+                    tmp = tmp + (int) Math.pow(-1, tmp);
+                    rem.setWith_audio(tmp);
+                    list_adapter.notifyDataSetChanged();
                     break;
                 case 1:
                     Bundle args = new Bundle();
@@ -75,9 +94,13 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
                     datetime_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
                     break;
                 case 2:
+                    DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
+                    delete_fragment.setCallBack(delete_listener);
+                    delete_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
                     break;
                 default:
                     Toast.makeText(getActivity().getApplicationContext(), "Invalid option", Toast.LENGTH_SHORT);
+                }
             }
         }
     };
