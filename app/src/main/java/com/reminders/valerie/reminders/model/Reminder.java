@@ -1,4 +1,4 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.model;
 
 
 import android.os.Bundle;

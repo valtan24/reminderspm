@@ -34,12 +34,21 @@
     <string name="time_of_reminder">Time:</string>
     <string name="delete_reminder_confirmation">Are you sure you want to delete this reminder?</string>
     <string name="confirm">CONFIRM</string>
+    <string name="drawer_open">Open Navigation Drawer</string>
+    <string name="drawer_close">Close Navigation Drawer</string>
 
     <string-array name="category_list">
         <item>General</item>
         <item>Study</item>
         <item>Work</item>
         <item>Social</item>
+    </string-array>
+
+    <string-array name="drawer_list">
+        <item>To do</item>
+        <item>History</item>
+        <item>Settings</item>
+        <item>My Routine</item>
     </string-array>
 
 </resources>

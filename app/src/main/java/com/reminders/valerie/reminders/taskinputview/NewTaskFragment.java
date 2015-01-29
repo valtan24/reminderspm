@@ -1,12 +1,10 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.taskinputview;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +15,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.reminders.valerie.reminders.model.DateEditTextManager;
+import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
+import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ScheduleCalculator;
+import com.reminders.valerie.reminders.model.Task;
+import com.reminders.valerie.reminders.TaskDBHandler;
+import com.reminders.valerie.reminders.model.TimeEditTextManager;
+import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;

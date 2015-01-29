@@ -1,12 +1,13 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.model;
 
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
+
+import com.reminders.valerie.reminders.taskinputview.TimePickerDialogFragment;
 
 public class TimeEditTextManager implements DateTimeEditTextMgr {
 

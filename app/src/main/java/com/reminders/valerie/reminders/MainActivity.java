@@ -1,45 +1,124 @@
 package com.reminders.valerie.reminders;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
-
-    ActionBar.Tab history_tab, todo_tab, settings_tab;
-    Fragment history_fragment = new HistoryFragment();
-    Fragment todo_fragment = new TodoFragment();
-    Fragment settings_fragment = new SettingsFragment();
+    private String[] drawer_list_titles;
+    private DrawerLayout drawer_layout;
+    private ListView drawer_list;
+    private ActionBarDrawerToggle drawer_toggle;
+    private CharSequence drawer_title;
+    private CharSequence title;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); //remove if required
+        setContentView(R.layout.activity_main);
+        title = drawer_title = getTitle();
+        drawer_list_titles = getResources().getStringArray(R.array.drawer_list);
+        drawer_layout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        drawer_toggle = new ActionBarDrawerToggle(this, drawer_layout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close){
 
-        ActionBar bar = getSupportActionBar();
-        bar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(title);
+            }
 
-        history_tab = bar.newTab();
-        todo_tab = bar.newTab();
-        settings_tab = bar.newTab();
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(drawer_title);
+            }
+        };
 
-        history_tab.setText("History");
-        todo_tab.setText("To Do");
-        settings_tab.setText("Settings");
+        drawer_layout.setDrawerListener(drawer_toggle);
+        drawer_list = (ListView) findViewById(R.id.left_drawer);
 
-        history_tab.setTabListener(new TabListener(history_fragment));
-        todo_tab.setTabListener(new TabListener(todo_fragment));
-        settings_tab.setTabListener(new TabListener(settings_fragment));
+        DrawerItem[] drawer_items = new DrawerItem[4];
+        drawer_items[0] = new DrawerItem(R.drawable.ic_default, "To do");
+        drawer_items[1] = new DrawerItem(R.drawable.ic_default, "History");
+        drawer_items[2] = new DrawerItem(R.drawable.ic_default, "My Profile");
+        drawer_items[3] = new DrawerItem(R.drawable.ic_default, "My Routine");
 
-        bar.addTab(history_tab);
-        bar.addTab(todo_tab);
-        bar.addTab(settings_tab);
+        DrawerAdapter adapter = new DrawerAdapter(this, R.layout.drawer_list_item, drawer_items);
+        drawer_list.setAdapter(adapter);
+        drawer_list.setOnItemClickListener(new DrawerItemClickListener());
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
 
     }
 
+    private void selectItem(int position) {
 
+        Fragment fragment = null;
 
+        switch (position) {
+            case 0:
+                fragment = new TodoFragment();
+                break;
+            case 1:
+                fragment = new HistoryFragment();
+                break;
+            case 2:
+                fragment = new SettingsFragment();
+                break;
+            case 3:
+                fragment = new SettingsFragment();
+                break;
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+            drawer_list.setItemChecked(position, true);
+            drawer_list.setSelection(position);
+            setTitle(drawer_list_titles[position]);
+            drawer_layout.closeDrawer(drawer_list);
+
+        } else {
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawer_toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        this.title = title;
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawer_toggle.syncState();
+    }
 }
+

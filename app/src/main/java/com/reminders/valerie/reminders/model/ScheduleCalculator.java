@@ -1,4 +1,4 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.model;
 
 /**
  * Created by valerie on 1/27/2015.

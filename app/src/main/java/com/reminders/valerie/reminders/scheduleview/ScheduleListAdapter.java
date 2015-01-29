@@ -1,4 +1,4 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.scheduleview;
 
 
 import android.app.Activity;
@@ -11,8 +11,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.reminders.valerie.reminders.model.DateEditTextManager;
+import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
+import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.TimeEditTextManager;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ScheduleListAdapter extends BaseAdapter {
 

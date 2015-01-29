@@ -1,4 +1,4 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.scheduleview;
 
 
 import android.app.AlertDialog;
@@ -14,6 +14,11 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+import com.reminders.valerie.reminders.model.DateEditTextManager;
+import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
+import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.model.TimeEditTextManager;
 
 public class DateTimeDialogFragment extends DialogFragment {
 

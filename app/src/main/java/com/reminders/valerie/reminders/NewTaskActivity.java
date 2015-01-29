@@ -3,11 +3,9 @@ package com.reminders.valerie.reminders;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
+
+import com.reminders.valerie.reminders.taskinputview.NewTaskFragment;
 
 public class NewTaskActivity extends ActionBarActivity{
 
