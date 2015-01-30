@@ -3,6 +3,7 @@ package com.reminders.valerie.reminders;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.reminders.valerie.reminders.myprofile.ProfileFragment;
 
 public class MainActivity extends ActionBarActivity {
     private String[] drawer_list_titles;
@@ -80,10 +83,10 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new HistoryFragment();
                 break;
             case 2:
-                fragment = new SettingsFragment();
+                fragment = new ProfileFragment();
                 break;
             case 3:
-                fragment = new SettingsFragment();
+                fragment = new ProfileFragment();
                 break;
             default:
                 break;
@@ -91,8 +94,9 @@ public class MainActivity extends ActionBarActivity {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.content_frame, fragment);
+            ft.commit();
             drawer_list.setItemChecked(position, true);
             drawer_list.setSelection(position);
             setTitle(drawer_list_titles[position]);

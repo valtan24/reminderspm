@@ -36,6 +36,11 @@
     <string name="confirm">CONFIRM</string>
     <string name="drawer_open">Open Navigation Drawer</string>
     <string name="drawer_close">Close Navigation Drawer</string>
+    <string name="profile_details">Profile Details</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_dob">Date of Birth</string>
+    <string name="confidential_declaration">Accurate date of birth is required for best calculation of your reminder schedule for each task. Information will not be sent to developer and will be kept confidential.</string>
+    <string name="task_categories">Task Categories</string>
 
     <string-array name="category_list">
         <item>General</item>

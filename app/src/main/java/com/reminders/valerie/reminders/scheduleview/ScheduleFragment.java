@@ -30,10 +30,9 @@ import java.util.ArrayList;
 public class ScheduleFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private ArrayList<Reminder> reminder_arraylist;
-    private ArrayList<String> reminder_string_arraylist;
     private ListView reminder_listview;
     private ScheduleListAdapter list_adapter;
-    private Button save_button, cancel_button;
+    private Button save_button;
 
     private int reminder_selected;
 
@@ -80,36 +79,36 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     ReminderDialog.OnActionSelectedListener action_listener = new ReminderDialog.OnActionSelectedListener() {
         @Override
         public void onActionSelected(int position) {
-            if (reminder_selected != -1) {
-                switch (position) {
-                    case 0:
-                    Reminder rem = reminder_arraylist.get(reminder_selected);
-                    int tmp = rem.getWith_audio();
-                    tmp = tmp + (int) Math.pow(-1, tmp);
-                    rem.setWith_audio(tmp);
-                    list_adapter.notifyDataSetChanged();
-                    break;
-                case 1:
-                    Bundle args = new Bundle();
-                    args.putInt("year", reminder_arraylist.get(reminder_selected).getYear());
-                    args.putInt("month", reminder_arraylist.get(reminder_selected).getMonth());
-                    args.putInt("day", reminder_arraylist.get(reminder_selected).getDay());
-                    args.putInt("hour", reminder_arraylist.get(reminder_selected).getHour());
-                    args.putInt("minute", reminder_arraylist.get(reminder_selected).getMinute());
-                    DateTimeDialogFragment datetime_fragment = new DateTimeDialogFragment();
-                    datetime_fragment.setArguments(args);
-                    datetime_fragment.setCallBack(datetime_listener);
-                    datetime_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
-                    break;
-                case 2:
-                    DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
-                    delete_fragment.setCallBack(delete_listener);
-                    delete_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
-                    break;
-                default:
-                    Toast.makeText(getActivity().getApplicationContext(), "Invalid option", Toast.LENGTH_SHORT);
-                }
+        if (reminder_selected != -1) {
+            switch (position) {
+                case 0:
+                Reminder rem = reminder_arraylist.get(reminder_selected);
+                int tmp = rem.getWith_audio();
+                tmp = tmp + (int) Math.pow(-1, tmp);
+                rem.setWith_audio(tmp);
+                list_adapter.notifyDataSetChanged();
+                break;
+            case 1:
+                Bundle args = new Bundle();
+                args.putInt("year", reminder_arraylist.get(reminder_selected).getYear());
+                args.putInt("month", reminder_arraylist.get(reminder_selected).getMonth());
+                args.putInt("day", reminder_arraylist.get(reminder_selected).getDay());
+                args.putInt("hour", reminder_arraylist.get(reminder_selected).getHour());
+                args.putInt("minute", reminder_arraylist.get(reminder_selected).getMinute());
+                DateTimeDialogFragment datetime_fragment = new DateTimeDialogFragment();
+                datetime_fragment.setArguments(args);
+                datetime_fragment.setCallBack(datetime_listener);
+                datetime_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
+                break;
+            case 2:
+                DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
+                delete_fragment.setCallBack(delete_listener);
+                delete_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
+                break;
+            default:
+                Toast.makeText(getActivity().getApplicationContext(), "Invalid option", Toast.LENGTH_SHORT);
             }
+        }
         }
     };
 
@@ -125,11 +124,10 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
         date_et_mgr = new DateEditTextManager();
         time_et_mgr = new TimeEditTextManager();
         save_button = (Button) rootView.findViewById(R.id.save_task_button);
-        cancel_button = (Button) rootView.findViewById(R.id.cancel_task_button);
+        save_button.setOnClickListener(this);
         reminder_listview = (ListView) rootView.findViewById(R.id.reminder_list);
 
         //populate list
-        reminder_string_arraylist = new ArrayList<String>();
         list_adapter = new ScheduleListAdapter(getActivity(), reminder_arraylist);
         reminder_listview.setAdapter(list_adapter);
 

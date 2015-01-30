@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    style="@style/AppTheme"
+    android:weightSum="1">
+
+    <!-- personal details -->
+    <TextView
+        android:id="@+id/personal_details_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:layout_marginTop="20dp"
+        style="@style/SectionHeader"
+        android:text="@string/profile_details"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/personal_details_header"
+        android:background="#ff4f4f4f"/>
+
+    <EditText
+        android:layout_below="@id/personal_details_header"
+        android:id="@+id/profile_name_edittext"
+        android:layout_width="match_parent"
+        style="@style/TextFieldWithIcon"
+        android:singleLine="true"
+        android:hint="@string/profile_name"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/profile_dob"
+        android:layout_below="@id/profile_name_edittext"
+        android:layout_width="match_parent"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:clickable="true"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/ic_date_picker"
+        android:hint="@string/profile_dob"
+        style="@style/TextFieldWithIcon"/>
+
+    <TextView
+        android:id="@+id/confidential_declaration"
+        android:layout_below="@id/profile_dob"
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:textColor="#ff666666"
+        android:text="@string/confidential_declaration"/>
+
+    <!-- task categories -->
+    <RelativeLayout
+        android:id="@+id/task_category_header"
+        android:layout_below="@id/confidential_declaration"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="true"
+            style="@style/SectionHeader"
+            android:layout_marginTop="20dp"
+            android:text="@string/task_categories"/>
+
+        <ImageView
+            android:id="@+id/plus_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:clickable="true"
+            android:src="@drawable/ic_add_cat"
+            android:layout_marginTop="15dp" />
+
+    </RelativeLayout>
+    <View
+        android:layout_below="@id/task_category_header"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#ff4f4f4f"/>
+
+    <ListView
+        android:id="@+id/category_list"
+        android:layout_below="@id/task_category_header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/save_profile_button"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        style="@style/BlueButton"
+        android:text="@string/save_button"
+        android:layout_marginBottom="20dp"/>
+</RelativeLayout>

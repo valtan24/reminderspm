@@ -39,6 +39,8 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
 
     TaskDBHandler dbhandler;
 
+    private boolean date_selected, time_selected;
+
     //task details
     private int task_hour, task_minute;
     private int task_day, task_month, task_year;
@@ -62,6 +64,7 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
             task_month = monthOfYear;
             task_year = year;
             if(date_edittext_mgr != null) {
+                date_selected = true;
                 String date_text = date_edittext_mgr.buildText(task_year, task_month, task_day);
                 date_edittext_mgr.setText(task_date_edittext, date_text);
             }
@@ -77,6 +80,7 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
             task_hour = hourOfDay;
             task_minute = minuteOfHour;
             if(time_edittext_mgr != null){
+                time_selected = true;
                 String time_text = time_edittext_mgr.buildText(task_hour, task_minute, 0);
                 time_edittext_mgr.setText(task_time_edittext, time_text);
             }
@@ -106,15 +110,15 @@ public class NewTaskFragment extends Fragment implements View.OnClickListener{
     TimePickerDialog.OnTimeSetListener reminder_time_listener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
-            reminder_hour = hourOfDay;
-            reminder_minute = minuteOfHour;
-            if(time_edittext_mgr != null){
-                String time_text = time_edittext_mgr.buildText(reminder_hour, reminder_minute, 0);
-                time_edittext_mgr.setText(reminder_time_edittext, time_text);
-            }
-            else{
-                Toast.makeText(getActivity().getApplicationContext(), "Error setting time", Toast.LENGTH_SHORT);
-            }
+        reminder_hour = hourOfDay;
+        reminder_minute = minuteOfHour;
+        if(time_edittext_mgr != null){
+            String time_text = time_edittext_mgr.buildText(reminder_hour, reminder_minute, 0);
+            time_edittext_mgr.setText(reminder_time_edittext, time_text);
+        }
+        else{
+            Toast.makeText(getActivity().getApplicationContext(), "Error setting time", Toast.LENGTH_SHORT);
+        }
         }
     };
 
