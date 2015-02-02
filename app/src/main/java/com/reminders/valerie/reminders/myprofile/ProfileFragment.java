@@ -42,6 +42,20 @@ public class ProfileFragment extends Fragment{
     private int dob_year, dob_month, dob_day;
     private DateTimeEditTextMgr date_et_mgr;
 
+    //add category listener
+    AddCategoryDialog.OnAddSetListener add_cat_listener = new AddCategoryDialog.OnAddSetListener() {
+        @Override
+        public void OnAddSet(int choice) {
+            switch(choice){
+                case 0: //cancel
+                    break;
+                case 1:
+                    //check inputs, add into database
+                    Toast.makeText(getActivity().getApplicationContext(), "Category added", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
+
     DatePickerDialog.OnDateSetListener date_listener = new DatePickerDialog.OnDateSetListener(){
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {

@@ -41,6 +41,11 @@
     <string name="profile_dob">Date of Birth</string>
     <string name="confidential_declaration">Accurate date of birth is required for best calculation of your reminder schedule for each task. Information will not be sent to developer and will be kept confidential.</string>
     <string name="task_categories">Task Categories</string>
+    <string name="category_name">Category Name</string>
+    <string name="alert_tone">Alert Tone</string>
+    <string name="default_tone">Default</string>
+    <string name="motivation">Motivation</string>
+    <string name="add_cat_title">Add New Category</string>
 
     <string-array name="category_list">
         <item>General</item>
@@ -54,6 +59,16 @@
         <item>History</item>
         <item>Settings</item>
         <item>My Routine</item>
+    </string-array>
+
+    <string-array name="days_list">
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+        <item>Sunday</item>
     </string-array>
 
 </resources>

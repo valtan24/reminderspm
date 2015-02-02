@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.reminders.valerie.reminders.myprofile.ProfileFragment;
+import com.reminders.valerie.reminders.myroutine.RoutineFragment;
 
 public class MainActivity extends ActionBarActivity {
     private String[] drawer_list_titles;
@@ -86,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new ProfileFragment();
                 break;
             case 3:
-                fragment = new ProfileFragment();
+                fragment = new RoutineFragment();
                 break;
             default:
                 break;
