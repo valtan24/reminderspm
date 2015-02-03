@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,9 +25,10 @@ import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
-public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAddSetListener{
+public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAddSetListener, AdapterView.OnItemClickListener{
 
     /*********Views********/
     private Button save_button;
@@ -52,7 +54,27 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
                 case 1:
                     //check inputs, add into database
                     Toast.makeText(getActivity().getApplicationContext(), "Category added", Toast.LENGTH_SHORT).show();
+                    break;
             }
+        }
+    };
+
+    EditCategoryDialog.OnAddSetListener edit_cat_listener = new EditCategoryDialog.OnAddSetListener(){
+
+        @Override
+        public void OnAddSet(int choice) {
+            switch(choice){
+                case 0:
+                    //cancel
+                    break;
+                case 1:
+                    Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    Toast.makeText(getActivity().getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
         }
     };
 
@@ -110,6 +132,7 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
                 FragmentManager fragment_manager = getActivity().getSupportFragmentManager();
                 AddCategoryDialog add_category = new AddCategoryDialog();
                 add_category.setCallBack(add_cat_listener);
+                add_category.setTitle(getActivity().getResources().getText(R.string.add_cat_title));
                 add_category.show(fragment_manager, "dialog");
             }
         });
@@ -118,6 +141,7 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
         cat_strings = getActivity().getResources().getStringArray(R.array.category_list);
         list_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, cat_strings);
         cat_list.setAdapter(list_adapter);
+        cat_list.setOnItemClickListener(this);
         return rootView;
     }
 
@@ -131,5 +155,15 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
                 Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        EditCategoryDialog edit_cat = new EditCategoryDialog();
+        edit_cat.setCallBack(edit_cat_listener);
+        edit_cat.setSet_neutral_button(true);
+        edit_cat.setTitle(getActivity().getResources().getText(R.string.edit_category));
+        edit_cat.setCat_name(cat_strings[position]);
+        edit_cat.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 }

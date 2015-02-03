@@ -50,4 +50,16 @@ public class PerDayEvent {
     public void setEnd_minute(int end_minute) {
         this.end_minute = end_minute;
     }
+
+    public String getTime(){
+        String time_text = "";
+        time_text = time_text + (start_hour < 10 ? "0" : "") + start_hour;
+        time_text = time_text + ":";
+        time_text = time_text + (start_minute < 10 ? "0":"") + start_minute;
+        time_text = time_text + " - ";
+        time_text = time_text + (end_hour < 10 ? "0" : "") + end_hour;
+        time_text = time_text + ":";
+        time_text = time_text + (end_minute < 10 ? "0" : "") + end_minute;
+        return time_text;
+    }
 }

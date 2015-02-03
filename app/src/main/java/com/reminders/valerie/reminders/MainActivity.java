@@ -96,6 +96,7 @@ public class MainActivity extends ActionBarActivity {
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
+            clearBackStack();
             ft.replace(R.id.content_frame, fragment);
             ft.commit();
             drawer_list.setItemChecked(position, true);
@@ -113,6 +114,7 @@ public class MainActivity extends ActionBarActivity {
         if (drawer_toggle.onOptionsItemSelected(item)) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -126,6 +128,12 @@ public class MainActivity extends ActionBarActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawer_toggle.syncState();
+    }
+
+    private void clearBackStack(){
+        while(getSupportFragmentManager().getBackStackEntryCount() > 0){
+            getSupportFragmentManager().popBackStackImmediate();
+        }
     }
 }
 
