@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.reminders.valerie.reminders.R;
 
@@ -69,5 +68,9 @@ public class AddCategoryDialog extends DialogFragment {
         });
 
         return builder.create();
+    }
+
+    public void setCallBack(OnAddSetListener listener){
+        this.listener = listener;
     }
 }

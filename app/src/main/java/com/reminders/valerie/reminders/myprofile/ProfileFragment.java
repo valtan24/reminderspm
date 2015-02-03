@@ -26,7 +26,7 @@ import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import java.util.ArrayList;
 
 
-public class ProfileFragment extends Fragment{
+public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAddSetListener{
 
     /*********Views********/
     private Button save_button;
@@ -107,7 +107,10 @@ public class ProfileFragment extends Fragment{
         add_cat_icon.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(getActivity().getApplicationContext(), "Category saved", Toast.LENGTH_SHORT).show();
+                FragmentManager fragment_manager = getActivity().getSupportFragmentManager();
+                AddCategoryDialog add_category = new AddCategoryDialog();
+                add_category.setCallBack(add_cat_listener);
+                add_category.show(fragment_manager, "dialog");
             }
         });
         //populate category list
@@ -118,4 +121,15 @@ public class ProfileFragment extends Fragment{
         return rootView;
     }
 
+    @Override
+    public void OnAddSet(int choice) {
+        switch(choice){
+            case 0:
+                Toast.makeText(getActivity().getApplicationContext(), "canceled", Toast.LENGTH_SHORT).show();
+                break;
+            case 1:
+                Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 }
