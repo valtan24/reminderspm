@@ -5,14 +5,44 @@
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/day_textview"
-        android:layout_width="wrap_content"
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        style="@style/SectionHeader"
-        android:textAllCaps="true"/>
+        android:orientation="horizontal"
+        android:paddingRight="3dp"
+        android:paddingBottom="3dp">
+
+        <TextView
+            android:id="@+id/day_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            style="@style/SectionHeader"
+            android:textAllCaps="true"/>
+
+        <ImageView
+            android:id="@+id/add_icon"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_content_add"
+            android:gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:clickable="true"/>
+
+        <ImageView
+            android:id="@+id/duplicate_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_copy"
+            android:gravity="center_vertical"
+            android:layout_toLeftOf="@id/add_icon"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:clickable="true"/>
+        
+    </RelativeLayout>
 
     <View
         android:layout_width="fill_parent"
@@ -22,6 +52,29 @@
     <ListView
         android:id="@+id/daily_routine_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="336dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/clear_all_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            style="@style/GreyButton"
+            android:layout_alignParentRight="true"
+            android:text="@string/clear_all"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/BlueButton"
+        android:text="@string/save_button"/>
 
 </LinearLayout>

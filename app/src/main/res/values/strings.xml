@@ -46,6 +46,7 @@
     <string name="default_tone">Default</string>
     <string name="motivation">Motivation</string>
     <string name="add_cat_title">Add New Category</string>
+    <string name="clear_all">Clear All</string>
 
     <string-array name="category_list">
         <item>General</item>
