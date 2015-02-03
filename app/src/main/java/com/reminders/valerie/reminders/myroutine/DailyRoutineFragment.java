@@ -62,12 +62,15 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
 
         add_icon = (ImageView) rootView.findViewById(R.id.add_icon);
         add_icon.setClickable(true);
+        add_icon.setOnClickListener(this);
         duplicate_icon = (ImageView) rootView.findViewById(R.id.duplicate_icon);
         duplicate_icon.setClickable(true);
+        duplicate_icon.setOnClickListener(this);
 
         clear_all_button = (Button) rootView.findViewById(R.id.clear_all_button);
         save_button = (Button) rootView.findViewById(R.id.save_button);
-
+        clear_all_button.setOnClickListener(this);
+        save_button.setOnClickListener(this);
         return rootView;
     }
 
