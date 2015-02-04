@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.reminders.valerie.reminders.MainActivity;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.PerDayEvent;
 
@@ -30,6 +31,7 @@ public class RoutineFragment extends Fragment implements AdapterView.OnItemClick
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.routine_fragment, container, false);
         days = getActivity().getResources().getStringArray(R.array.days_list);
+        ((MainActivity) getActivity()).enableDrawer();
         list_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, days);
         days_listview = (ListView) rootView.findViewById(R.id.days_listview);
         days_listview.setAdapter(list_adapter);

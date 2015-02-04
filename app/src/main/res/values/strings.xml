@@ -48,6 +48,14 @@
     <string name="clear_all">Clear All</string>
     <string name="edit_category">Edit Category</string>
     <string name="delete_button">Delete</string>
+    <string name="event_title">Name of Event</string>
+    <string name="start_time">Start Time</string>
+    <string name="to">To</string>
+    <string name="end_time">End Time</string>
+    <string name="complexity_subheader">Complexity</string>
+    <string name="noisy">Noisy</string>
+    <string name="dnd">Do Not Disturb</string>
+    <string name="environment_subheader">Environment</string>
 
     <string-array name="category_list">
         <item>General</item>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -114,7 +115,20 @@ public class MainActivity extends ActionBarActivity {
         if (drawer_toggle.onOptionsItemSelected(item)) {
             return true;
         }
-
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                FragmentManager fm = getSupportFragmentManager();
+                if(fm.getBackStackEntryCount()>0){
+                    fm.popBackStack();
+                    return true;
+                }
+                else{
+                    NavUtils.navigateUpFromSameTask(this);
+                    return true;
+                }
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -134,6 +148,14 @@ public class MainActivity extends ActionBarActivity {
         while(getSupportFragmentManager().getBackStackEntryCount() > 0){
             getSupportFragmentManager().popBackStackImmediate();
         }
+    }
+
+    public void disableDrawer(){
+        drawer_toggle.setDrawerIndicatorEnabled(false);
+    }
+
+    public void enableDrawer(){
+        drawer_toggle.setDrawerIndicatorEnabled(true);
     }
 }
 

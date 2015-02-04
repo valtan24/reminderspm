@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:paddingBottom="20dp"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/reminder_schedule_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -15,6 +17,8 @@
         android:textAllCaps="true"/>
 
     <View
+        android:id="@+id/divider"
+        android:layout_below="@id/reminder_schedule_header"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="#ff4f4f4f"/>
@@ -22,26 +26,17 @@
 
     <ListView
         android:id="@+id/reminder_list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <LinearLayout
+        android:layout_below="@id/divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginBottom="20dp"/>
 
 
-        <Button
-            android:id="@+id/save_task_button"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:text="@string/save_button"
-            style="@style/BlueButton"/>
+    <Button
+        android:id="@+id/save_task_button"
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:text="@string/save_button"
+        style="@style/BlueButton"/>
 
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

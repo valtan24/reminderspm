@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingRight="20dp"
+    android:paddingLeft="20dp"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/action_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        style="@style/SectionHeader"
+        android:textAllCaps="true"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_below="@id/action_header"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#ff4f4f4f"/>
+
+    <EditText
+        android:id="@+id/event_title"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/divider"
+        android:hint="@string/event_title"
+        style="@style/TextFieldWithIcon"
+        android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:id="@+id/from_to_times"
+        android:layout_below="@id/event_title"
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/start_time_edittext"
+            android:layout_width="0dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            style="@style/TextFieldWithIcon"
+            android:drawableLeft="@drawable/ic_time_picker"
+            android:hint="@string/start_time"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:text="@string/to"/>
+
+        <EditText
+            android:id="@+id/end_time_edittext"
+            android:clickable="true"
+            android:focusable="false"
+            android:cursorVisible="false"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            style="@style/TextFieldWithIcon"
+            android:drawableLeft="@drawable/ic_time_picker"
+            android:hint="@string/end_time"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/complexity_subheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/from_to_times"
+        style="@style/SubsectionHeader"
+        android:layout_marginTop="20dp"
+        android:text="@string/complexity_subheader"/>
+
+    <View
+        android:id="@+id/complexity_divider"
+        android:layout_below="@id/complexity_subheader"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#ff4f4f4f"/>
+
+    <RadioGroup
+        android:id="@+id/complexity_radiogroup"
+        android:layout_below="@id/complexity_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/radio_high"/>
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/radio_medium"/>
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/radio_low"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/environment_subheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/complexity_radiogroup"
+        style="@style/SubsectionHeader"
+        android:layout_marginTop="20dp"
+        android:text="@string/environment_subheader"/>
+
+    <View
+        android:id="@+id/environment_divider"
+        android:layout_below="@id/environment_subheader"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#ff4f4f4f"/>
+
+    <RadioGroup
+        android:id="@+id/environment_radiogroup"
+        android:layout_below="@id/environment_divider"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/noisy"/>
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dnd"/>
+
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            style="@style/GreyButton"
+            android:text="@string/delete_button"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            style="@style/BlueButton"
+            android:text="@string/save_button"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

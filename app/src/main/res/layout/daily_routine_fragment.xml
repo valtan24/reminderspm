@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:paddingBottom="20dp"
     android:orientation="vertical">
     
     <RelativeLayout
+        android:id="@+id/header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -45,36 +47,33 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/divider"
+        android:layout_below="@id/header"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="#ff4f4f4f"/>
 
     <ListView
         android:id="@+id/daily_routine_list"
+        android:layout_below="@id/divider"
         android:layout_width="match_parent"
-        android:layout_height="336dp"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/clear_all_button"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            style="@style/GreyButton"
-            android:layout_alignParentRight="true"
-            android:text="@string/clear_all"/>
-
-    </RelativeLayout>
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/save_button"
         android:layout_marginTop="20dp"
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         style="@style/BlueButton"
         android:text="@string/save_button"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/clear_all_button"
+        android:layout_width="100dp"
+        android:layout_above="@id/save_button"
+        style="@style/GreyButton"
+        android:layout_alignParentRight="true"
+        android:text="@string/clear_all"/>
+
+
+</RelativeLayout>
