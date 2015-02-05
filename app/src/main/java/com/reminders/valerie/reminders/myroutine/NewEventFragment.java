@@ -17,7 +17,8 @@ public class NewEventFragment extends EventInputFragment{
         setEnd_hour(cal.get(Calendar.HOUR_OF_DAY));
         setEnd_minute(cal.get(Calendar.MINUTE));
 
-        getDelete_button().setVisibility(View.INVISIBLE);
+        getDelete_button().setVisibility(View.GONE);
+        getButton_space().setVisibility(View.GONE);
         getDelete_button().setClickable(false);
     }
 }

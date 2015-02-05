@@ -4,6 +4,7 @@ package com.reminders.valerie.reminders.myroutine;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
 
 public abstract class EventInputFragment extends Fragment implements View.OnClickListener{
@@ -24,10 +26,12 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
     private TextView action_header;
     private EditText event_title, start_time, end_time;
     private Button delete_button, save_button;
-
+    private View button_space;
     private int start_hour, start_minute, end_hour, end_minute;
 
     private TimeEditTextManager time_et_mgr;
+
+    View.OnClickListener listener;
 
     TimePickerDialog.OnTimeSetListener start_listener = new TimePickerDialog.OnTimeSetListener(){
         @Override
@@ -52,6 +56,10 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
         }
     }
 
+    public void setListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.event_input_fragment,null);
@@ -63,6 +71,7 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
         delete_button = (Button) rootView.findViewById(R.id.delete_button);
         save_button = (Button) rootView.findViewById(R.id.save_button);
         time_et_mgr = new TimeEditTextManager();
+        button_space = rootView.findViewById(R.id.button_space);
         setContents();
 
         start_time.setClickable(true);
@@ -98,12 +107,19 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
 
     @Override
     public void onClick(View v){
+        FragmentManager fragment_mgr = getActivity().getSupportFragmentManager();
         switch(v.getId()){
             case R.id.delete_button:
                 Toast.makeText(getActivity().getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                if(fragment_mgr.getBackStackEntryCount() > 0){
+                    fragment_mgr.popBackStack();
+                }
                 break;
             case R.id.save_button:
-                Toast.makeText(getActivity().getApplicationContext(), "save", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "Event Added", Toast.LENGTH_SHORT).show();
+                if(fragment_mgr.getBackStackEntryCount() > 0){
+                    fragment_mgr.popBackStack();
+                }
                 break;
         }
     }
@@ -138,6 +154,30 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
     }
     public void setEnd_minute(int end_minute) {
         this.end_minute = end_minute;
+    }
+    public View getButton_space() {
+        return button_space;
+    }
+    public DateTimeEditTextMgr getTime_et_mgr(){
+        return time_et_mgr;
+    }
+    public EditText getStart_time(){
+        return start_time;
+    }
+    public EditText getEnd_time(){
+        return end_time;
+    }
+    public int getStart_hour(){
+        return start_hour;
+    }
+    public int getStart_minute(){
+        return start_minute;
+    }
+    public int getEnd_hour(){
+        return end_hour;
+    }
+    public int getEnd_minute(){
+        return end_minute;
     }
 
 }

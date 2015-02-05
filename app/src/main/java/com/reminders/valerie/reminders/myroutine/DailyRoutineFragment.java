@@ -57,6 +57,7 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        Log.d("view", "creating");
         View rootView = inflater.inflate(R.layout.daily_routine_fragment, null);
         ActionBar actionbar = ((ActionBarActivity) getActivity()).getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -90,6 +91,7 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
                 //add event
                 fragment_mgr = getActivity().getSupportFragmentManager();
                 fragment_transaction = fragment_mgr.beginTransaction();
+                Fragment new_event = new NewEventFragment();
                 fragment_transaction.addToBackStack(null);
                 fragment_transaction.replace(R.id.content_frame, new NewEventFragment());
                 fragment_transaction.commit();
@@ -111,7 +113,19 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity().getApplicationContext(), "clicked", Toast.LENGTH_SHORT).show();
-
+        FragmentManager fragment_mgr = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragment_transaction = fragment_mgr.beginTransaction();
+        Fragment edit_fragment = new EditEventFragment();
+        Bundle args = new Bundle();
+        PerDayEvent event = (PerDayEvent) list_adapter.getItem(position);
+        args.putString("title", event.getName());
+        args.putInt("start_hour", event.getStart_hour());
+        args.putInt("start_minute", event.getStart_minute());
+        args.putInt("end_hour", event.getEnd_hour());
+        args.putInt("end_minute", event.getEnd_hour());
+        ((EditEventFragment) edit_fragment).setArgs(args);
+        fragment_transaction.addToBackStack(null);
+        fragment_transaction.replace(R.id.content_frame, edit_fragment).commit();
     }
+
 }
