@@ -18,10 +18,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
 
 import java.util.ArrayList;
@@ -32,9 +34,14 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     private ArrayList<Reminder> reminder_arraylist;
     private ListView reminder_listview;
     private ScheduleListAdapter list_adapter;
-    private Button save_button;
+    public Button save_button;
 
+    private Task task;
     private int reminder_selected;
+
+    public void setTask(Task task){
+        this.task = task;
+    }
 
     DateTimeDialogFragment.OnDateTimeSetListener datetime_listener = new DateTimeDialogFragment.OnDateTimeSetListener() {
         @Override
@@ -138,6 +145,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         if (v.getId() == save_button.getId()) {
+            TaskDBHandler handler = new TaskDBHandler(getActivity());
+            handler.addNewTask(task);
             getActivity().setResult(getActivity().RESULT_OK);
             getActivity().finish();
         }

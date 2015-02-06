@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.reminders.valerie.reminders.model.Task;
+
 public class TaskDBHandler extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "remindersDB";
@@ -45,15 +47,15 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         //add default
         Bundle args = new Bundle();
         args.putString("cat_name", "General");
-        addNewCategory(args);
+        addNewCategory(args, db);
         args.putString("cat_name", "Study");
-        addNewCategory(args);
-        String create_tasks_table = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_IMPORTANCE + " REAL, " + KEY_CATEGORY +" TEXT FOREIGN KEY, "
-                + KEY_COMPLETED + " INTEGER)";
+        addNewCategory(args, db);
+        String create_tasks_table = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + " ( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_IMPORTANCE + " REAL, " + KEY_CATEGORY +" TEXT, "
+                + KEY_COMPLETED + " INTEGER, FOREIGN KEY(" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES +"(_id))";
         db.execSQL(create_tasks_table);
         String create_reminders_table = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_REMDATE + " TEXT, "
-                + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER FOREIGN KEY, " + KEY_AUDIO + " INTEGER)";
+                + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER, " + KEY_AUDIO + " INTEGER, FOREIGN KEY (" + KEY_TASKFK + ") REFERENCES " + TABLE_TASKS + "(_id))";
         db.execSQL(create_reminders_table);
     }
 
@@ -63,11 +65,10 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public Cursor getTasksForDate(int year, int month, int day, String ordered_by){
-        String target_date = day+"-"+ (month+1) +"-"+year;
-        String[] whereArgs = {target_date};
+    public Cursor getUncompletedTasks(String ordered_by){
+        String where_args[] = {"0"};
         String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID};
-        return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_TASKDATE + " LIKE ? ", whereArgs, null, null, ordered_by);
+        return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
 
     public void addNewTask(Bundle args){
@@ -75,14 +76,22 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
                 args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
                 args.getString("task_time") + "', 0)";
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         db.execSQL(insert_query);
     }
 
-    public void addNewCategory(Bundle args){
+    public void addNewTask(Task task){
+        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
+                KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
+                task.getTitle() + "', '" + task.getTaskDate() + "', '" +
+                task.getTaskTime() + "', 0)";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(insert_query);
+    }
+
+    public void addNewCategory(Bundle args, SQLiteDatabase db){
         ContentValues cv = new ContentValues();
         cv.put("_id", args.getString("cat_name"));
-        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_CATEGORIES, null, cv);
     }
 

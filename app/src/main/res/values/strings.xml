@@ -57,6 +57,7 @@
     <string name="dnd">Do Not Disturb</string>
     <string name="environment_subheader">Environment</string>
     <string name="edit_event">Edit Event</string>
+    <string name="next_reminder_details">Next Reminder</string>
 
     <string-array name="category_list">
         <item>General</item>

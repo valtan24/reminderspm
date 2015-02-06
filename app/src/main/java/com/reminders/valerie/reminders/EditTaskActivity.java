@@ -1,12 +1,12 @@
 package com.reminders.valerie.reminders;
 
-import com.reminders.valerie.reminders.taskinputview.NewTaskFragment;
+import com.reminders.valerie.reminders.taskinputview.EditTaskFragment;
 import com.reminders.valerie.reminders.taskinputview.TaskInputFragment;
 
-public class NewTaskActivity extends TaskInputActivity{
+public class EditTaskActivity extends TaskInputActivity {
 
     @Override
     public TaskInputFragment getFragment() {
-        return new NewTaskFragment();
+        return new EditTaskFragment();
     }
 }

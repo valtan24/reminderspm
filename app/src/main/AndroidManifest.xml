@@ -28,8 +28,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewTaskActivity"
+            android:name=".TaskInputActivity"
             android:label="New Task">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.reminders.valerie.reminders.MainActivity"/>
+        </activity>
+        <activity
+            android:name=".EditTaskActivity"
+            android:label="Edit Task">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.reminders.valerie.reminders.MainActivity"/>

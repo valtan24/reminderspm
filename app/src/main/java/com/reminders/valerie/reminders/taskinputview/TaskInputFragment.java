@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     public DateTimeEditTextMgr date_et_mgr, time_et_mgr;
     public EditText task_title, task_time, task_date, rem_time, rem_date;
     private Button continue_button;
+    public TextView reminder_header;
 
 
     DatePickerDialog.OnDateSetListener task_date_listener = new DatePickerDialog.OnDateSetListener(){
@@ -142,6 +144,9 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         continue_button = (Button) rootView.findViewById(R.id.continue_task_button);
         continue_button.setOnClickListener(this);
 
+        reminder_header = (TextView) rootView.findViewById(R.id.reminder_header);
+
+        setContents();
         return rootView;
     }
 
@@ -149,16 +154,6 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     public void onClick(View v){
         Bundle args;
         switch(v.getId()) {
-            case R.id.continue_task_button:
-                ArrayList<Reminder> reminder_list = setDummyData();
-                ScheduleFragment schedule_fragment = new ScheduleFragment();
-                schedule_fragment.setReminderArrayList(reminder_list);
-                FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
-                fragment_transaction.addToBackStack(null);
-                fragment_transaction.hide(this);
-                fragment_transaction.commit();
-                break;
             case R.id.task_date_edittext:
                 args = new Bundle();
                 args.putInt("year", task_year);
@@ -188,7 +183,17 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         }
     }
 
-    private ArrayList<Reminder> setDummyData(){
+    public Task buildTask(){
+        Task new_task =  new Task();
+        new_task.setTitle(task_title.getText().toString());
+        new_task.setDay(task_day);
+        new_task.setYear(task_year);
+        new_task.setMonth(task_month);
+        new_task.setCompleted(0);
+        return new_task;
+    }
+
+    public ArrayList<Reminder> setDummyData(){
         Task new_task =  new Task();
         new_task.setTitle(task_title.getText().toString());
         new_task.setDay(task_day);
