@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 
 import java.util.ArrayList;
@@ -39,6 +40,15 @@ public class NewTaskFragment extends TaskInputFragment{
                 ArrayList<Reminder> reminder_list = setDummyData();
                 ScheduleFragment schedule_fragment = new ScheduleFragment();
                 schedule_fragment.setReminderArrayList(reminder_list);
+                Task task = new Task();
+                task.setTitle(task_title.getText().toString());
+                task.setYear(task_year);
+                task.setMonth(task_month);
+                task.setDay(task_day);
+                task.setHour(task_hour);
+                task.setMinute(task_minute);
+                task.setCompleted(0);
+                schedule_fragment.setTask(task);
                 FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
                 fragment_transaction.addToBackStack(null);

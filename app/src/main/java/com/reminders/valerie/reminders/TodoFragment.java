@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.reminders.valerie.reminders.model.CursorToBundle;
+import com.reminders.valerie.reminders.model.DateEditTextManager;
 
 public class TodoFragment extends ListFragment implements View.OnClickListener {
 
@@ -43,9 +45,25 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
     private void updateTaskList() throws Exception{
         dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
         Cursor cursor = dbhandler.getUncompletedTasks(dbhandler.KEY_TASKDATE);
-        String[] from = new String[]{dbhandler.KEY_TASKTITLE, dbhandler.KEY_TASKTIME};
-        int[] to = {android.R.id.text1, android.R.id.text2};
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_2, cursor, from, to, 0);
+        String[] from = new String[]{dbhandler.KEY_TASKTITLE, dbhandler.KEY_TASKDATE, dbhandler.KEY_TASKTIME};
+        int[] to = {R.id.title_text, R.id.date_text, R.id.time_text};
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), R.layout.task_list_item, cursor, from, to, 0);
+        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder(){
+            @Override
+            public boolean setViewValue(View view, Cursor cursor, int i) {
+                if(i == cursor.getColumnIndex(dbhandler.KEY_TASKDATE)){
+                    String date_original = cursor.getString(i);
+                    int year = Integer.parseInt(date_original.substring(0,4));
+                    int month = Integer.parseInt(date_original.substring(5,7));
+                    int day = Integer.parseInt(date_original.substring(8,10));
+                    String date_display = (new DateEditTextManager()).buildText(year, month, day);
+                    TextView textview = (TextView) view;
+                    textview.setText(date_display);
+                    return true;
+                }
+                return false;
+            }
+        });
         setListAdapter(adapter);
     }
 
@@ -68,7 +86,7 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         int id = item.getItemId();
 
         if (id == R.id.action_new_task) {
-            Intent new_task_intent = new Intent(getActivity(), TaskInputActivity.class);
+            Intent new_task_intent = new Intent(getActivity(), NewTaskActivity.class);
             startActivityForResult(new_task_intent, TODO_FRAGMENT);
             return true;
         }
