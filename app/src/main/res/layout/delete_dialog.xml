@@ -10,6 +10,6 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="98dp"
-        android:text="@string/delete_reminder_confirmation"/>
+        android:text="@string/delete_confirmation"/>
 
 </LinearLayout>

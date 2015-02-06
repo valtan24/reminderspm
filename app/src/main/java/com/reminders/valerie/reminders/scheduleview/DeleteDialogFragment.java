@@ -12,6 +12,12 @@ import com.reminders.valerie.reminders.R;
 
 public class DeleteDialogFragment extends DialogFragment {
 
+    private String title;
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+
     OnDeleteSetListener listener;
     public interface OnDeleteSetListener{
         public void OnDeleteSet(int choice);
@@ -20,7 +26,7 @@ public class DeleteDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_LIGHT);
-        builder.setTitle("Delete Reminder");
+        builder.setTitle(title);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialog_content = inflater.inflate(R.layout.delete_dialog, null);
         builder.setView(dialog_content);

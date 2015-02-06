@@ -23,6 +23,7 @@ import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TodoFragment;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
+import com.reminders.valerie.reminders.scheduleview.DeleteDialogFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +60,22 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
         }
     };
 
+    DeleteDialogFragment.OnDeleteSetListener delete_listener = new DeleteDialogFragment.OnDeleteSetListener(){
+        @Override
+        public void OnDeleteSet(int choice) {
+            switch (choice) {
+                case 0: //cancel
+                    //do nothing;
+                    break;
+                case 1:
+                    Toast.makeText(getActivity().getApplicationContext(), "category deleted", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Log.d("Error", "invalid choice");
+            }
+        }
+    };
+
     EditCategoryDialog.OnAddSetListener edit_cat_listener = new EditCategoryDialog.OnAddSetListener(){
 
         @Override
@@ -71,7 +88,10 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
                     Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
-                    Toast.makeText(getActivity().getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                    DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
+                    delete_fragment.setTitle("Delete Category");
+                    delete_fragment.setCallBack(delete_listener);
+                    delete_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
                     break;
             }
 

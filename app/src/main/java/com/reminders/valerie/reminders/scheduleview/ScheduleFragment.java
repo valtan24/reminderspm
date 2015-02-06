@@ -109,6 +109,7 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
                 break;
             case 2:
                 DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
+                delete_fragment.setTitle("Delete Reminder");
                 delete_fragment.setCallBack(delete_listener);
                 delete_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
                 break;
