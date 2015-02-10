@@ -167,6 +167,19 @@
             android:layout_gravity="bottom"
             android:layout_weight="1">
 
+            <Button
+                android:id="@+id/completed_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                style="@style/BlueButton"
+                android:text="@string/completed"/>
+
+            <View
+                android:id="@+id/button_gap"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="0dp"/>
 
             <Button
                 android:id="@+id/continue_task_button"

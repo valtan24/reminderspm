@@ -41,7 +41,8 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     public EditText task_title, task_time, task_date, rem_time, rem_date;
     private Button continue_button;
     public TextView reminder_header;
-
+    public Button completed_button;
+    public View button_gap;
 
     DatePickerDialog.OnDateSetListener task_date_listener = new DatePickerDialog.OnDateSetListener(){
         @Override
@@ -146,6 +147,8 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
 
         reminder_header = (TextView) rootView.findViewById(R.id.reminder_header);
 
+        completed_button = (Button) rootView.findViewById(R.id.completed_button);
+        button_gap = rootView.findViewById(R.id.button_gap);
         setContents();
         return rootView;
     }

@@ -30,6 +30,9 @@ public class NewTaskFragment extends TaskInputFragment{
         rem_minute = cal.get(Calendar.MINUTE);
         reminder_header.setText(getActivity().getResources().getText(R.string.first_reminder_details));
 
+        completed_button.setVisibility(View.GONE);
+        button_gap.setVisibility(View.GONE);
+
     }
 
     @Override
