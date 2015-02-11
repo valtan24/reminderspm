@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -28,6 +30,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     //category table
     public static final String TABLE_CATEGORIES = "reminders_categories";
+    public static final String KEY_AUDIOURI = "audio_uri";
 
     //reminders table
     public static final String TABLE_REMINDERS = "reminders_reminders";
@@ -42,7 +45,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY )";
+        String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY, " + KEY_AUDIOURI + " TEXT )";
         db.execSQL(create_category_table);
 
         //add default
@@ -105,6 +108,8 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public void addNewCategory(Bundle args, SQLiteDatabase db){
         ContentValues cv = new ContentValues();
         cv.put("_id", args.getString("cat_name"));
+        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        cv.put(KEY_AUDIOURI, alert.toString());
         db.insert(TABLE_CATEGORIES, null, cv);
     }
 

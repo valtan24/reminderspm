@@ -59,6 +59,7 @@
     <string name="next_reminder_details">Next Reminder</string>
     <string name="delete_confirmation">Are you sure?</string>
     <string name="completed">Completed</string>
+    <string name="ringtone_picker">Pick Ringtone</string>
 
     <string-array name="category_list">
         <item>General</item>

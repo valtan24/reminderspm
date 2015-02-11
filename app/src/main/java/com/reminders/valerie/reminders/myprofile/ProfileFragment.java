@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAddSetListener, AdapterView.OnItemClickListener{
+public class ProfileFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     /*********Views********/
     private Button save_button;
@@ -85,6 +85,7 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
                     //cancel
                     break;
                 case 1:
+
                     Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
@@ -165,17 +166,7 @@ public class ProfileFragment extends Fragment implements AddCategoryDialog.OnAdd
         return rootView;
     }
 
-    @Override
-    public void OnAddSet(int choice) {
-        switch(choice){
-            case 0:
-                Toast.makeText(getActivity().getApplicationContext(), "canceled", Toast.LENGTH_SHORT).show();
-                break;
-            case 1:
-                Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

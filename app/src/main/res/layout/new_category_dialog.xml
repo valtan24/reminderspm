@@ -40,8 +40,7 @@
             android:id="@+id/alert_text_clickable"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:text="@string/default_tone"/>
+            android:layout_alignParentLeft="true"/>
 
         <ImageView
             android:layout_width="wrap_content"
