@@ -50,16 +50,16 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
     TaskDBHandler dbhandler;
 
     //add category listener
-    AddCategoryDialog.OnAddSetListener add_cat_listener = new AddCategoryDialog.OnAddSetListener() {
+    CategoryDialog.OnCategorySetListener add_listener = new AddCategoryDialog.OnCategorySetListener() {
         @Override
-        public void OnAddSet(int choice) {
+        public void OnCategorySet(int choice) {
             switch(choice){
-                case 0: //cancel
+                case CategoryDialog.CANCEL: //cancel
+                    //TODO CANCEL ADD CATEGORY
                     break;
-                case 1:
-                    //check inputs, add into database
-                    Toast.makeText(getActivity().getApplicationContext(), "Category added", Toast.LENGTH_SHORT).show();
-
+                case CategoryDialog.SAVE:
+                    Cursor cursor = dbhandler.getCategoryNames();
+                    list_adapter.changeCursor(cursor);
                     break;
             }
         }
@@ -70,10 +70,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         public void OnDeleteSet(int choice) {
             switch (choice) {
                 case 0: //cancel
-                    //do nothing;
+                    //to-do
                     break;
                 case 1:
-                    Toast.makeText(getActivity().getApplicationContext(), "category deleted", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     Log.d("Error", "invalid choice");
@@ -81,19 +80,18 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         }
     };
 
-    EditCategoryDialog.OnAddSetListener edit_cat_listener = new EditCategoryDialog.OnAddSetListener(){
-
+    CategoryDialog.OnCategorySetListener edit_listener = new CategoryDialog.OnCategorySetListener() {
         @Override
-        public void OnAddSet(int choice) {
+        public void OnCategorySet(int choice) {
             switch(choice){
-                case 0:
+                case CategoryDialog.CANCEL:
                     //cancel
                     break;
-                case 1:
+                case CategoryDialog.SAVE:
 
                     Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
                     break;
-                case 2:
+                case CategoryDialog.DELETE:
                     DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
                     delete_fragment.setTitle("Delete Category");
                     delete_fragment.setCallBack(delete_listener);
@@ -157,8 +155,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
             public void onClick(View v){
                 FragmentManager fragment_manager = getActivity().getSupportFragmentManager();
                 AddCategoryDialog add_category = new AddCategoryDialog();
-                add_category.setCallBack(add_cat_listener);
-                add_category.setTitle(getActivity().getResources().getText(R.string.add_cat_title));
+                add_category.setCallBack(add_listener);
                 add_category.show(fragment_manager, "dialog");
             }
         });
@@ -178,12 +175,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        EditCategoryDialog edit_cat = new EditCategoryDialog();
-        edit_cat.setCallBack(edit_cat_listener);
-        edit_cat.setSet_neutral_button(true);
-        edit_cat.setTitle(getActivity().getResources().getText(R.string.edit_category));
+        CategoryDialog edit_cat = new EditCategoryDialog();
+        edit_cat.setCallBack(edit_listener);
         Category category = dbhandler.getCategory(position);
-        edit_cat.setCat_name(category.getCategory_title());
         //set other attributes for the dialog
         edit_cat.show(getActivity().getSupportFragmentManager(), "dialog");
     }

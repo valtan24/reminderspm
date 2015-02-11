@@ -18,17 +18,18 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
+import com.reminders.valerie.reminders.model.Category;
 
 public abstract class CategoryDialog extends DialogFragment {
 
     public final static int SAVE = 1;
     public final static int CANCEL = 0;
     public final static int DELETE = 2;
-    public CharSequence title;
     public TextView alert_text;
     public Uri ringtone_uri;
     public EditText cat_name_edittext;
     RelativeLayout alert_tone;
+    public Category category;
 
     TaskDBHandler dbhandler;
 
@@ -77,6 +78,7 @@ public abstract class CategoryDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 if(listener != null){
                     if(savedata()){
+                        Toast.makeText(getActivity().getApplicationContext(), "Category added", Toast.LENGTH_SHORT).show();
                         listener.OnCategorySet(SAVE);
                     }
                     else{
@@ -121,7 +123,7 @@ public abstract class CategoryDialog extends DialogFragment {
         ringtone_uri = RingtoneManager.getActualDefaultRingtoneUri(getActivity(),RingtoneManager.TYPE_RINGTONE);
         Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), ringtone_uri);
         alert_text.setText(ringtone.getTitle(getActivity()));
-
+        category = new Category();
         setContents(builder);
         return builder.create();
     }

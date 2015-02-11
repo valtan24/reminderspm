@@ -16,7 +16,7 @@ public class EditCategoryDialog extends AddCategoryDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        super.getCat_name_edittext().setText(this.cat_name);
+        //super.getCat_name_edittext().setText(this.cat_name);
         return dialog;
     }
 }

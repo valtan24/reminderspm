@@ -43,7 +43,6 @@
     <string name="alert_tone">Alert Tone</string>
     <string name="default_tone">Default</string>
     <string name="motivation">Motivation</string>
-    <string name="add_cat_title">Add New Category</string>
     <string name="clear_all">Clear All</string>
     <string name="edit_category">Edit Category</string>
     <string name="delete_button">Delete</string>
@@ -60,6 +59,7 @@
     <string name="delete_confirmation">Are you sure?</string>
     <string name="completed">Completed</string>
     <string name="ringtone_picker">Pick Ringtone</string>
+    <string name="add_category">New Category</string>
 
     <string-array name="category_list">
         <item>General</item>

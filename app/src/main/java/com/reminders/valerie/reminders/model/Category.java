@@ -1,13 +1,11 @@
 package com.reminders.valerie.reminders.model;
 
-/**
- * Created by valerie on 2/11/2015.
- */
 public class Category{
 
     private String audio_uri;
     private String category_title;
 
+    public Category(){}
     public double getMotivation() {
         return 0.5;
     }
