@@ -1,6 +1,5 @@
 package com.reminders.valerie.reminders.myprofile;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -10,7 +9,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -20,43 +18,35 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
-import com.reminders.valerie.reminders.model.Category;
 
+public abstract class CategoryDialog extends DialogFragment {
 
-public class AddCategoryDialog extends DialogFragment{
-
-
-    private CharSequence title;
-    private boolean set_neutral_button;
+    public final static int SAVE = 1;
+    public final static int CANCEL = 0;
+    public final static int DELETE = 2;
+    public CharSequence title;
     public TextView alert_text;
-    private Uri ringtone_uri;
-    EditText cat_name_edittext;
+    public Uri ringtone_uri;
+    public EditText cat_name_edittext;
     RelativeLayout alert_tone;
 
-    OnAddSetListener listener;
+    TaskDBHandler dbhandler;
 
 
-    public interface OnAddSetListener{
-        public void OnAddSet(int choice);
+    OnCategorySetListener listener;
+
+
+    public interface OnCategorySetListener{
+        public void OnCategorySet(int choice);
     }
-    public void setSet_neutral_button(boolean set_neutral_button) {
-        this.set_neutral_button = set_neutral_button;
-    }
-    public boolean isSet_neutral_button() {
-        return set_neutral_button;
-    }
-    public EditText getCat_name_edittext() {
-        return cat_name_edittext;
-    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
+        dbhandler = new TaskDBHandler(getActivity());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), AlertDialog.THEME_HOLO_LIGHT);
-        builder.setTitle(this.getTitle());
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialog_content = inflater.inflate(R.layout.category_dialog, null);
         builder.setView(dialog_content);
-
         cat_name_edittext = (EditText) dialog_content.findViewById(R.id.category_name_edittext);
         alert_tone = (RelativeLayout) dialog_content.findViewById(R.id.alert_tone_layout);
         alert_tone.setClickable(true);
@@ -87,7 +77,7 @@ public class AddCategoryDialog extends DialogFragment{
             public void onClick(DialogInterface dialog, int which) {
                 if(listener != null){
                     if(savedata()){
-                        listener.OnAddSet(1);
+                        listener.OnCategorySet(SAVE);
                     }
                     else{
                         Toast.makeText(getActivity().getApplication(), "There was an error saving the category", Toast.LENGTH_SHORT).show();
@@ -104,7 +94,7 @@ public class AddCategoryDialog extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which){
                 if(listener != null){
-                    listener.OnAddSet(0);
+                    listener.OnCategorySet(CANCEL);
                 }
                 else{
                     dialog.dismiss();
@@ -112,7 +102,7 @@ public class AddCategoryDialog extends DialogFragment{
             }
         });
 
-        if(this.isSet_neutral_button()){
+        /*copy this to edit category dialog
             builder.setNeutralButton(R.string.delete_button, new DialogInterface.OnClickListener(){
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -124,37 +114,21 @@ public class AddCategoryDialog extends DialogFragment{
                     }
                 }
             });
-        }
+        }*/
+
 
         alert_text = (TextView) dialog_content.findViewById(R.id.alert_text_clickable);
         ringtone_uri = RingtoneManager.getActualDefaultRingtoneUri(getActivity(),RingtoneManager.TYPE_RINGTONE);
         Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), ringtone_uri);
         alert_text.setText(ringtone.getTitle(getActivity()));
+
+        setContents(builder);
         return builder.create();
     }
 
-    public boolean savedata() {
-        try {
-            Category new_category = new Category(cat_name_edittext.getText().toString(), ringtone_uri.toString());
-            TaskDBHandler dbhandler = new TaskDBHandler(getActivity());
-            dbhandler.addNewCategory(new_category);
-            return true;
-        }
-        catch(Exception e){
-            Log.d("error", "could not save new category");
-            return false;
-        }
-    }
+    public abstract boolean savedata();
 
-    public void setTitle(CharSequence title){
-        this.title = title;
-    }
-
-    public CharSequence getTitle(){
-        return title;
-    }
-
-    public void setCallBack(OnAddSetListener listener){
+    public void setCallBack(OnCategorySetListener listener){
         this.listener = listener;
     }
 
@@ -170,4 +144,6 @@ public class AddCategoryDialog extends DialogFragment{
             }
         }
     }
+
+    public abstract void setContents(AlertDialog.Builder builder);
 }

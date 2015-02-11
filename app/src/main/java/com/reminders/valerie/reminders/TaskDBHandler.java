@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.reminders.valerie.reminders.model.Category;
 import com.reminders.valerie.reminders.model.Task;
 
 public class TaskDBHandler extends SQLiteOpenHelper {
@@ -31,6 +32,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     //category table
     public static final String TABLE_CATEGORIES = "reminders_categories";
     public static final String KEY_AUDIOURI = "audio_uri";
+    public static final String KEY_MOTIVATION = "motivation";
 
     //reminders table
     public static final String TABLE_REMINDERS = "reminders_reminders";
@@ -45,7 +47,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY, " + KEY_AUDIOURI + " TEXT )";
+        String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY, " + KEY_AUDIOURI + " TEXT, " + KEY_MOTIVATION + " REAL )";
         db.execSQL(create_category_table);
 
         //add default
@@ -108,13 +110,27 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public void addNewCategory(Bundle args, SQLiteDatabase db){
         ContentValues cv = new ContentValues();
         cv.put("_id", args.getString("cat_name"));
+        cv.put(KEY_MOTIVATION, 0.5);
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         cv.put(KEY_AUDIOURI, alert.toString());
         db.insert(TABLE_CATEGORIES, null, cv);
     }
 
+    public void addNewCategory(Category c){
+        ContentValues values = new ContentValues();
+        values.put("_id", c.getCategory_title());
+        values.put(KEY_AUDIOURI, c.getAudio_uri());
+        values.put(KEY_MOTIVATION, c.getMotivation());
+        SQLiteDatabase db = getWritableDatabase();
+        db.insert(TABLE_CATEGORIES, null, values);
+    }
+
     public Cursor getCategoryNames() {
         String[] select_columns = {"_id"};
         return getReadableDatabase().query(TABLE_CATEGORIES, select_columns, null, null, null, null, null);
+    }
+
+    public Category getCategory(int position) {
+        return null;
     }
 }

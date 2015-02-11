@@ -8,6 +8,16 @@ public class Category{
     private String audio_uri;
     private String category_title;
 
+    public double getMotivation() {
+        return 0.5;
+    }
+
+    public void setMotivation(double motivation) {
+        this.motivation = motivation;
+    }
+
+    private double motivation;
+
     public Category(String title, String audio){
         this.category_title = title;
         this.audio_uri = audio;

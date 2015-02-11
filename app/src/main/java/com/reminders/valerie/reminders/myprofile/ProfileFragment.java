@@ -1,10 +1,12 @@
 package com.reminders.valerie.reminders.myprofile;
 
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,9 @@ import android.widget.Toast;
 
 
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.TodoFragment;
+import com.reminders.valerie.reminders.model.Category;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.scheduleview.DeleteDialogFragment;
@@ -37,13 +41,13 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
     private ImageView add_cat_icon;
     //list
     private ListView cat_list;
-    //list - for temp data
-    private String[] cat_strings;
-    private ArrayAdapter list_adapter;
+    private SimpleCursorAdapter list_adapter;
 
     /*********Data attributes ***********/
     private int dob_year, dob_month, dob_day;
     private DateTimeEditTextMgr date_et_mgr;
+
+    TaskDBHandler dbhandler;
 
     //add category listener
     AddCategoryDialog.OnAddSetListener add_cat_listener = new AddCategoryDialog.OnAddSetListener() {
@@ -55,6 +59,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
                 case 1:
                     //check inputs, add into database
                     Toast.makeText(getActivity().getApplicationContext(), "Category added", Toast.LENGTH_SHORT).show();
+
                     break;
             }
         }
@@ -159,8 +164,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         });
         //populate category list
         cat_list = (ListView) rootView.findViewById(R.id.category_list);
-        cat_strings = getActivity().getResources().getStringArray(R.array.category_list);
-        list_adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, cat_strings);
+        dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        Cursor cursor = dbhandler.getCategoryNames();
+        String[] from = new String[]{"_id"};
+        int[] to = {android.R.id.text1};
+        list_adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, cursor, from, to, 0);
         cat_list.setAdapter(list_adapter);
         cat_list.setOnItemClickListener(this);
         return rootView;
@@ -174,7 +182,9 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         edit_cat.setCallBack(edit_cat_listener);
         edit_cat.setSet_neutral_button(true);
         edit_cat.setTitle(getActivity().getResources().getText(R.string.edit_category));
-        edit_cat.setCat_name(cat_strings[position]);
+        Category category = dbhandler.getCategory(position);
+        edit_cat.setCat_name(category.getCategory_title());
+        //set other attributes for the dialog
         edit_cat.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 }
