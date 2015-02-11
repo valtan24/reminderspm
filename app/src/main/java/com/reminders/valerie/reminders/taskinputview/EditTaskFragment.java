@@ -35,6 +35,20 @@ public class EditTaskFragment extends TaskInputFragment {
 
         task_date.setText(date_et_mgr.buildText(task_year, task_month, task_day));
         task_time.setText(time_et_mgr.buildText(task_hour, task_minute, 0));
+
+        if(args.getInt("same_datetime") == 1){
+            same_datetime.setChecked(true);
+            reminder_header.setVisibility(View.GONE);
+            reminder_header_underline.setVisibility(View.GONE);
+            rem_time.setVisibility(View.GONE);
+            rem_date.setVisibility(View.GONE);
+            rem_day = task_day;
+            rem_year = task_year;
+            rem_month = task_month;
+            rem_hour = task_hour;
+            rem_minute = task_minute;
+        }
+
     }
 
     @Override
@@ -56,4 +70,6 @@ public class EditTaskFragment extends TaskInputFragment {
                 break;
         }
     }
+
+
 }

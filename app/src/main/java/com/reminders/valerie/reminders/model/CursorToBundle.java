@@ -11,11 +11,7 @@ public class CursorToBundle {
     public static Bundle getTaskByPosition(Cursor cursor, int position){
         cursor.moveToPosition(position);
         Bundle args = new Bundle();
-        if(cursor != null && cursor.getCount() > 0){
-            Log.d("cursor", "notempty");
-        }
         int title_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKTITLE);
-        Log.d("index", ""+position);
         args.putString("title", cursor.getString(title_index));
         int date_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKDATE);
         String date = cursor.getString(date_index);
@@ -34,6 +30,8 @@ public class CursorToBundle {
         int minute = Integer.parseInt(time.substring(3,5));
         args.putInt("task_hour", hour);
         args.putInt("task_minute", minute);
+        int same_datetime_index = cursor.getColumnIndex(TaskDBHandler.KEY_SAMETASKREM);
+        args.putInt("same_datetime", cursor.getInt(same_datetime_index));
         return args;
     }
 }

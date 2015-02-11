@@ -57,10 +57,12 @@
             style="@style/TextFieldWithIcon"/>
 
         <CheckBox
+            android:id="@+id/same_datetime_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reminder_task_same"
-            android:textColor="#ff57646a"/>
+            android:textColor="#ff57646a"
+            android:onClick="onCheckboxClicked"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -73,13 +75,19 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 style="@style/SubsectionHeader"
-                android:gravity="center"
+                android:gravity="left"
                 android:text="@string/task_category"/>
 
             <Spinner
                 android:id="@+id/task_category_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"/>
 
         </LinearLayout>
@@ -131,6 +139,7 @@
             style="@style/SectionHeader"/>
 
         <View
+            android:id="@+id/reminder_header_underline"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:background="#ff4f4f4f"/>

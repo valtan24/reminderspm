@@ -51,6 +51,7 @@ public class NewTaskFragment extends TaskInputFragment{
                 task.setHour(task_hour);
                 task.setMinute(task_minute);
                 task.setCompleted(0);
+                task.setSame_rem_task(same_datetime.isChecked()? 1 : 0);
                 schedule_fragment.setTask(task);
                 FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
@@ -62,5 +63,7 @@ public class NewTaskFragment extends TaskInputFragment{
                 super.onClick(v);
         }
     }
+
+
 
 }

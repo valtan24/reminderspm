@@ -2,18 +2,22 @@ package com.reminders.valerie.reminders.taskinputview;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,6 +26,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.model.Reminder;
@@ -42,7 +47,8 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     private Button continue_button;
     public TextView reminder_header;
     public Button completed_button;
-    public View button_gap;
+    public View button_gap, reminder_header_underline;
+    public CheckBox same_datetime;
 
     DatePickerDialog.OnDateSetListener task_date_listener = new DatePickerDialog.OnDateSetListener(){
         @Override
@@ -137,7 +143,11 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
 
         //category spinner
         category_spinner = (Spinner) rootView.findViewById(R.id.task_category_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.category_list, android.R.layout.simple_spinner_item);
+        TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        Cursor cursor = dbhandler.getCategoryNames();
+        String[] from = new String[]{"_id"};
+        int[] to = {android.R.id.text1};
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, cursor, from, to, 0);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category_spinner.setAdapter(adapter);
 
@@ -149,14 +159,39 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
 
         completed_button = (Button) rootView.findViewById(R.id.completed_button);
         button_gap = rootView.findViewById(R.id.button_gap);
+        same_datetime = (CheckBox) rootView.findViewById(R.id.same_datetime_checkbox);
+        same_datetime.setOnClickListener(this);
+        reminder_header_underline = rootView.findViewById(R.id.reminder_header_underline);
+
         setContents();
         return rootView;
     }
+
+
 
     @Override
     public void onClick(View v){
         Bundle args;
         switch(v.getId()) {
+            case R.id.same_datetime_checkbox:
+                if(((CheckBox) v).isChecked()){
+                    reminder_header.setVisibility(View.GONE);
+                    reminder_header_underline.setVisibility(View.GONE);
+                    rem_time.setVisibility(View.GONE);
+                    rem_date.setVisibility(View.GONE);
+                    rem_day = task_day;
+                    rem_year = task_year;
+                    rem_month = task_month;
+                    rem_hour = task_hour;
+                    rem_minute = task_minute;
+                }
+                else{
+                    reminder_header.setVisibility(View.VISIBLE);
+                    reminder_header_underline.setVisibility(View.VISIBLE);
+                    rem_time.setVisibility(View.VISIBLE);
+                    rem_date.setVisibility(View.VISIBLE);
+                }
+                break;
             case R.id.task_date_edittext:
                 args = new Bundle();
                 args.putInt("year", task_year);
@@ -193,6 +228,7 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         new_task.setYear(task_year);
         new_task.setMonth(task_month);
         new_task.setCompleted(0);
+        new_task.setSame_rem_task(same_datetime.isChecked()? 1 : 0);
         return new_task;
     }
 

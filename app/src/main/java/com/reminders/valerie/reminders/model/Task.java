@@ -100,6 +100,16 @@ public class Task {
     private String category;
     private double importance;
 
+    public int getSame_rem_task() {
+        return same_rem_task;
+    }
+
+    public void setSame_rem_task(int same_rem_task) {
+        this.same_rem_task = same_rem_task;
+    }
+
+    private int same_rem_task;
+
     public String getTaskDate(){
         String date_text = "";
         date_text = date_text + year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
