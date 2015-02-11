@@ -70,9 +70,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         public void OnDeleteSet(int choice) {
             switch (choice) {
                 case 0: //cancel
-                    //to-do
+                    //TODO DELETE CANCELLED
                     break;
                 case 1:
+                    //TODO DELETE CATEGORY FROM DATABASE
+                    Toast.makeText(getActivity().getApplicationContext(), "Category deleted", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     Log.d("Error", "invalid choice");
@@ -85,11 +87,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         public void OnCategorySet(int choice) {
             switch(choice){
                 case CategoryDialog.CANCEL:
-                    //cancel
+                    //TODO EDIT CANCELED
                     break;
                 case CategoryDialog.SAVE:
-
-                    Toast.makeText(getActivity().getApplicationContext(), "category saved", Toast.LENGTH_SHORT).show();
+                    Cursor cursor = dbhandler.getCategoryNames();
+                    list_adapter.changeCursor(cursor);
                     break;
                 case CategoryDialog.DELETE:
                     DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
@@ -178,7 +180,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         CategoryDialog edit_cat = new EditCategoryDialog();
         edit_cat.setCallBack(edit_listener);
         Category category = dbhandler.getCategory(position);
-        //set other attributes for the dialog
+        Bundle args = new Bundle();
+        args.putString("category", category.getCategory_title());
+        args.putString("uri", category.getAudio_uri());
+        args.putDouble("motivation", category.getMotivation());
+        edit_cat.setArguments(args);
         edit_cat.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 }

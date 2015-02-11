@@ -78,7 +78,7 @@ public abstract class CategoryDialog extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 if(listener != null){
                     if(savedata()){
-                        Toast.makeText(getActivity().getApplicationContext(), "Category added", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity().getApplicationContext(), "Category saved", Toast.LENGTH_SHORT).show();
                         listener.OnCategorySet(SAVE);
                     }
                     else{

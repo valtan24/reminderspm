@@ -127,10 +127,20 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     public Cursor getCategoryNames() {
         String[] select_columns = {"_id"};
-        return getReadableDatabase().query(TABLE_CATEGORIES, select_columns, null, null, null, null, null);
+        return getReadableDatabase().query(TABLE_CATEGORIES, select_columns, null, null, null, null, "_id");
     }
 
     public Category getCategory(int position) {
-        return null;
+        Category c = new Category();
+        String[] select_columns = {"_id", KEY_AUDIOURI, KEY_MOTIVATION};
+        Cursor cursor = getReadableDatabase().query(TABLE_CATEGORIES, select_columns, null, null, null, null, "_id");
+        cursor.moveToPosition(position);
+        int title_index = cursor.getColumnIndex("_id");
+        c.setCategory_title(cursor.getString(title_index));
+        int uri_index = cursor.getColumnIndex(KEY_AUDIOURI);
+        c.setAudio_uri(cursor.getString(uri_index));
+        int motivation_index = cursor.getColumnIndex(KEY_MOTIVATION);
+        c.setMotivation(cursor.getDouble(motivation_index));
+        return c;
     }
 }
