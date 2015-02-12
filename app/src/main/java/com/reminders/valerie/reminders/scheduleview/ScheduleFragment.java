@@ -147,7 +147,8 @@ public class ScheduleFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View v) {
         if (v.getId() == save_button.getId()) {
             TaskDBHandler handler = new TaskDBHandler(getActivity());
-            handler.addNewTask(task);
+            int task_id = handler.addNewTask(task); //TODO RETRIEVE TASK ID
+            handler.addReminders(reminder_arraylist, task_id); //not complete
             getActivity().setResult(getActivity().RESULT_OK);
             getActivity().finish();
         }

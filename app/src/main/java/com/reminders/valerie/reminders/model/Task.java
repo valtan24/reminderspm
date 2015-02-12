@@ -110,6 +110,7 @@ public class Task {
 
     private int same_rem_task;
 
+    //TODO REMOVE AND USE DateTimeConverter.convertDateToDBText()
     public String getTaskDate(){
         String date_text = "";
         date_text = date_text + year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;

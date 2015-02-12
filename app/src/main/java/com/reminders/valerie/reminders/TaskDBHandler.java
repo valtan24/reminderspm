@@ -11,7 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.reminders.valerie.reminders.model.Category;
+import com.reminders.valerie.reminders.model.DateTimeConverter;
+import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.Task;
+
+import java.util.ArrayList;
 
 public class TaskDBHandler extends SQLiteOpenHelper {
 
@@ -81,16 +85,8 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
 
-    public void addNewTask(Bundle args){
-        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
-                KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
-                args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
-                args.getString("task_time") + "', 0)";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(insert_query);
-    }
-
-    public void addNewTask(Task task){
+    //TODO CHANGE TO INT TO RETRIEVE ID OF TASK
+    public int addNewTask(Task task){
         ContentValues values = new ContentValues();
         values.put(KEY_TASKTITLE, task.getTitle());
         values.put(KEY_TASKDATE, task.getTaskDate());
@@ -99,14 +95,13 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         values.put(KEY_SAMETASKREM, task.getSame_rem_task());
         values.put(KEY_IMPORTANCE, task.getImportance());
         values.put(KEY_CATEGORY, task.getCategory());
-        /*String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
-                KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "', '" + KEY_SAMETASKREM + "' ) VALUES ( '" +
-                task.getTitle() + "', '" + task.getTaskDate() + "', '" +
-                task.getTaskTime() + "', 0, " + task.getSame_rem_task() +")";*/
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_TASKS, null, values);
+        db.close();
+        return 0;
     }
 
+    //for default categories
     public void addNewCategory(Bundle args, SQLiteDatabase db){
         ContentValues cv = new ContentValues();
         cv.put("_id", args.getString("cat_name"));
@@ -114,8 +109,10 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         cv.put(KEY_AUDIOURI, alert.toString());
         db.insert(TABLE_CATEGORIES, null, cv);
+        db.close();
     }
 
+    //TODO CHANGE TO BOOLEAN
     public void addNewCategory(Category c){
         ContentValues values = new ContentValues();
         values.put("_id", c.getCategory_title());
@@ -123,6 +120,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         values.put(KEY_MOTIVATION, c.getMotivation());
         SQLiteDatabase db = getWritableDatabase();
         db.insert(TABLE_CATEGORIES, null, values);
+        db.close();
     }
 
     public Cursor getCategoryNames() {
@@ -142,5 +140,34 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         int motivation_index = cursor.getColumnIndex(KEY_MOTIVATION);
         c.setMotivation(cursor.getDouble(motivation_index));
         return c;
+    }
+
+    public boolean addReminders(ArrayList<Reminder> reminders, int task_id) {
+        try {
+            SQLiteDatabase db = getWritableDatabase();
+            ContentValues cv = new ContentValues();
+            if (reminders.size() <= 0) {
+                Log.e("No reminders", "There are no reminders to be saved");
+                return false;
+            }
+            for (int i = 0; i < reminders.size(); i++) {
+                int year = reminders.get(i).getYear();
+                int month = reminders.get(i).getMonth();
+                int day = reminders.get(i).getDay();
+                cv.put(KEY_REMDATE, DateTimeConverter.convertDateToDBText(year, month, day));
+                int hour = reminders.get(i).getHour();
+                int minute = reminders.get(i).getMinute();
+                cv.put(KEY_REMTIME, DateTimeConverter.convertTimeToDBText(hour, minute));
+                cv.put(KEY_TASKFK, reminders.get(i).getTask_id());
+                cv.put(KEY_AUDIO, reminders.get(i).getWith_audio());
+                db.insert(TABLE_REMINDERS, null, cv);
+            }
+            db.close();
+            return true;
+        }
+        catch (Exception e) {
+            Log.e("Exception", e.getMessage());
+            return false;
+        }
     }
 }

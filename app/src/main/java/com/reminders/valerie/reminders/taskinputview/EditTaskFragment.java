@@ -3,9 +3,12 @@ package com.reminders.valerie.reminders.taskinputview;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ScheduleCalculator;
+import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.scheduleview.ExistingScheduleFragment;
 import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 
@@ -52,18 +55,50 @@ public class EditTaskFragment extends TaskInputFragment {
     }
 
     @Override
+    public void getReminders(Task task) {
+        //TODO RETRIEVE REMINDERS FROM DB
+    }
+
+    @Override
+    public Reminder buildReminder(Task task) throws Exception {
+        //TODO RETRIEVE NEXT REMINDER
+
+        //temp
+        Reminder reminder = new Reminder();
+        reminder.setYear(task.getYear());
+        reminder.setMonth(task.getMonth());
+        reminder.setDay(task.getDay());
+        reminder.setHour(task.getHour());
+        reminder.setMinute(task.getMinute());
+        reminder.setWith_audio(0);
+        reminder.setTask(task);
+        return reminder;
+    }
+
+    @Override
     public void onClick(View v) {
-        Bundle args;
         switch (v.getId()) {
             case R.id.continue_task_button:
-                ArrayList<Reminder> reminder_list = setDummyData();
-                ScheduleFragment schedule_fragment = new ExistingScheduleFragment();
-                schedule_fragment.setReminderArrayList(reminder_list);
-                FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
-                fragment_transaction.addToBackStack(null);
-                fragment_transaction.hide(this);
-                fragment_transaction.commit();
+                try {
+                    Task task = buildTask();
+                    Reminder reminder = buildReminder(task);
+                    //TODO RETRIEVE REMAINING REMINDERS
+
+                    //temp
+                    ArrayList<Reminder> reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
+
+                    ScheduleFragment schedule_fragment = new ExistingScheduleFragment();
+                    schedule_fragment.setReminderArrayList(reminder_list);
+                    schedule_fragment.setTask(task);
+                    FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
+                    fragment_transaction.addToBackStack(null);
+                    fragment_transaction.hide(this);
+                    fragment_transaction.commit();
+                }
+                catch(Exception e){
+                    Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
                 break;
             default:
                 super.onClick(v);

@@ -221,61 +221,35 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         }
     }
 
-    public Task buildTask(){
+    public Task buildTask() throws Exception{
         Task new_task =  new Task();
+        if(task_title.getText() == null || task_title.getText().equals("")){
+            throw new Exception("Please enter a title for your task");
+        }
+        if(task_date.getText() == null || task_date.getText().equals("")){
+            throw new Exception("Please enter a date for your task");
+        }
+        if(task_time.getText() == null || task_time.getText().equals("")){
+            throw new Exception("Please enter a time for your task");
+        }
+        if(!same_datetime.isChecked()){
+            if(rem_date.getText() == null || rem_date.getText().equals("")){
+                throw new Exception("Please enter a date for your reminder");
+            }
+            if(rem_time.getText() == null || rem_time.getText().equals("")){
+                throw new Exception("Please enter a time for your reminder");
+            }
+        }
         new_task.setTitle(task_title.getText().toString());
         new_task.setDay(task_day);
         new_task.setYear(task_year);
         new_task.setMonth(task_month);
         new_task.setCompleted(0);
         new_task.setSame_rem_task(same_datetime.isChecked()? 1 : 0);
+        //TODO ADD CATEGORY AND IMPORTANCE
         return new_task;
     }
 
-    public ArrayList<Reminder> setDummyData(){
-        Task new_task =  new Task();
-        new_task.setTitle(task_title.getText().toString());
-        new_task.setDay(task_day);
-        new_task.setYear(task_year);
-        new_task.setMonth(task_month);
-        new_task.setCompleted(0);
-        ScheduleCalculator.getInstance().setTask(new_task);
-        //create 3 reminders
-        ArrayList<Reminder> reminder_list = new ArrayList<Reminder>();
-        //1st reminder
-        Reminder rem_1 = new Reminder();
-        rem_1.setDay(rem_day);
-        rem_1.setMonth(rem_month);
-        rem_1.setYear(rem_year);
-        rem_1.setHour(rem_hour);
-        rem_1.setMinute(rem_minute);
-        rem_1.setWith_audio(0);
-        reminder_list.add(rem_1);
-        //2nd reminder
-        int tmp = task_minute;
-        while(tmp != 0) {
-            Reminder rem_2 = new Reminder();
-            rem_2.setDay(task_day);
-            rem_2.setMonth(task_month);
-            rem_2.setYear(task_year);
-            rem_2.setMinute(tmp-1);
-            rem_2.setHour(task_hour);
-            rem_2.setWith_audio(1);
-            reminder_list.add(rem_2);
-            tmp -= 1;
-        }
-
-        //last reminder during task
-        Reminder rem_3 = new Reminder();
-        rem_3.setDay(task_day);
-        rem_3.setMonth(task_month);
-        rem_3.setYear(task_year);
-        rem_3.setHour(task_hour);
-        rem_3.setMinute(task_minute);
-        rem_3.setWith_audio(1);
-        reminder_list.add(rem_3);
-        return reminder_list;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -290,5 +264,6 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     }
 
     public abstract void setContents();
-
+    public abstract void getReminders(Task task);
+    public abstract Reminder buildReminder(Task task) throws Exception; //first reminder or next reminder
 }
