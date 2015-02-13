@@ -79,7 +79,6 @@ public class NewTaskFragment extends TaskInputFragment{
                 throw new Exception("Please enter a time for your task");
             }
             reminder.setYear(task.getYear());
-            reminder.setTask(task);
             reminder.setYear(task.getYear());
             reminder.setMonth(task.getMonth());
             reminder.setDay(task.getDay());
@@ -100,6 +99,7 @@ public class NewTaskFragment extends TaskInputFragment{
             reminder.setHour(rem_hour);
             reminder.setMinute(rem_minute);
         }
+        reminder.setTask(task);
         return reminder;
     }
 
