@@ -10,7 +10,7 @@ import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.scheduleview.ExistingScheduleFragment;
-import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
+import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,7 +87,7 @@ public class EditTaskFragment extends TaskInputFragment {
                     //temp
                     ArrayList<Reminder> reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
 
-                    ScheduleFragment schedule_fragment = new ExistingScheduleFragment();
+                    NewScheduleFragment schedule_fragment = new ExistingScheduleFragment();
                     schedule_fragment.setReminderArrayList(reminder_list);
                     schedule_fragment.setTask(task);
                     FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
