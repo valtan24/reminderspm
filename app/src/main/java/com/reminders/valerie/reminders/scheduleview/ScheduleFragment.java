@@ -24,17 +24,21 @@ import java.util.ArrayList;
 
 public abstract class ScheduleFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener{
 
-    private ArrayList<Reminder> reminder_list; //new reminders for existingschedulefragment should be in a separate arraylist
+    protected ArrayList<Reminder> reminder_list; //new reminders for existingschedulefragment should be in a separate arraylist
     private ListView reminder_listview;
-    private ScheduleListAdapter list_adapter;
-    private Button save_button;
-    private Task task;
-    private Reminder reminder_selected;
+    protected ScheduleListAdapter list_adapter;
+    protected Button save_button;
+    protected Task task;
+    protected Reminder reminder_selected;
     public DateTimeDialogFragment.OnDateTimeSetListener datetime_listener;
     public DeleteDialogFragment.OnDeleteSetListener delete_listener;
     public ReminderDialog.OnActionSelectedListener action_listener;
 
     private DateTimeEditTextMgr date_et_mgr, time_et_mgr;
+
+    public void setTask(Task task){
+        this.task = task;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
