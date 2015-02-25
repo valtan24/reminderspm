@@ -11,17 +11,11 @@ import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.scheduleview.ExistingScheduleFragment;
 import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
-import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class EditTaskFragment extends TaskInputFragment {
-
-    private long task_id;
-    private ArrayList<Reminder> deletion_list;
-    private ArrayList<Reminder> reminder_list;
-
     @Override
     public void setContents() {
         Bundle args = getArguments();
@@ -30,7 +24,6 @@ public class EditTaskFragment extends TaskInputFragment {
         task_minute = args.getInt("task_minute");
         task_month = args.getInt("task_month");
         task_year = args.getInt("task_year");
-        task_id = args.getLong("task_id");
 
         //temp
         final Calendar cal = Calendar.getInstance();
@@ -68,9 +61,7 @@ public class EditTaskFragment extends TaskInputFragment {
 
     @Override
     public Reminder buildReminder(Task task) throws Exception {
-        //TODO RETRIEVE NEXT REMINDER, CHECK IF SAME AS INPUT
-        /*if the next reminder is different from input, rebuild next reminder and recalculate schedule. retrieve reminders and add to deletion list
-        if is the same, simply retrieve reminders*/
+        //TODO RETRIEVE NEXT REMINDER
 
         //temp
         Reminder reminder = new Reminder();
@@ -91,21 +82,13 @@ public class EditTaskFragment extends TaskInputFragment {
                 try {
                     Task task = buildTask();
                     Reminder reminder = buildReminder(task);
-                    task.setTask_id(task_id);
                     //TODO RETRIEVE REMAINING REMINDERS
+
                     //temp
-                    reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
-                    ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
-                    if(same_datetime.isChecked() && reminder_list.size() > 1){
-                        deletion_list = new ArrayList<Reminder>();
-                        deletion_list.add(reminder_list.get(reminder_list.size()-1));
-                        reminder_list.remove(reminder_list.size()-1);
-                        schedule_fragment.setDeletionList(reminder_list);
-                        schedule_fragment.setReminderArrayList(deletion_list);
-                    }
-                    else{
-                        schedule_fragment.setReminderArrayList(reminder_list);
-                    }
+                    ArrayList<Reminder> reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
+
+                    NewScheduleFragment schedule_fragment = new ExistingScheduleFragment();
+                    schedule_fragment.setReminderArrayList(reminder_list);
                     schedule_fragment.setTask(task);
                     FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);

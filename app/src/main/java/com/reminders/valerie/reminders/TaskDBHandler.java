@@ -54,7 +54,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY, " + KEY_AUDIOURI + " TEXT, " + KEY_MOTIVATION + " REAL )";
         db.execSQL(create_category_table);
 
-        //TODO ADD DEFAULT ONLY IN FIRST RUN USING SHARED PREFERENCES
+        //add default
         Bundle args = new Bundle();
         args.putString("cat_name", "General");
         addNewCategory(args, db);
@@ -175,28 +175,6 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         }
         catch (Exception e) {
             Log.e("Exception", e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean updateTask(Task task){
-        ContentValues update_value = new ContentValues();
-        update_value.put(KEY_TASKTITLE, task.getTitle());
-        update_value.put(KEY_TASKDATE, task.getTaskDate());
-        update_value.put(KEY_TASKTIME, task.getTaskTime());
-        update_value.put(KEY_COMPLETED, task.getCompleted());
-        update_value.put(KEY_IMPORTANCE, task.getImportance());
-        update_value.put(KEY_CATEGORY, task.getCategory());
-        update_value.put(KEY_SAMETASKREM, task.getSame_rem_task());
-        SQLiteDatabase db = getWritableDatabase();
-        String[] where_args = {""+task.getTask_id()};
-        if(db.updateWithOnConflict(TABLE_REMINDERS, update_value, KEY_TASKID + " = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1){
-            db.close();
-            return true; //successful update
-        }
-        else{
-            //TODO THROW EXCEPTION? OR TOAST HERE?
-            Log.d("db error", "failed to update task");
             return false;
         }
     }
