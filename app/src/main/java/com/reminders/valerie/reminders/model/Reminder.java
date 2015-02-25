@@ -13,6 +13,15 @@ public class Reminder {
     private int minute;
     private int task_id;
     private int with_audio;
+    private Task task;
+
+    public Task getTask(){
+        return task;
+    }
+
+    public void setTask(Task task){
+        this.task = task;
+    }
 
     public int getYear() {
         return year;
