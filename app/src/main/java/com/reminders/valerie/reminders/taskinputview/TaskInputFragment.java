@@ -5,17 +5,15 @@ import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -30,17 +28,13 @@ import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.model.Reminder;
-import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
-import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
-
-import java.util.ArrayList;
-
 
 public abstract class TaskInputFragment extends Fragment implements View.OnClickListener{
     public int task_hour, task_minute, task_day, task_month, task_year;
     public int rem_hour, rem_minute, rem_day, rem_month, rem_year;
+    public String category;
     public Spinner category_spinner;
     public DateTimeEditTextMgr date_et_mgr, time_et_mgr;
     public EditText task_title, task_time, task_date, rem_time, rem_date;
@@ -150,6 +144,19 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, cursor, from, to, 0);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         category_spinner.setAdapter(adapter);
+        category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Cursor c = (Cursor) parent.getItemAtPosition(position);
+                category = c.getString(c.getColumnIndex("_id"));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Cursor c = (Cursor) parent.getItemAtPosition(0);
+                category = c.getString(c.getColumnIndex("_id"));
+            }
+        });
 
         //save task button
         continue_button = (Button) rootView.findViewById(R.id.continue_task_button);
@@ -249,6 +256,7 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         new_task.setCompleted(0);
         new_task.setSame_rem_task(same_datetime.isChecked()? 1 : 0);
         //TODO ADD CATEGORY AND IMPORTANCE
+        new_task.setCategory(category);
         return new_task;
     }
 
