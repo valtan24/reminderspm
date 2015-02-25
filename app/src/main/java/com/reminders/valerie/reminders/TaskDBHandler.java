@@ -84,7 +84,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     public Cursor getUncompletedTasks(String ordered_by){
         String where_args[] = {"0"};
-        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM};
+        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM, KEY_CATEGORY};
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
 

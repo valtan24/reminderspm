@@ -1,7 +1,9 @@
 package com.reminders.valerie.reminders.taskinputview;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.CheckBox;
@@ -35,6 +37,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task_month = args.getInt("task_month");
         task_year = args.getInt("task_year");
         task_id = args.getLong("task_id");
+        category = args.getString("category");
         setTaskContents();
         getReminders(task);
         if(reminder_list == null || reminder_list.size() == 0){
@@ -77,6 +80,23 @@ public class EditTaskFragment extends TaskInputFragment {
             rem_time.setText(time_et_mgr.buildText(rem_hour, rem_minute, 0));
         }
 
+        //set category
+        TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        Cursor cursor = dbhandler.getCategoryNames();
+        int position = -1;
+        category_spinner.setSelection(0);
+        do{
+            cursor.moveToNext();
+            position++;
+            String category_name = cursor.getString(cursor.getColumnIndex("_id"));
+            Log.d("category name", category_name);
+            Log.d("category", category);
+            if(category.equals(category_name)){
+                category_spinner.setSelection(position);
+                break;
+            }
+        }while(!cursor.isLast());
+        cursor.close();
         getReminders(task);
         deletion_list = new ArrayList<Reminder>();
         added_reminders = new ArrayList<Reminder>();
@@ -194,7 +214,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task.setSame_rem_task(same_datetime.isChecked() ? 1 : 0);
         task.setCompleted(0);
         task.setImportance(1);
-        task.setCategory("General");
+        task.setCategory(category);
     }
 
     private boolean taskDateTimeUnchanged(){

@@ -11,10 +11,10 @@ public class CursorToBundle {
     public static Bundle getTaskByPosition(Cursor cursor, int position){
         cursor.moveToPosition(position);
         Bundle args = new Bundle();
-        int title_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKTITLE);
-        args.putString("title", cursor.getString(title_index));
-        int date_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKDATE);
-        String date = cursor.getString(date_index);
+        int column_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKTITLE);
+        args.putString("title", cursor.getString(column_index));
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKDATE);
+        String date = cursor.getString(column_index);
         //get year month day
         int year = Integer.parseInt(date.substring(0,4));
         int month = Integer.parseInt(date.substring(5,7));
@@ -24,16 +24,19 @@ public class CursorToBundle {
         args.putInt("task_day", day);
 
         //get hour and minute
-        int time_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKTIME);
-        String time = cursor.getString(time_index);
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKTIME);
+        String time = cursor.getString(column_index);
         int hour = Integer.parseInt(time.substring(0,2));
         int minute = Integer.parseInt(time.substring(3,5));
         args.putInt("task_hour", hour);
         args.putInt("task_minute", minute);
-        int same_datetime_index = cursor.getColumnIndex(TaskDBHandler.KEY_SAMETASKREM);
-        args.putInt("same_datetime", cursor.getInt(same_datetime_index));
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_SAMETASKREM);
+        args.putInt("same_datetime", cursor.getInt(column_index));
         int id_index = cursor.getColumnIndex("_id");
         args.putLong("task_id", cursor.getLong(id_index));
+
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_CATEGORY);
+        args.putString("category", cursor.getString(column_index));
 
         //remaining: completed, importance, category
         return args;
