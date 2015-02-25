@@ -11,10 +11,19 @@ public class Reminder {
     private int day;
     private int hour;
     private int minute;
-    private int task_id;
+    private long task_id;
     private int with_audio;
     private Task task;
     private long id;
+    private int is_fired;
+
+    public void setIs_fired(int fired){
+        is_fired = fired;
+    }
+
+    public int getIs_fired(){
+        return is_fired;
+    }
 
     public long getId(){
         return id;
@@ -73,11 +82,11 @@ public class Reminder {
         this.minute = minute;
     }
 
-    public int getTask_id() {
+    public long getTask_id() {
         return task_id;
     }
 
-    public void setTask_id(int task_id) {
+    public void setTask_id(long task_id) {
         this.task_id = task_id;
     }
 

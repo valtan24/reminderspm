@@ -209,4 +209,16 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<Reminder> getUnfiredReminders(long task_id){
+        ArrayList<Reminder> reminder_list = new ArrayList<Reminder>();
+        String[] where_args = {""+task_id, "0"};
+        Cursor cursor = getReadableDatabase().query(TABLE_REMINDERS, null, KEY_TASKFK + " = ? AND " + KEY_FIRED + " = ?", where_args, null, null, KEY_REMDATE + ", " + KEY_REMTIME );
+        do{
+            cursor.moveToNext();
+            reminder.add(CursorToBundle.getReminderFromCursor(cursor);
+        }while(!cursor.isLast());
+
+        return reminder_list;
+    }
+
 }

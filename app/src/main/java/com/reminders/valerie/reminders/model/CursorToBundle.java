@@ -35,6 +35,39 @@ public class CursorToBundle {
         int id_index = cursor.getColumnIndex("_id");
         args.putLong("task_id", cursor.getLong(id_index));
 
+        //remaining: completed, importance, category
         return args;
+    }
+
+    public static Reminder getReminderFromCursor(Cursor cursor){
+        int column_index = cursor.getColumnIndex("_id");
+        Reminder reminder = new Reminder();
+        reminder.setId(cursor.getLong(column_index));
+
+        column_index = cursor.getColumnIndex(KEY_REMDATE);
+        String date = cursor.getString(column_index);
+        int year = Integer.parseInt(date.substring(0,4));
+        int month = Integer.parseInt(date.substring(5,7));
+        int day = Integer.parseInt(date.substring(8,10));
+        reminder.setYear(year);
+        reminder.setMonth(month);
+        reminder.setDay(day);
+
+        column_index = cursor.getColumnIndex(KEY_REMTIME);
+        String time = cursor.getString(column_index);
+        int hour = Integer.parseInt(time.substring(0,2));
+        int minute = Integer.parseInt(time.substring(3,5));
+        reminder.setHour(hour);
+        reminder.setMinute(minute);
+
+        column_index = cursor.getColumnIndex(KEY_TASKFK);
+        reminder.setTask_id(cursor.getLong(column_index));
+
+        column_index = cursor.getColumnIndex(KEY_AUDIO);
+        reminder.setWith_audio(cursor.getInt(column_index));
+
+        column_index = cursor.getColumnIndex(KEY_FIRED);
+        reminder.setIs_fired(cursor.getInt(column_index));
+        return reminder;
     }
 }

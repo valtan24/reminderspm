@@ -19,8 +19,10 @@ import java.util.Calendar;
 public class EditTaskFragment extends TaskInputFragment {
 
     private long task_id;
+    private Task task;
     private ArrayList<Reminder> deletion_list;
     private ArrayList<Reminder> reminder_list;
+    private ArrayList<Reminder> added_reminders;
 
     @Override
     public void setContents() {
@@ -31,6 +33,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task_month = args.getInt("task_month");
         task_year = args.getInt("task_year");
         task_id = args.getLong("task_id");
+        setTaskContents();
 
         //temp
         final Calendar cal = Calendar.getInstance();
@@ -58,12 +61,15 @@ public class EditTaskFragment extends TaskInputFragment {
             rem_hour = task_hour;
             rem_minute = task_minute;
         }
+        getReminders(task);
 
     }
 
     @Override
     public void getReminders(Task task) {
         //TODO RETRIEVE REMINDERS FROM DB
+        TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        reminder_list = dbhandler.getUnfiredReminders(task.getId());
     }
 
     @Override
@@ -89,25 +95,14 @@ public class EditTaskFragment extends TaskInputFragment {
         switch (v.getId()) {
             case R.id.continue_task_button:
                 try {
-                    Task task = buildTask();
+                    setTaskContents();
                     Reminder reminder = buildReminder(task);
-                    task.setTask_id(task_id);
-
                     //TODO RETRIEVE REMAINING REMINDERS
                     TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
-
-
                     ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
-                    if(same_datetime.isChecked() && reminder_list.size() > 1){
-                        deletion_list = new ArrayList<Reminder>();
-                        deletion_list.add(reminder_list.get(reminder_list.size()-1));
-                        reminder_list.remove(reminder_list.size()-1);
-                        schedule_fragment.setDeletionList(reminder_list);
-                        schedule_fragment.setReminderArrayList(deletion_list);
-                    }
-                    else{
-                        schedule_fragment.setReminderArrayList(reminder_list);
-                    }
+                    //TODO UPDATE ARRAYLISTS
+                    //set last reminder in reminder_list to be the same as task date and time
+                    //add all three lists to schedule_fragment
 
                     schedule_fragment.setTask(task);
                     FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -120,11 +115,30 @@ public class EditTaskFragment extends TaskInputFragment {
                     Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.same_datetime_checkbox:
+                //TODO UPDATE REMINDER ARRAYLISTS
+                if(((CheckBox) v).isChecked()){
+                    //update last reminder to task date and time, move remaining to deletion_list
+                }
+                else{
+                    //if task.getsame_rem_time is true, add new reminders into BOTH reminder_list and added_reminders
+                    //if is false, move all reminders from deletion_list to reminder_list
+                }
+                super.onClick(v);
+                break;
             default:
                 super.onClick(v);
                 break;
         }
     }
 
-
+    private void setTaskContents(){
+        task.setYear(task_year);
+        task.setHour(task_hour);
+        task.setMinute(task_minute);
+        task.setMonth(task_month);
+        task.setDay(task_day);
+        task.setId(task_id);
+        task.setSame_rem_task(same_datetime.isChecked() ? 1 : 0);
+    }
 }
