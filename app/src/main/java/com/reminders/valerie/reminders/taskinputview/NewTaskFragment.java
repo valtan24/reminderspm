@@ -69,43 +69,5 @@ public class NewTaskFragment extends TaskInputFragment{
 
     }
 
-    @Override
-    public Reminder buildReminder(Task task) throws Exception{
-        Reminder reminder = new Reminder();
-        if(same_datetime.isChecked()){
-            if(task_date.getText() == null || task_date.getText().equals("")){
-                throw new Exception("Please enter a date for your task");
-            }
-            if(task_time.getText() == null || task_time.getText().equals("")){
-                throw new Exception("Please enter a time for your task");
-            }
-            reminder.setYear(task.getYear());
-            reminder.setTask(task);
-            reminder.setYear(task.getYear());
-            reminder.setMonth(task.getMonth());
-            reminder.setDay(task.getDay());
-            reminder.setWith_audio(1); //TODO CHECK ROUTINE BEFORE ADDING AUDIO
-            reminder.setMinute(task.getMinute());
-            reminder.setHour(task.getHour());
-        }
-        else{
-            if(rem_date.getText() == null || rem_date.getText().equals("")){
-                throw new Exception("Please enter a date for your first reminder");
-            }
-            if(rem_time.getText() == null || rem_time.getText().equals("")){
-                throw new Exception("Please enter a time for your first reminder");
-            }
-            reminder.setYear(rem_year);
-            reminder.setMonth(rem_month);
-            reminder.setDay(rem_day);
-            reminder.setHour(rem_hour);
-            reminder.setMinute(rem_minute);
-            reminder.setWith_audio(1);
-        }
-        reminder.setTask(task);
-        return reminder;
-    }
-
-
 
 }

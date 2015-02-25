@@ -14,6 +14,7 @@ import com.reminders.valerie.reminders.model.Category;
 import com.reminders.valerie.reminders.model.DateTimeConverter;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.Task;
+import com.reminders.valerie.reminders.model.CursorToBundle;
 
 import java.util.ArrayList;
 
@@ -215,7 +216,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         Cursor cursor = getReadableDatabase().query(TABLE_REMINDERS, null, KEY_TASKFK + " = ? AND " + KEY_FIRED + " = ?", where_args, null, null, KEY_REMDATE + ", " + KEY_REMTIME );
         do{
             cursor.moveToNext();
-            reminder.add(CursorToBundle.getReminderFromCursor(cursor);
+            reminder_list.add(CursorToBundle.getReminderFromCursor(cursor));
         }while(!cursor.isLast());
 
         return reminder_list;

@@ -44,7 +44,7 @@ public class CursorToBundle {
         Reminder reminder = new Reminder();
         reminder.setId(cursor.getLong(column_index));
 
-        column_index = cursor.getColumnIndex(KEY_REMDATE);
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_REMDATE);
         String date = cursor.getString(column_index);
         int year = Integer.parseInt(date.substring(0,4));
         int month = Integer.parseInt(date.substring(5,7));
@@ -53,20 +53,20 @@ public class CursorToBundle {
         reminder.setMonth(month);
         reminder.setDay(day);
 
-        column_index = cursor.getColumnIndex(KEY_REMTIME);
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_REMTIME);
         String time = cursor.getString(column_index);
         int hour = Integer.parseInt(time.substring(0,2));
         int minute = Integer.parseInt(time.substring(3,5));
         reminder.setHour(hour);
         reminder.setMinute(minute);
 
-        column_index = cursor.getColumnIndex(KEY_TASKFK);
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_TASKFK);
         reminder.setTask_id(cursor.getLong(column_index));
 
-        column_index = cursor.getColumnIndex(KEY_AUDIO);
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_AUDIO);
         reminder.setWith_audio(cursor.getInt(column_index));
 
-        column_index = cursor.getColumnIndex(KEY_FIRED);
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_FIRED);
         reminder.setIs_fired(cursor.getInt(column_index));
         return reminder;
     }
