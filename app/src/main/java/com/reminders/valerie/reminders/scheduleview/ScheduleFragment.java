@@ -1,24 +1,17 @@
 package com.reminders.valerie.reminders.scheduleview;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.R;
@@ -38,9 +31,7 @@ public abstract class ScheduleFragment extends Fragment implements View.OnClickL
     protected Button save_button;
     protected Task task;
     protected Reminder reminder_selected;
-    public DateTimeDialogFragment.OnDateTimeSetListener datetime_listener;
-    public DeleteDialogFragment.OnDeleteSetListener delete_listener;
-    public ReminderDialog.OnActionSelectedListener action_listener;
+    private ImageView plus_icon;
 
     private DateTimeEditTextMgr date_et_mgr, time_et_mgr;
     public void setTask(Task task){
@@ -59,10 +50,13 @@ public abstract class ScheduleFragment extends Fragment implements View.OnClickL
         save_button = (Button) rootView.findViewById(R.id.save_task_button);
         save_button.setOnClickListener(this);
         reminder_listview = (ListView) rootView.findViewById(R.id.reminder_list);
-
+        plus_icon = (ImageView) rootView.findViewById(R.id.plus_icon);
+        plus_icon.setClickable(true);
+        plus_icon.setOnClickListener(this);
         //populate list
         list_adapter = new ScheduleListAdapter(getActivity(), reminder_list);
         reminder_listview.setAdapter(list_adapter);
+        reminder_listview.setOnItemClickListener(this);
         return rootView;
     }
 
@@ -73,21 +67,8 @@ public abstract class ScheduleFragment extends Fragment implements View.OnClickL
         this.reminder_list = reminder_list;
     }
 
-
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-        reminder_selected = reminder_list.get(position); //reminders that are marked for deletion should be in a separate arraylist
-        if(view.findViewById(R.id.schedule_item_datetime) != null){
-            TextView dialog_title = (TextView) view.findViewById(R.id.schedule_item_datetime);
-            Bundle args =  new Bundle();
-            args.putString("date_time", dialog_title.getText().toString());
-            args.putInt("with_audio", reminder_selected.getWith_audio());
-            args.putInt("position", position);
-            ReminderDialog action_fragment = new ReminderDialog();
-            action_fragment.setArguments(args);
-            action_fragment.setCallBack(action_listener);
-            action_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
-        }
-    }
+    public abstract void onItemClick(AdapterView<?> parent, View view, int position, long id);
+
 
 }

@@ -44,6 +44,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public static final String KEY_REMTIME = "remtime";
     public static final String KEY_TASKFK = "task_id";
     public static final String KEY_AUDIO = "with_audio";
+    public static final String KEY_FIRED = "is_fired";
 
     public TaskDBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -69,7 +70,8 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 + KEY_COMPLETED + " INTEGER, " + KEY_SAMETASKREM + " INTEGER, FOREIGN KEY(" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES +"(_id))";
         db.execSQL(create_tasks_table);
         String create_reminders_table = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_REMDATE + " TEXT, "
-                + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER, " + KEY_AUDIO + " INTEGER, FOREIGN KEY (" + KEY_TASKFK + ") REFERENCES " + TABLE_TASKS + "(_id))";
+                + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER, " + KEY_AUDIO + " INTEGER, " + KEY_FIRED + " INTEGER, FOREIGN KEY (" + KEY_TASKFK
+                + ") REFERENCES " + TABLE_TASKS + "(_id))";
         db.execSQL(create_reminders_table);
     }
 
@@ -85,14 +87,14 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
 
-    public void addNewTask(Bundle args){
+    /*public void addNewTask(Bundle args){
         String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
                 KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
                 args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
                 args.getString("task_time") + "', 0)";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(insert_query);
-    }
+    }*/
 
     //TODO CHANGE TO INT TO RETRIEVE ID OF TASK
     public long addNewTask(Task task){
@@ -173,6 +175,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 cv.put(KEY_REMTIME, DateTimeConverter.convertTimeToDBText(hour, minute));
                 cv.put(KEY_TASKFK, task_id);
                 cv.put(KEY_AUDIO, reminders.get(i).getWith_audio());
+                cv.put(KEY_FIRED, 0);
                 db.insert(TABLE_REMINDERS, null, cv);
             }
             db.close();

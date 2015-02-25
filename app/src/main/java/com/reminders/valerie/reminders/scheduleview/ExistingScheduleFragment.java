@@ -3,14 +3,18 @@ package com.reminders.valerie.reminders.scheduleview;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.Reminder;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ExistingScheduleFragment extends ScheduleFragment {
 
@@ -35,9 +39,25 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                 reminder_selected.setMonth(args.getInt("month"));
                 reminder_selected.setDay(args.getInt("day"));
                 reminder_selected = null;
-                //TODO rearrange arraylist first
-                list_adapter.notifyDataSetChanged();
             }
+            else{ //new reminder
+                Reminder new_reminder = new Reminder();
+                new_reminder.setHour(args.getInt("hour"));
+                new_reminder.setMinute(args.getInt("minute"));
+                new_reminder.setYear(args.getInt("year"));
+                new_reminder.setMonth(args.getInt("month"));
+                new_reminder.setDay(args.getInt("day"));
+                if(added_reminders == null || added_reminders.size() == 0){
+                    added_reminders = new ArrayList<Reminder>();
+                }
+                added_reminders.add(new_reminder);
+                reminder_list.add(new_reminder); //needs to be added to be reflected in list
+                /* when committing into db, reminders in added_reminders should be removed from reminder_list first,
+                ** then reminder_list will undergo an UPDATE while added_reminders will undergo an INSERT
+                */
+            }
+            //TODO REARRANGE ARRAYLIST FIRST
+            list_adapter.notifyDataSetChanged();
         }
     };
 
@@ -50,6 +70,9 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                         //do nothing;
                         break;
                     case 1:
+                        if(marked_for_deletion == null || marked_for_deletion.size() == 0){
+                            marked_for_deletion = new ArrayList<Reminder>();
+                        }
                         marked_for_deletion.add(reminder_selected);
                         reminder_list.remove(reminder_selected);
                         list_adapter.notifyDataSetChanged();
@@ -103,17 +126,50 @@ public class ExistingScheduleFragment extends ScheduleFragment {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == save_button.getId()) {
-            //TODO SAVE EXISTING TASK AND REMINDERS
-            TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
-            if(dbhandler.updateTask(task)){
-                getActivity().setResult(getActivity().RESULT_OK);
-            }
-            else{
-                Toast.makeText(getActivity().getApplicationContext(), "Failed to save editted details", Toast.LENGTH_SHORT).show();
-                getActivity().setResult(getActivity().RESULT_CANCELED);
-            }
-            getActivity().finish();
+        switch(v.getId()){
+            case R.id.save_task_button:
+                //TODO SAVE EXISTING TASK AND REMINDERS
+                TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+                if(dbhandler.updateTask(task)){
+                    getActivity().setResult(getActivity().RESULT_OK);
+                }
+                else{
+                    Toast.makeText(getActivity().getApplicationContext(), "Failed to save editted details", Toast.LENGTH_SHORT).show();
+                    getActivity().setResult(getActivity().RESULT_CANCELED);
+                }
+                getActivity().finish();
+                break;
+            case R.id.plus_icon:
+                Bundle args = new Bundle();
+                final Calendar cal = Calendar.getInstance();
+                args.putInt("year", cal.get(Calendar.YEAR));
+                args.putInt("month", cal.get(Calendar.MONTH));
+                args.putInt("day", cal.get(Calendar.DAY_OF_MONTH));
+                args.putInt("hour", cal.get(Calendar.HOUR_OF_DAY));
+                args.putInt("minute", cal.get(Calendar.MINUTE));
+                DateTimeDialogFragment new_reminder_dialog = new DateTimeDialogFragment();
+                new_reminder_dialog.setArguments(args);
+                new_reminder_dialog.setCallBack(datetime_listener);
+                new_reminder_dialog.show(getActivity().getSupportFragmentManager(), "dialog");
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+        reminder_selected = reminder_list.get(position); //reminders that are marked for deletion should be in a separate arraylist
+        if(view.findViewById(R.id.schedule_item_datetime) != null){
+            TextView dialog_title = (TextView) view.findViewById(R.id.schedule_item_datetime);
+            Bundle args =  new Bundle();
+            args.putString("date_time", dialog_title.getText().toString());
+            args.putInt("with_audio", reminder_selected.getWith_audio());
+            args.putInt("position", position);
+            ReminderDialog action_fragment = new ReminderDialog();
+            action_fragment.setArguments(args);
+            action_fragment.setCallBack(action_listener);
+            action_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
         }
     }
 }

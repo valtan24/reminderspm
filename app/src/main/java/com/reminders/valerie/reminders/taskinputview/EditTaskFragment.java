@@ -94,9 +94,8 @@ public class EditTaskFragment extends TaskInputFragment {
                     task.setTask_id(task_id);
 
                     //TODO RETRIEVE REMAINING REMINDERS
+                    TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
 
-                    //temp
-                    reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
 
                     ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
                     if(same_datetime.isChecked() && reminder_list.size() > 1){
