@@ -95,7 +95,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     }
 
     //TODO CHANGE TO INT TO RETRIEVE ID OF TASK
-    public int addNewTask(Task task){
+    public long addNewTask(Task task){
         ContentValues values = new ContentValues();
         values.put(KEY_TASKTITLE, task.getTitle());
         values.put(KEY_TASKDATE, task.getTaskDate());
@@ -109,9 +109,9 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 task.getTitle() + "', '" + task.getTaskDate() + "', '" +
                 task.getTaskTime() + "', 0, " + task.getSame_rem_task() +")";*/
         SQLiteDatabase db = getWritableDatabase();
-        db.insert(TABLE_TASKS, null, values);
+        long row_id = db.insert(TABLE_TASKS, null, values);
         db.close();
-        return 0;
+        return row_id;
 
     }
 
@@ -155,7 +155,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return c;
     }
 
-    public boolean addReminders(ArrayList<Reminder> reminders, int task_id) {
+    public boolean addReminders(ArrayList<Reminder> reminders, long task_id) {
         try {
             SQLiteDatabase db = getWritableDatabase();
             ContentValues cv = new ContentValues();
@@ -171,7 +171,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 int hour = reminders.get(i).getHour();
                 int minute = reminders.get(i).getMinute();
                 cv.put(KEY_REMTIME, DateTimeConverter.convertTimeToDBText(hour, minute));
-                cv.put(KEY_TASKFK, reminders.get(i).getTask_id());
+                cv.put(KEY_TASKFK, task_id);
                 cv.put(KEY_AUDIO, reminders.get(i).getWith_audio());
                 db.insert(TABLE_REMINDERS, null, cv);
             }

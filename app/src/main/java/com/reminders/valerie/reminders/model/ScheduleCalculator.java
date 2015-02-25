@@ -43,7 +43,7 @@ public class ScheduleCalculator {
                 new_rem.setYear(task.getYear());
                 new_rem.setMonth(task.getMonth());
                 new_rem.setDay(task.getDay());
-                new_rem.setHour((task.getHour() + time) % 24);
+                new_rem.setHour(Math.abs(task.getHour() + time) % 24);
                 new_rem.setTask(task);
                 new_rem.setWith_audio(1);
                 reminder_list.add(new_rem);
@@ -66,6 +66,14 @@ public class ScheduleCalculator {
             new_rem.setWith_audio(1);
             reminder.setTask(task);
         }
+        Reminder last_rem = new Reminder();
+        last_rem.setTask(task);
+        last_rem.setYear(task.getYear());
+        last_rem.setMonth(task.getMonth());
+        last_rem.setDay(task.getDay());
+        last_rem.setHour(task.getHour());
+        last_rem.setMinute(task.getMinute());
+        reminder_list.add(last_rem);
         return reminder_list;
     }
 }

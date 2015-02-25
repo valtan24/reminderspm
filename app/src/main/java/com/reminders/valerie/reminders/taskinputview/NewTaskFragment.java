@@ -100,6 +100,7 @@ public class NewTaskFragment extends TaskInputFragment{
             reminder.setHour(rem_hour);
             reminder.setMinute(rem_minute);
         }
+        reminder.setTask(task);
         return reminder;
     }
 

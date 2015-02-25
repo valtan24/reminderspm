@@ -244,6 +244,8 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         new_task.setDay(task_day);
         new_task.setYear(task_year);
         new_task.setMonth(task_month);
+        new_task.setHour(task_hour);
+        new_task.setMinute(task_minute);
         new_task.setCompleted(0);
         new_task.setSame_rem_task(same_datetime.isChecked()? 1 : 0);
         //TODO ADD CATEGORY AND IMPORTANCE
