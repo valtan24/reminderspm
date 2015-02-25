@@ -5,11 +5,11 @@ package com.reminders.valerie.reminders.model;
  */
 public class Task {
 
-    public int getTask_id() {
+    public long getTask_id() {
         return task_id;
     }
 
-    public void setTask_id(int task_id) {
+    public void setTask_id(long task_id) {
         this.task_id = task_id;
     }
 
@@ -85,7 +85,7 @@ public class Task {
         this.importance = importance;
     }
 
-    private int task_id;
+    private long task_id;
     private String title;
     //date
     private int year;

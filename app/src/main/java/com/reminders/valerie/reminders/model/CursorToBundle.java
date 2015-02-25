@@ -32,6 +32,9 @@ public class CursorToBundle {
         args.putInt("task_minute", minute);
         int same_datetime_index = cursor.getColumnIndex(TaskDBHandler.KEY_SAMETASKREM);
         args.putInt("same_datetime", cursor.getInt(same_datetime_index));
+        int id_index = cursor.getColumnIndex("_id");
+        args.putLong("task_id", cursor.getLong(id_index));
+
         return args;
     }
 }
