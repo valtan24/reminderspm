@@ -5,7 +5,7 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 
-public class ExistingScheduleFragment extends ScheduleFragment {
+public class ExistingScheduleFragment extends NewScheduleFragment {
     @Override
     public void onClick(View v) {
         if (v.getId() == save_button.getId()) {

@@ -14,6 +14,16 @@ public class Reminder {
     private int task_id;
     private int with_audio;
     private Task task;
+    private long id;
+
+    public long getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
 
     public Task getTask(){
         return task;

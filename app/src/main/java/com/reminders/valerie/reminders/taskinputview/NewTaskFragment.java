@@ -9,6 +9,7 @@ import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
+import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
 import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class NewTaskFragment extends TaskInputFragment{
         switch (v.getId()) {
             case R.id.continue_task_button:
                 //call calculator open schedule fragment
-                ScheduleFragment schedule_fragment = new ScheduleFragment();
+                NewScheduleFragment schedule_fragment = new NewScheduleFragment();
                 try{
                     Task task = buildTask();
                     Reminder reminder = buildReminder(task);
