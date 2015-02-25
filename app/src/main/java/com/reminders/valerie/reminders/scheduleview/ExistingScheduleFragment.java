@@ -10,6 +10,11 @@ import com.reminders.valerie.reminders.model.Reminder;
 
 import java.util.ArrayList;
 
+import com.reminders.valerie.reminders.TaskDBHandler;
+import com.reminders.valerie.reminders.model.Reminder;
+
+import java.util.ArrayList;
+
 public class ExistingScheduleFragment extends ScheduleFragment {
 
     private ArrayList<Reminder> marked_for_deletion;
@@ -58,7 +63,7 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                 reminder_selected = null;
             }
             else{
-                Log.d("Error","No reminder selected");
+                Log.d("Error", "No reminder selected");
             }
         }
     };
@@ -98,8 +103,6 @@ public class ExistingScheduleFragment extends ScheduleFragment {
             }
         }
     };
-
-
 
     @Override
     public void onClick(View v) {

@@ -1,6 +1,5 @@
 package com.reminders.valerie.reminders.model;
 
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -10,7 +9,14 @@ import java.util.ArrayList;
 public class ScheduleCalculator {
 
     private static ScheduleCalculator instance = null;
+    private Task task;
+    public void setTask(Task task){
+        this.task = task;
+    }
 
+    public Task getTask(){
+        return task;
+    }
     public static ScheduleCalculator getInstance(){
         if(instance == null){
             instance =  new ScheduleCalculator();

@@ -21,6 +21,7 @@ public class EditTaskFragment extends TaskInputFragment {
     private long task_id;
     private ArrayList<Reminder> deletion_list;
     private ArrayList<Reminder> reminder_list;
+
     @Override
     public void setContents() {
         Bundle args = getArguments();
@@ -92,10 +93,8 @@ public class EditTaskFragment extends TaskInputFragment {
                     Reminder reminder = buildReminder(task);
                     task.setTask_id(task_id);
                     //TODO RETRIEVE REMAINING REMINDERS
-
                     //temp
                     reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
-
                     ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
                     if(same_datetime.isChecked() && reminder_list.size() > 1){
                         deletion_list = new ArrayList<Reminder>();

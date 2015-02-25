@@ -85,6 +85,14 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
 
+    public void addNewTask(Bundle args){
+        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
+                KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
+                args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
+                args.getString("task_time") + "', 0)";
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL(insert_query);
+    }
     //TODO CHANGE TO INT TO RETRIEVE ID OF TASK
     public long addNewTask(Task task){
         ContentValues values = new ContentValues();

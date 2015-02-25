@@ -3,7 +3,6 @@ package com.reminders.valerie.reminders.model;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 

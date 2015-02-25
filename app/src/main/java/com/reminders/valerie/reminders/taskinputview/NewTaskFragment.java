@@ -40,6 +40,7 @@ public class NewTaskFragment extends TaskInputFragment{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.continue_task_button:
+            //call calculator open schedule fragment
                 NewScheduleFragment schedule_fragment = new NewScheduleFragment();
                 try{
                     Task task = buildTask();
@@ -61,7 +62,6 @@ public class NewTaskFragment extends TaskInputFragment{
                 super.onClick(v);
         }
     }
-
     @Override
     public void getReminders(Task task){
 
@@ -78,6 +78,7 @@ public class NewTaskFragment extends TaskInputFragment{
                 throw new Exception("Please enter a time for your task");
             }
             reminder.setYear(task.getYear());
+            reminder.setTask(task);
             reminder.setYear(task.getYear());
             reminder.setMonth(task.getMonth());
             reminder.setDay(task.getDay());
