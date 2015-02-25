@@ -3,6 +3,7 @@ package com.reminders.valerie.reminders.model;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 
@@ -31,6 +32,9 @@ public class CursorToBundle {
         args.putInt("task_minute", minute);
         int same_datetime_index = cursor.getColumnIndex(TaskDBHandler.KEY_SAMETASKREM);
         args.putInt("same_datetime", cursor.getInt(same_datetime_index));
+        int id_index = cursor.getColumnIndex("_id");
+        args.putLong("task_id", cursor.getLong(id_index));
+
         return args;
     }
 }

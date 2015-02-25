@@ -1,5 +1,6 @@
 package com.reminders.valerie.reminders.taskinputview;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Toast;
@@ -9,6 +10,7 @@ import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
+import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +42,7 @@ public class NewTaskFragment extends TaskInputFragment{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.continue_task_button:
-            //call calculator open schedule fragment
+                //call calculator open schedule fragment
                 NewScheduleFragment schedule_fragment = new NewScheduleFragment();
                 try{
                     Task task = buildTask();
@@ -102,5 +104,7 @@ public class NewTaskFragment extends TaskInputFragment{
         reminder.setTask(task);
         return reminder;
     }
+
+
 
 }

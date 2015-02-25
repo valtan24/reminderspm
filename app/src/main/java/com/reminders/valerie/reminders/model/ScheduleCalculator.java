@@ -1,6 +1,5 @@
 package com.reminders.valerie.reminders.model;
 
-
 import java.util.ArrayList;
 
 /**
@@ -23,6 +22,7 @@ public class ScheduleCalculator {
         }
         return instance;
     }
+
 
     public static ArrayList<Reminder> buildReminderList(Task task, Reminder reminder){
         ArrayList<Reminder> reminder_list = new ArrayList<Reminder>();

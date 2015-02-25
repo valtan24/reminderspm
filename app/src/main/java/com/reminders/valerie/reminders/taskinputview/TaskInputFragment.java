@@ -5,14 +5,17 @@ import android.app.TimePickerDialog;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -27,8 +30,12 @@ import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
+import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
+
+import java.util.ArrayList;
 
 
 public abstract class TaskInputFragment extends Fragment implements View.OnClickListener{
@@ -261,4 +268,5 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     public abstract void setContents();
     public abstract void getReminders(Task task);
     public abstract Reminder buildReminder(Task task) throws Exception; //first reminder or next reminder
+
 }

@@ -24,6 +24,15 @@ public class Reminder {
         this.id = id;
     }
 
+
+    public Task getTask(){
+        return task;
+    }
+
+    public void setTask(Task task){
+        this.task = task;
+    }
+
     public int getYear() {
         return year;
     }
@@ -78,13 +87,5 @@ public class Reminder {
 
     public void setWith_audio(int with_audio) {
         this.with_audio = with_audio;
-    }
-
-    public void setTask(Task task){
-        this.task = task;
-    }
-
-    public Task getTask(){
-        return task;
     }
 }

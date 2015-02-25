@@ -5,11 +5,11 @@ package com.reminders.valerie.reminders.model;
  */
 public class Task {
 
-    public int getTask_id() {
+    public long getTask_id() {
         return task_id;
     }
 
-    public void setTask_id(int task_id) {
+    public void setTask_id(long task_id) {
         this.task_id = task_id;
     }
 
@@ -85,7 +85,7 @@ public class Task {
         this.importance = importance;
     }
 
-    private int task_id;
+    private long task_id;
     private String title;
     //date
     private int year;
@@ -111,6 +111,7 @@ public class Task {
     private int same_rem_task;
 
     //TODO REMOVE AND USE DateTimeConverter.convertDateToDBText()
+
     public String getTaskDate(){
         String date_text = "";
         date_text = date_text + year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
