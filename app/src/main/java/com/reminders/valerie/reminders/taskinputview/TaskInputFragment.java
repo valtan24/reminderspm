@@ -46,7 +46,7 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     public CheckBox same_datetime;
     private RadioGroup importance_group;
     public RadioButton importance_high, importance_medium, importance_low;
-    private double importance;
+    public double importance;
 
     DatePickerDialog.OnDateSetListener task_date_listener = new DatePickerDialog.OnDateSetListener(){
         @Override

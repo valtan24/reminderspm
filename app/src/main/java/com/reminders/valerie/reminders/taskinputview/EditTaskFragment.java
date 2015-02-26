@@ -38,6 +38,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task_year = args.getInt("task_year");
         task_id = args.getLong("task_id");
         category = args.getString("category");
+        importance = args.getDouble("importance");
         setTaskContents();
         getReminders(task);
         if(reminder_list == null || reminder_list.size() == 0){
@@ -97,6 +98,12 @@ public class EditTaskFragment extends TaskInputFragment {
             }
         }while(!cursor.isLast());
         cursor.close();
+
+        //setimportance
+        if(importance == Task.IMPORTANCE_HIGH) importance_high.toggle();
+        else if(importance == Task.IMPORTANCE_MEDIUM) importance_medium.toggle();
+        else importance_low.toggle();
+
         getReminders(task);
         deletion_list = new ArrayList<Reminder>();
         added_reminders = new ArrayList<Reminder>();
@@ -213,7 +220,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task.setTask_id(task_id);
         task.setSame_rem_task(same_datetime.isChecked() ? 1 : 0);
         task.setCompleted(0);
-        task.setImportance(1);
+        task.setImportance(importance);
         task.setCategory(category);
     }
 
