@@ -5,6 +5,34 @@ package com.reminders.valerie.reminders.model;
  */
 public class Task {
 
+    public static final double IMPORTANCE_HIGH = 0.9;
+    public static final double IMPORTANCE_MEDIUM = 0.49;
+    public static final double IMPORTANCE_LOW = 0.09;
+    private long task_id;
+    private String title;
+    //date
+    private int year;
+    private int month;
+    private int day;
+
+    //time in 24-h format
+    private int hour;
+    private int minute;
+
+    private int completed;
+    private String category;
+    private double importance;
+
+    public int getSame_rem_task() {
+        return same_rem_task;
+    }
+
+    public void setSame_rem_task(int same_rem_task) {
+        this.same_rem_task = same_rem_task;
+    }
+
+    private int same_rem_task;
+
     public long getTask_id() {
         return task_id;
     }
@@ -85,33 +113,9 @@ public class Task {
         this.importance = importance;
     }
 
-    private long task_id;
-    private String title;
-    //date
-    private int year;
-    private int month;
-    private int day;
 
-    //time in 24-h format
-    private int hour;
-    private int minute;
-
-    private int completed;
-    private String category;
-    private double importance;
-
-    public int getSame_rem_task() {
-        return same_rem_task;
-    }
-
-    public void setSame_rem_task(int same_rem_task) {
-        this.same_rem_task = same_rem_task;
-    }
-
-    private int same_rem_task;
 
     //TODO REMOVE AND USE DateTimeConverter.convertDateToDBText()
-
     public String getTaskDate(){
         String date_text = "";
         date_text = date_text + year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;

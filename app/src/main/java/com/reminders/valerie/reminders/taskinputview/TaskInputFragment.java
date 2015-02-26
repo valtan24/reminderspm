@@ -22,7 +22,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
@@ -43,6 +44,9 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
     public Button completed_button;
     public View button_gap, reminder_header_underline;
     public CheckBox same_datetime;
+    private RadioGroup importance_group;
+    public RadioButton importance_high, importance_medium, importance_low;
+    private double importance;
 
     DatePickerDialog.OnDateSetListener task_date_listener = new DatePickerDialog.OnDateSetListener(){
         @Override
@@ -158,6 +162,31 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
             }
         });
 
+        //importance radio group
+        importance_group = (RadioGroup) rootView.findViewById(R.id.importance_group);
+        importance_high = (RadioButton) rootView.findViewById(R.id.importance_high);
+        importance_medium = (RadioButton) rootView.findViewById(R.id.importance_medium);
+        importance_low = (RadioButton) rootView.findViewById(R.id.importance_low);
+
+        importance_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId){
+                switch(checkedId){
+                    case R.id.importance_high:
+                        importance = Task.IMPORTANCE_HIGH;
+                        break;
+                    case R.id.importance_medium:
+                        importance = Task.IMPORTANCE_MEDIUM;
+                        break;
+                    case R.id.importance_low:
+                        importance = Task.IMPORTANCE_LOW;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
         //save task button
         continue_button = (Button) rootView.findViewById(R.id.continue_task_button);
         continue_button.setOnClickListener(this);
@@ -257,6 +286,7 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         new_task.setSame_rem_task(same_datetime.isChecked()? 1 : 0);
         //TODO ADD CATEGORY AND IMPORTANCE
         new_task.setCategory(category);
+        new_task.setImportance(importance);
         return new_task;
     }
 
@@ -311,5 +341,6 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
         reminder.setTask(task);
         return reminder;
     }
+
 
 }
