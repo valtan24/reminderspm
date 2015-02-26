@@ -131,6 +131,21 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                 //TODO SAVE EXISTING TASK AND REMINDERS
                 TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
                 if(dbhandler.updateTask(task)){
+                    if(added_reminders.size() > 0) {
+                        dbhandler.addReminders(added_reminders, task.getTask_id());
+                        //remove added_reminders from reminder_list
+                        for (int i = 0; i < added_reminders.size(); i++) {
+                            reminder_list.remove(added_reminders.get(i));
+                        }
+                    }
+                    //update reminders in reminder_list
+                    for(int j = 0; j < reminder_list.size(); j++){
+                        dbhandler.updateReminder(reminder_list.get(j));
+                    }
+                    //delete unwanted reminders
+                    for(int k = 0; k < reminder_list.size(); k++){
+                        dbhandler.deleteReminder(reminder_list.get(k));
+                    }
                     getActivity().setResult(getActivity().RESULT_OK);
                 }
                 else{

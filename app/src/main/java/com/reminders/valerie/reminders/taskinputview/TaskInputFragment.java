@@ -316,7 +316,6 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
                 throw new Exception("Please enter a time for your task");
             }
             reminder.setYear(task.getYear());
-            reminder.setTask(task);
             reminder.setYear(task.getYear());
             reminder.setMonth(task.getMonth());
             reminder.setDay(task.getDay());
