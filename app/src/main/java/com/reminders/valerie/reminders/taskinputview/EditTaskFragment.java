@@ -38,6 +38,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task_year = args.getInt("task_year");
         task_id = args.getLong("task_id");
         category = args.getString("category");
+        importance = args.getDouble("importance");
         setTaskContents();
         getReminders(task);
         if(reminder_list == null || reminder_list.size() == 0){
@@ -97,6 +98,12 @@ public class EditTaskFragment extends TaskInputFragment {
             }
         }while(!cursor.isLast());
         cursor.close();
+
+        //setimportance
+        if(importance == Task.IMPORTANCE_HIGH) importance_high.toggle();
+        else if(importance == Task.IMPORTANCE_MEDIUM) importance_medium.toggle();
+        else importance_low.toggle();
+
         getReminders(task);
         deletion_list = new ArrayList<Reminder>();
         added_reminders = new ArrayList<Reminder>();
@@ -116,68 +123,85 @@ public class EditTaskFragment extends TaskInputFragment {
                 try {
                     setTaskContents();
                     Reminder next_reminder = buildReminder(task);
+                    next_reminder.setTask_id(task.getTask_id());
                     //TODO RETRIEVE REMAINING REMINDERS
                     TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
                     ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
-                    //TODO UPDATE REMINDER ARRAYLISTS
-                    if(same_datetime.isChecked()){
-                        //update last reminder to task date and time, move remaining to deletion_list
-                        if(reminder_list == null){
-                            reminder_list = new ArrayList<Reminder>();
-                            reminder_list.add(next_reminder);
-                        }
-                        else{
-                            reminder_list.remove(reminder_list.size()-1);
-                            reminder_list.add(next_reminder);
-                            if(reminder_list.size() > 1) { //more than 1 reminder
-                                while(reminder_list.size() > 1){
-                                    deletion_list.add(reminder_list.remove(0));
+                    if(reminder_list.size() > 0) {
+                        //TODO UPDATE REMINDER ARRAYLISTS
+                        if (same_datetime.isChecked()) {
+                            //update last reminder to task date and time, move remaining to deletion_list
+                            if (reminder_list == null) {
+                                reminder_list = new ArrayList<Reminder>();
+                                reminder_list.add(next_reminder);
+                            } else {
+                                reminder_list.remove(reminder_list.size() - 1);
+                                reminder_list.add(next_reminder);
+                                if (reminder_list.size() > 1) { //more than 1 reminder
+                                    while (reminder_list.size() > 1) {
+                                        deletion_list.add(reminder_list.remove(0));
+                                    }
                                 }
+                            }
+                        } else {
+                            //if task.getsame_rem_time is true, add new reminders into BOTH reminder_list and added_reminders
+                            if (taskDateTimeUnchanged()) {
+                                if (!reminderDateTimeUnchanged(reminder_list.get(0))) {
+                                    while (reminder_list.size() > 1) {
+                                        deletion_list.add(reminder_list.remove(0));
+                                    }
+                                    //TODO REPOPULATE LIST
+                                    reminder_list.add(0, next_reminder);
+                                    added_reminders.add(next_reminder);
+                                } else {
+                                    //re-retrieve list
+                                    reminder_list = null;
+                                    getReminders(task);
+                                    deletion_list = new ArrayList<Reminder>();
+                                    added_reminders = new ArrayList<Reminder>();
+                                }
+                            } else {
+                                while (reminder_list.size() > 1) {
+                                    deletion_list.add(reminder_list.remove(1));
+                                }
+                                if (!reminderDateTimeUnchanged(reminder_list.get(0))) {
+                                    deletion_list.add(reminder_list.remove(0));
+                                    reminder_list.add(next_reminder);
+                                    added_reminders.add(next_reminder);
+                                }
+                                //TODO REPOPULATE LIST
+                                Reminder last_reminder = new Reminder();
+                                last_reminder.setYear(task_year);
+                                last_reminder.setMonth(task_month);
+                                last_reminder.setDay(task_day);
+                                last_reminder.setHour(task_hour);
+                                last_reminder.setDay(task_day);
+                                last_reminder.setTask(task);
+                                last_reminder.setTask_id(task_id);
+                                last_reminder.setIs_fired(0);
+                                last_reminder.setWith_audio(0);
+                                reminder_list.add(last_reminder);
+                                added_reminders.add(last_reminder);
                             }
                         }
                     }
-                    else {
-                        //if task.getsame_rem_time is true, add new reminders into BOTH reminder_list and added_reminders
-                        if(taskDateTimeUnchanged()){
-                            if(!reminderDateTimeUnchanged(reminder_list.get(0))){
-                                while(reminder_list.size() > 1){
-                                    deletion_list.add(reminder_list.remove(0));
-                                }
-                                //TODO REPOPULATE LIST
-                                reminder_list.add(0, next_reminder);
-                                added_reminders.add(next_reminder);
-                            }
-                            else{
-                                //re-retrieve list
-                                reminder_list = null;
-                                getReminders(task);
-                                deletion_list = new ArrayList<Reminder>();
-                                added_reminders = new ArrayList<Reminder>();
-                            }
-                        }
-                        else{
-                            while(reminder_list.size() > 1){
-                                deletion_list.add(reminder_list.remove(1));
-                            }
-                            if(!reminderDateTimeUnchanged(reminder_list.get(0))){
-                                deletion_list.add(reminder_list.remove(0));
-                                reminder_list.add(next_reminder);
-                                added_reminders.add(next_reminder);
-                            }
-                            //TODO REPOPULATE LIST
-                            Reminder last_reminder = new Reminder();
-                            last_reminder.setYear(task_year);
-                            last_reminder.setMonth(task_month);
-                            last_reminder.setDay(task_day);
-                            last_reminder.setHour(task_hour);
-                            last_reminder.setDay(task_day);
-                            last_reminder.setTask(task);
-                            last_reminder.setTask_id(task_id);
-                            last_reminder.setIs_fired(0);
-                            last_reminder.setWith_audio(0);
-                            reminder_list.add(last_reminder);
-                            added_reminders.add(last_reminder);
-                        }
+                    else{
+                        reminder_list.add(next_reminder);
+                        added_reminders.add(next_reminder);
+                        //recalculate
+                        Reminder last_reminder = new Reminder();
+                        last_reminder.setYear(task_year);
+                        last_reminder.setMonth(task_month);
+                        last_reminder.setDay(task_day);
+                        last_reminder.setHour(task_hour);
+                        last_reminder.setDay(task_day);
+                        last_reminder.setTask(task);
+                        last_reminder.setTask_id(task_id);
+                        last_reminder.setIs_fired(0);
+                        last_reminder.setWith_audio(0);
+                        reminder_list.add(last_reminder);
+                        added_reminders.add(last_reminder);
+
                     }
                     //add all three lists to schedule_fragment
                     schedule_fragment.setReminderArrayList(reminder_list);
@@ -192,6 +216,7 @@ public class EditTaskFragment extends TaskInputFragment {
                 }
                 catch(Exception e){
                     Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
                 break;
             default:
@@ -213,7 +238,7 @@ public class EditTaskFragment extends TaskInputFragment {
         task.setTask_id(task_id);
         task.setSame_rem_task(same_datetime.isChecked() ? 1 : 0);
         task.setCompleted(0);
-        task.setImportance(1);
+        task.setImportance(importance);
         task.setCategory(category);
     }
 

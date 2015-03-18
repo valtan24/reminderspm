@@ -32,8 +32,8 @@ public abstract class ScheduleFragment extends Fragment implements View.OnClickL
     protected Task task;
     protected Reminder reminder_selected;
     private ImageView plus_icon;
-
     private DateTimeEditTextMgr date_et_mgr, time_et_mgr;
+
     public void setTask(Task task){
         this.task = task;
     }
@@ -69,6 +69,5 @@ public abstract class ScheduleFragment extends Fragment implements View.OnClickL
 
     @Override
     public abstract void onItemClick(AdapterView<?> parent, View view, int position, long id);
-
 
 }

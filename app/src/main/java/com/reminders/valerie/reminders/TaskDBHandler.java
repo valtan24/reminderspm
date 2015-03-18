@@ -94,18 +94,9 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     public Cursor getUncompletedTasks(String ordered_by){
         String where_args[] = {"0"};
-        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM, KEY_CATEGORY};
+        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM, KEY_CATEGORY, KEY_IMPORTANCE};
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
-
-    /*public void addNewTask(Bundle args){
-        String insert_query = "INSERT INTO " + TABLE_TASKS + " ( \"" + KEY_TASKTITLE + "\", '" +
-                KEY_TASKDATE + "', '" + KEY_TASKTIME+ "', '" + KEY_COMPLETED + "' ) VALUES ( '" +
-                args.getString("task_title") + "', '" + args.getString("task_date") + "', '" +
-                args.getString("task_time") + "', 0)";
-        SQLiteDatabase db = getWritableDatabase();
-        db.execSQL(insert_query);
-    }*/
 
     //TODO CHANGE TO INT TO RETRIEVE ID OF TASK
     public long addNewTask(Task task){
@@ -198,6 +189,25 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public boolean updateReminder(Reminder reminder){
+        ContentValues update_value = new ContentValues();
+        update_value.put(KEY_REMDATE, DateTimeConverter.convertDateToDBText(reminder.getYear(), reminder.getMonth(), reminder.getDay()));
+        update_value.put(KEY_REMTIME, DateTimeConverter.convertTimeToDBText(reminder.getHour(), reminder.getMinute()));
+        update_value.put(KEY_TASKFK, reminder.getTask_id());
+        update_value.put(KEY_AUDIO, reminder.getWith_audio());
+        update_value.put(KEY_FIRED, reminder.getIs_fired());
+        SQLiteDatabase db = getWritableDatabase();
+        String[] where_args = {"" + reminder.getId()};
+        if(db.updateWithOnConflict(TABLE_REMINDERS, update_value, "_id = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1){
+            db.close();
+            return true;
+        }
+        else{
+            Log.e("db error", "failed to update reminder "+reminder.getId());
+            return false;
+        }
+    }
+
     public boolean updateTask(Task task){
         ContentValues update_value = new ContentValues();
         update_value.put(KEY_TASKTITLE, task.getTitle());
@@ -220,14 +230,26 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public boolean deleteReminder(Reminder reminder){
+        SQLiteDatabase db = getWritableDatabase();
+        String[] where_args = {""+reminder.getId()};
+        if(db.delete(TABLE_REMINDERS, "_id = ?", where_args) == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     public ArrayList<Reminder> getUnfiredReminders(long task_id){
         ArrayList<Reminder> reminder_list = new ArrayList<Reminder>();
         String[] where_args = {""+task_id, "0"};
         Cursor cursor = getReadableDatabase().query(TABLE_REMINDERS, null, KEY_TASKFK + " = ? AND " + KEY_FIRED + " = ?", where_args, null, null, KEY_REMDATE + ", " + KEY_REMTIME );
-        do{
-            cursor.moveToNext();
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
             reminder_list.add(CursorToBundle.getReminderFromCursor(cursor));
-        }while(!cursor.isLast());
+            cursor.moveToNext();
+        }
 
         return reminder_list;
     }

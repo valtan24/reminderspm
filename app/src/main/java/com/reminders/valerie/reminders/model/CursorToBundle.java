@@ -38,6 +38,9 @@ public class CursorToBundle {
         column_index = cursor.getColumnIndex(TaskDBHandler.KEY_CATEGORY);
         args.putString("category", cursor.getString(column_index));
 
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_IMPORTANCE);
+        args.putDouble("importance", cursor.getDouble(column_index));
+
         //remaining: completed, importance, category
         return args;
     }
