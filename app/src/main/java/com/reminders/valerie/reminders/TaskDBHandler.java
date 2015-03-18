@@ -47,6 +47,14 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public static final String KEY_AUDIO = "with_audio";
     public static final String KEY_FIRED = "is_fired";
 
+    //daily routine events
+    public static final String TABLE_ACTIVITIES = "reminders_activities";
+    public static final String KEY_DAY = "day";
+    public static final String KEY_START = "start_time";
+    public static final String KEY_END = "end_time";
+    public static final String KEY_COMPLEXITY = "complexity";
+    public static final String KEY_ACT_CATEGORY = "category";
+
     public TaskDBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
@@ -74,6 +82,8 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER, " + KEY_AUDIO + " INTEGER, " + KEY_FIRED + " INTEGER, FOREIGN KEY (" + KEY_TASKFK
                 + ") REFERENCES " + TABLE_TASKS + "(_id))";
         db.execSQL(create_reminders_table);
+
+
     }
 
     @Override

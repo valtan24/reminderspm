@@ -2,21 +2,27 @@ package com.reminders.valerie.reminders.myroutine;
 
 
 import android.app.TimePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
 
@@ -30,6 +36,9 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
     private int start_hour, start_minute, end_hour, end_minute;
 
     private TimeEditTextManager time_et_mgr;
+
+    public Spinner category_spinner;
+    public String category;
 
     View.OnClickListener listener;
 
@@ -72,6 +81,29 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
         save_button = (Button) rootView.findViewById(R.id.save_button);
         time_et_mgr = new TimeEditTextManager();
         button_space = rootView.findViewById(R.id.button_space);
+        //category spinner
+        category_spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
+        TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        Cursor cursor = dbhandler.getCategoryNames();
+        String[] from = new String[]{"_id"};
+        int[] to = {android.R.id.text1};
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, cursor, from, to, 0);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        category_spinner.setAdapter(adapter);
+        category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Cursor c = (Cursor) parent.getItemAtPosition(position);
+                category = c.getString(c.getColumnIndex("_id"));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Cursor c = (Cursor) parent.getItemAtPosition(0);
+                category = c.getString(c.getColumnIndex("_id"));
+            }
+        });
+
         setContents();
 
         start_time.setClickable(true);
@@ -86,16 +118,15 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
         });
 
         end_time.setClickable(true);
-        end_time.setOnClickListener(new View.OnClickListener(){
+        end_time.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Bundle time_args = new Bundle();
                 time_args.putInt("hour", end_hour);
                 time_args.putInt("minute", end_minute);
                 time_et_mgr.showPickerFragment(getActivity().getSupportFragmentManager(), end_listener, time_args);
             }
         });
-
 
         save_button.setOnClickListener(this);
         delete_button.setOnClickListener(this);

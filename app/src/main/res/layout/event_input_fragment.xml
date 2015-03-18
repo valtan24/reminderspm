@@ -71,11 +71,41 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/category_area"
+        android:layout_below="@id/from_to_times"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/SubsectionHeader"
+            android:gravity="left"
+            android:text="@string/task_category"/>
+
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/complexity_subheader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/from_to_times"
+        android:layout_below="@id/category_area"
         style="@style/SubsectionHeader"
         android:layout_marginTop="20dp"
         android:text="@string/complexity_subheader"/>

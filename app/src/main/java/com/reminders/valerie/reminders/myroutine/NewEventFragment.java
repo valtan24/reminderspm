@@ -1,7 +1,11 @@
 package com.reminders.valerie.reminders.myroutine;
 
 
+import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
+
+import com.reminders.valerie.reminders.TaskDBHandler;
 
 import java.util.Calendar;
 
