@@ -86,7 +86,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         db.execSQL(create_reminders_table);
 
         String create_activities_table = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTIVITIES +  " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DAY + " INTEGER, "
-                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + ", FOREGIN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id))";
+                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + " TEXT, FOREIGN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id))";
         db.execSQL(create_activities_table);
     }
 

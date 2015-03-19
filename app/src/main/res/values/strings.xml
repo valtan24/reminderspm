@@ -60,6 +60,7 @@
     <string name="completed">Completed</string>
     <string name="ringtone_picker">Pick Ringtone</string>
     <string name="add_category">New Category</string>
+    <string name="new_reminder">Add Reminder</string>
 
     <string-array name="category_list">
         <item>General</item>

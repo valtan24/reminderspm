@@ -9,10 +9,13 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.reminders.valerie.reminders.scheduleservice.ScheduleClient;
 import com.reminders.valerie.reminders.taskinputview.NewTaskFragment;
 import com.reminders.valerie.reminders.taskinputview.TaskInputFragment;
 
 public abstract class TaskInputActivity extends ActionBarActivity{
+
+    private ScheduleClient schedule_client;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -28,6 +31,8 @@ public abstract class TaskInputActivity extends ActionBarActivity{
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.task_fragment_container, task_input_fragment).commit();
         }
+        schedule_client = new ScheduleClient(this);
+        schedule_client.doBindService();
     }
 
     @Override
@@ -50,5 +55,16 @@ public abstract class TaskInputActivity extends ActionBarActivity{
     }
 
     public abstract TaskInputFragment getFragment();
+
+    public ScheduleClient getSchedule_client(){return schedule_client;}
+
+
+    @Override
+    public void onStop(){
+        if(schedule_client != null){
+            schedule_client.doUnbindService();
+        }
+        super.onStop();
+    }
 
 }

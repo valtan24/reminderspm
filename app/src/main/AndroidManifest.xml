@@ -41,6 +41,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.reminders.valerie.reminders.MainActivity"/>
         </activity>
+        <service android:name="com.reminders.valerie.reminders.scheduleservice.ScheduleService"/>
+        <service android:name="com.reminders.valerie.reminders.scheduleservice.NotifyService"/>
     </application>
 
 </manifest>

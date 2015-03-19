@@ -65,7 +65,7 @@ public class DateTimeDialogFragment extends DialogFragment {
         date_et_mgr = new DateEditTextManager();
         time_et_mgr = new TimeEditTextManager();
 
-        builder.setTitle(R.string.change_datetime_header);
+        builder.setTitle(getArguments().getString("title"));
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View dialog_content = inflater.inflate(R.layout.datetime_dialog_fragment, null);
         //views in content

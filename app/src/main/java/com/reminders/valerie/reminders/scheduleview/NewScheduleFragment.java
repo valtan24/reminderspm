@@ -1,32 +1,18 @@
 package com.reminders.valerie.reminders.scheduleview;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
-import com.reminders.valerie.reminders.model.DateEditTextManager;
-import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskInputActivity;
 import com.reminders.valerie.reminders.model.Reminder;
-import com.reminders.valerie.reminders.model.Task;
-import com.reminders.valerie.reminders.model.TimeEditTextManager;
+import com.reminders.valerie.reminders.scheduleservice.ScheduleClient;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -100,6 +86,7 @@ public class NewScheduleFragment extends ScheduleFragment{
                         args.putInt("day", reminder_selected.getDay());
                         args.putInt("hour", reminder_selected.getHour());
                         args.putInt("minute", reminder_selected.getMinute());
+                        args.putString("title", getActivity().getResources().getText(R.string.change_datetime_header).toString());
                         DateTimeDialogFragment datetime_fragment = new DateTimeDialogFragment();
                         datetime_fragment.setArguments(args);
                         datetime_fragment.setCallBack(datetime_listener);
@@ -126,6 +113,15 @@ public class NewScheduleFragment extends ScheduleFragment{
                 TaskDBHandler handler = new TaskDBHandler(getActivity());
                 long task_id = handler.addNewTask(task);
                 handler.addReminders(reminder_list, task_id);
+                Calendar c = Calendar.getInstance();
+                Reminder first_reminder = reminder_list.get(0);
+                c.set(first_reminder.getYear(), first_reminder.getMonth(), first_reminder.getDay());
+                c.set(Calendar.HOUR_OF_DAY, first_reminder.getHour());
+                c.set(Calendar.MINUTE, first_reminder.getMinute());
+                c.set(Calendar.SECOND, 0);
+                //bind schedule service
+                ScheduleClient client = ((TaskInputActivity) getActivity()).getSchedule_client();
+               client.setAlarmForNotification(c);
                 getActivity().setResult(getActivity().RESULT_OK);
                 getActivity().finish();
                 break;
@@ -137,6 +133,7 @@ public class NewScheduleFragment extends ScheduleFragment{
                 args.putInt("day", cal.get(Calendar.DAY_OF_MONTH));
                 args.putInt("hour", cal.get(Calendar.HOUR_OF_DAY));
                 args.putInt("minute", cal.get(Calendar.MINUTE));
+                args.putString("title", getActivity().getResources().getText(R.string.new_reminder).toString());
                 DateTimeDialogFragment new_reminder_dialog = new DateTimeDialogFragment();
                 new_reminder_dialog.setArguments(args);
                 new_reminder_dialog.setCallBack(datetime_listener);
@@ -162,4 +159,6 @@ public class NewScheduleFragment extends ScheduleFragment{
             action_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
         }
     }
+
+
 }
