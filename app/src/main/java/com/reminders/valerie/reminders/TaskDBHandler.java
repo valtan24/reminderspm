@@ -74,16 +74,20 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         addNewCategory(args, db);
         args.putString("cat_name", "Social");
         addNewCategory(args, db);
+
         String create_tasks_table = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + " ( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_IMPORTANCE + " REAL, " + KEY_CATEGORY +" TEXT, "
                 + KEY_COMPLETED + " INTEGER, " + KEY_SAMETASKREM + " INTEGER, FOREIGN KEY(" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES +"(_id))";
         db.execSQL(create_tasks_table);
+
         String create_reminders_table = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_REMDATE + " TEXT, "
                 + KEY_REMTIME + " TEXT, " + KEY_TASKFK + " INTEGER, " + KEY_AUDIO + " INTEGER, " + KEY_FIRED + " INTEGER, FOREIGN KEY (" + KEY_TASKFK
                 + ") REFERENCES " + TABLE_TASKS + "(_id))";
         db.execSQL(create_reminders_table);
 
-
+        String create_activities_table = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTIVITIES +  " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DAY + " INTEGER, "
+                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + ", FOREGIN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id))";
+        db.execSQL(create_activities_table);
     }
 
     @Override
@@ -252,6 +256,23 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         }
 
         return reminder_list;
+    }
+
+    public boolean markTaskAsComplete(Task task){
+        ContentValues update_value = new ContentValues();
+        update_value.put(KEY_COMPLETED, task.getCompleted());
+        SQLiteDatabase db = getWritableDatabase();
+        String[] where_args = {""+task.getTask_id()};
+        if(db.updateWithOnConflict(TABLE_TASKS, update_value, KEY_TASKID + " = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1){
+            //TODO MARK REMINDERS AS FIRED
+            db.close();
+            return true; //successful update
+        }
+        else{
+            //TODO THROW EXCEPTION? OR TOAST HERE?
+            Log.d("db error", "failed to update task");
+            return false;
+        }
     }
 
 }

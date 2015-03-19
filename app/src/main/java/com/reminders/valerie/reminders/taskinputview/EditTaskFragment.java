@@ -1,5 +1,6 @@
 package com.reminders.valerie.reminders.taskinputview;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -103,6 +104,7 @@ public class EditTaskFragment extends TaskInputFragment {
         if(importance == Task.IMPORTANCE_HIGH) importance_high.toggle();
         else if(importance == Task.IMPORTANCE_MEDIUM) importance_medium.toggle();
         else importance_low.toggle();
+        completed_button.setOnClickListener(this);
 
         getReminders(task);
         deletion_list = new ArrayList<Reminder>();
@@ -218,6 +220,19 @@ public class EditTaskFragment extends TaskInputFragment {
                     Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
+                break;
+            case R.id.completed_button:
+                TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+                task.setCompleted(1);
+                if(!dbhandler.markTaskAsComplete(task)){
+                    Toast.makeText(getActivity().getApplicationContext(), "Failed to mark this task as complete", Toast.LENGTH_SHORT).show();
+                    getActivity().setResult(Activity.RESULT_CANCELED);
+                }
+                else {
+                    getActivity().setResult(getActivity().RESULT_OK);
+                }
+                dbhandler.close();
+                getActivity().finish();
                 break;
             default:
                 super.onClick(v);
