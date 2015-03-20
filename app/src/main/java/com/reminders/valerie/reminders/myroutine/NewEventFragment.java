@@ -12,7 +12,7 @@ import java.util.Calendar;
 public class NewEventFragment extends EventInputFragment{
     @Override
     public void setContents() {
-        getAction_header().setText("New Event");
+        getAction_header().setText("New Activity");
 
         //set hours and minutes
         final Calendar cal = Calendar.getInstance();

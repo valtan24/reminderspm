@@ -9,16 +9,16 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.reminders.valerie.reminders.R;
-import com.reminders.valerie.reminders.model.PerDayEvent;
+import com.reminders.valerie.reminders.model.DailyActivity;
 
 import java.util.ArrayList;
 
 public class DailyRoutineListAdapter extends BaseAdapter {
 
-    private ArrayList<PerDayEvent> routine_list;
+    private ArrayList<DailyActivity> routine_list;
     private static LayoutInflater inflater = null;
 
-    public DailyRoutineListAdapter(Activity activity, ArrayList<PerDayEvent> routine_list){
+    public DailyRoutineListAdapter(Activity activity, ArrayList<DailyActivity> routine_list){
         this.routine_list = routine_list;
         inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

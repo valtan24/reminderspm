@@ -1,29 +1,25 @@
 package com.reminders.valerie.reminders.myroutine;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.TwoLineListItem;
 
 import com.reminders.valerie.reminders.MainActivity;
 import com.reminders.valerie.reminders.R;
-import com.reminders.valerie.reminders.model.PerDayEvent;
+import com.reminders.valerie.reminders.model.DailyActivity;
 
 import java.util.ArrayList;
 
@@ -35,15 +31,15 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
     private DailyRoutineListAdapter list_adapter;
     private ImageView add_icon, duplicate_icon;
 
-    private ArrayList<PerDayEvent> routine_list;
+    private ArrayList<DailyActivity> routine_list;
 
     private Button clear_all_button, save_button;
 
-    public ArrayList<PerDayEvent> getRoutine_list() {
+    public ArrayList<DailyActivity> getRoutine_list() {
         return routine_list;
     }
 
-    public void setRoutine_list(ArrayList<PerDayEvent> routine_list) {
+    public void setRoutine_list(ArrayList<DailyActivity> routine_list) {
         this.routine_list = routine_list;
     }
 
@@ -117,7 +113,7 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
         FragmentTransaction fragment_transaction = fragment_mgr.beginTransaction();
         Fragment edit_fragment = new EditEventFragment();
         Bundle args = new Bundle();
-        PerDayEvent event = (PerDayEvent) list_adapter.getItem(position);
+        DailyActivity event = (DailyActivity) list_adapter.getItem(position);
         args.putString("title", event.getName());
         args.putInt("start_hour", event.getStart_hour());
         args.putInt("start_minute", event.getStart_minute());

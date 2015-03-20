@@ -1,7 +1,7 @@
 package com.reminders.valerie.reminders.model;
 
 
-public class PerDayEvent {
+public class DailyActivity {
 
     private int start_minute;
     private int end_minute;
