@@ -11,6 +11,7 @@ import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskInputActivity;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderNotification;
 import com.reminders.valerie.reminders.scheduleservice.ScheduleClient;
 
 import java.util.Calendar;
@@ -119,9 +120,18 @@ public class NewScheduleFragment extends ScheduleFragment{
                 c.set(Calendar.HOUR_OF_DAY, first_reminder.getHour());
                 c.set(Calendar.MINUTE, first_reminder.getMinute());
                 c.set(Calendar.SECOND, 0);
+                //build reminder notifcation
+                ReminderNotification rem_notification = new ReminderNotification(handler.getNextReminder(task_id).getId());
+                rem_notification.setYear(task.getYear());
+                rem_notification.setMonth(task.getMonth());
+                rem_notification.setDay(task.getDay());
+                rem_notification.setHour(task.getHour());
+                rem_notification.setMinute(task.getMinute());
+                rem_notification.setTask_title(task.getTitle());
+                rem_notification.setTask_id(task_id);
                 //bind schedule service
                 ScheduleClient client = ((TaskInputActivity) getActivity()).getSchedule_client();
-               client.setAlarmForNotification(c);
+                client.setAlarmForNotification(c, rem_notification);
                 getActivity().setResult(getActivity().RESULT_OK);
                 getActivity().finish();
                 break;

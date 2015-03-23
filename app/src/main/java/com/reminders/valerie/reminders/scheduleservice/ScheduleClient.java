@@ -9,6 +9,9 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderNotification;
+
 public class ScheduleClient {
 
     private ScheduleService bound_service;
@@ -30,13 +33,14 @@ public class ScheduleClient {
         app_context = applicationContext;
     }
 
+
     public void doBindService(){
         app_context.bindService(new Intent(app_context, ScheduleService.class), connection, Context.BIND_AUTO_CREATE);
         is_bound = true;
     }
 
-    public void setAlarmForNotification(Calendar c){
-        bound_service.setAlarm(c);
+    public void setAlarmForNotification(Calendar c, ReminderNotification reminder){
+        bound_service.setAlarm(c, reminder);
     }
 
     public void doUnbindService(){

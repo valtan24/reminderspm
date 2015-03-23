@@ -6,12 +6,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.reminders.valerie.reminders.EditTaskActivity;
 import com.reminders.valerie.reminders.NewTaskActivity;
+import com.reminders.valerie.reminders.TaskDBHandler;
+import com.reminders.valerie.reminders.model.CursorToBundle;
 
 
 public class NotifyService extends Service{
@@ -37,7 +42,7 @@ public class NotifyService extends Service{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         if(intent.getBooleanExtra(INTENT_NOTIFY, false)){
-            showNotification();
+            showNotification(intent.getExtras());
         }
         return START_NOT_STICKY;
     }
@@ -47,9 +52,8 @@ public class NotifyService extends Service{
         return binder;
     }
 
-    private void showNotification(){
-        CharSequence title = "You have a task to do!";
-        CharSequence text = "Task title and date and time here!";
+    private void showNotification(Bundle extras){
+        CharSequence title = extras.getString("task_title");
         int icon = R.drawable.ic_dialog_alert;
         //time to show on the notification
         long time = System.currentTimeMillis();
@@ -58,25 +62,30 @@ public class NotifyService extends Service{
         NotificationCompat.Builder notification_builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(icon)
                 .setContentTitle(title)
-                .setContentText(text);
+                .setVisibility(Notification.VISIBILITY_PUBLIC);
 
         NotificationCompat.InboxStyle inbox_style = new NotificationCompat.InboxStyle();
-        String[] events = {"task title", "task date", "task time"};
+        String[] events = {extras.getString("task_date"), extras.getString("task_time")};
         inbox_style.setBigContentTitle(title);
         for(int i = 0; i<events.length;i++){
             inbox_style.addLine(events[i]);
         }
         notification_builder.setStyle(inbox_style);
 
-        Intent result_intent = new Intent(this, NewTaskActivity.class);
+        TaskDBHandler dbhandler = new TaskDBHandler(getApplicationContext());
+        Bundle args = dbhandler.getTaskById(extras.getLong("task_id"));
+        Intent edit_task_intent = new Intent(this, EditTaskActivity.class);
+        edit_task_intent.putExtra("arguments", args);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(NewTaskActivity.class);
-        stackBuilder.addNextIntent(result_intent);
+        stackBuilder.addParentStack(EditTaskActivity.class);
+        stackBuilder.addNextIntent(edit_task_intent);
         PendingIntent result_pending_intent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         notification_builder.setContentIntent(result_pending_intent);
         notification_mgr.notify(NOTIFICATION, notification_builder.build());
 
+        dbhandler.markReminderAsFired(extras.getLong("reminder_id"));
+        dbhandler.close();
         stopSelf();
     }
 }

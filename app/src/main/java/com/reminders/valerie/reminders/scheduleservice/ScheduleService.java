@@ -7,6 +7,9 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderNotification;
+
 public class ScheduleService extends Service {
     public class ServiceBinder extends Binder{
         ScheduleService getService(){
@@ -26,7 +29,8 @@ public class ScheduleService extends Service {
         return app_binder;
     }
 
-    public void setAlarm(Calendar c){
-        new AlarmTask(this, c).run();
+
+    public void setAlarm(Calendar c, ReminderNotification reminder){
+        new AlarmTask(this, c, reminder).run();
     }
 }

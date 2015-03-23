@@ -275,4 +275,33 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         }
     }
 
+    public Reminder getNextReminder(long task_id){
+        ArrayList<Reminder> reminder_list = getUnfiredReminders(task_id);
+        return reminder_list.get(0);
+    }
+
+    public Bundle getTaskById(long task_id){
+        String[] where_args = {""+task_id, "0"};
+        Cursor cursor = getReadableDatabase().query(
+                TABLE_TASKS, null, KEY_TASKID + " = ? AND " + KEY_COMPLETED + " = ?",
+                where_args, null, null, null);
+        cursor.moveToFirst();
+        if(!cursor.isAfterLast()){
+            return CursorToBundle.getTaskFromCursor(cursor);
+        }
+        return null;
+    }
+
+    public boolean markReminderAsFired(long reminder_id){
+        ContentValues update_value = new ContentValues();
+        update_value.put(KEY_FIRED, 1);
+        SQLiteDatabase db = getWritableDatabase();
+        String[] where_args = {""+reminder_id};
+        if(db.updateWithOnConflict(TABLE_REMINDERS, update_value, "_id = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1){
+            db.close();
+            return true;
+        }
+        return false;
+    }
+
 }
