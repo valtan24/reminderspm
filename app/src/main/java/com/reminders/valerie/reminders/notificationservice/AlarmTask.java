@@ -2,50 +2,39 @@ package com.reminders.valerie.reminders.notificationservice;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.Reminder;
-import com.reminders.valerie.reminders.model.Task;
 
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
-public class QueueReminderService extends Service {
+public class AlarmTask implements Runnable {
 
-
-    public class QueueReminderBinder extends Binder {
-        QueueReminderService getService(){ return QueueReminderService.this; }
-    }
-
-    private final QueueReminderBinder binder = new QueueReminderBinder();
     private TaskDBHandler dbhandler;
     private long task_id;
-    private long reminder_id;
+    private long reminder_id; //to mark as fired
     private AlarmManager alarm_mgr;
+    private Context context;
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        return binder;
+    private static int requestCode = 1;
+
+    public AlarmTask(Context context, long task_id, long reminder_id){
+        alarm_mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        this.context = context;
+        dbhandler = new TaskDBHandler(this.context);
+        this.task_id = task_id;
+        this.reminder_id = reminder_id;
     }
 
-    @Override
-    public void onCreate(){
-        dbhandler = new TaskDBHandler(this);
-    }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        Log.i("starting queue reminder service", "true");
-        Bundle extras = intent.getExtras();
-        task_id = extras.getLong("task_id");
-        reminder_id = extras.getLong("reminder_id");
+    public void run() {
+        Log.i("starting alarm task", "true");
         Log.i("reminder id", ""+reminder_id);
         Reminder next_reminder = dbhandler.getNextReminder(task_id);
         if(next_reminder != null){
@@ -58,7 +47,7 @@ public class QueueReminderService extends Service {
             cal.set(Calendar.MINUTE, next_reminder.getMinute());
             cal.set(Calendar.SECOND, 0);
 
-            Intent receiver_intent = new Intent(QueueReminderService.this, NotificationReceiver.class);
+            Intent receiver_intent = new Intent(context, NotificationReceiver.class);
             receiver_intent.putExtra("task_title", task_bundle.getString("title"));
             int hour = task_bundle.getInt("task_hour");
             int minute = task_bundle.getInt("task_minute");
@@ -79,20 +68,10 @@ public class QueueReminderService extends Service {
             receiver_intent.putExtra("task_id", task_id);
             receiver_intent.putExtra("reminder_id", reminder_id);
 
-            PendingIntent pending_intent = PendingIntent.getBroadcast(QueueReminderService.this, 2412, receiver_intent, 0);
-            alarm_mgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+            PendingIntent pending_intent = PendingIntent.getBroadcast(context, requestCode, receiver_intent, 0);
             alarm_mgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending_intent);
+            requestCode++;
         }
         dbhandler.close();
-        stopSelf();
-
-        return START_STICKY;
     }
-
-    @Override
-    public void onDestroy(){
-        Log.i("queue reminder service", "destroyed");
-        super.onDestroy();
-    }
-
 }

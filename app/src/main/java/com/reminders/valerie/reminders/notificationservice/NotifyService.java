@@ -64,7 +64,7 @@ public class NotifyService extends Service {
         PendingIntent pending_intent = PendingIntent.getActivity(this.getApplicationContext(),0, open_task_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         notification_builder.addAction(android.R.drawable.ic_lock_idle_alarm, "Open Task", pending_intent);
         notification_builder.setContentIntent(pending_intent);
-        n_mgr.notify(2412, notification_builder.build());
+        n_mgr.notify(2412, notification_builder.build()); //notification id should be unique as well
         dbhandler.close();
         stopSelf();
 

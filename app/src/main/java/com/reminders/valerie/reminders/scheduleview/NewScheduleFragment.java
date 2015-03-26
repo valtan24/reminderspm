@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.notificationservice.AlarmTask;
 import com.reminders.valerie.reminders.notificationservice.QueueReminderService;
 
 import java.util.Calendar;
@@ -113,11 +114,15 @@ public class NewScheduleFragment extends ScheduleFragment{
                 TaskDBHandler handler = new TaskDBHandler(getActivity());
                 long task_id = handler.addNewTask(task);
                 handler.addReminders(reminder_list, task_id);
+                /*
                 Intent queue_reminder_intent = new Intent(getActivity(), QueueReminderService.class);
                 Reminder next_reminder = handler.getNextReminder(task_id);
                 queue_reminder_intent.putExtra("task_id", task_id);
                 queue_reminder_intent.putExtra("reminder_id", next_reminder.getId());
                 getActivity().startService(queue_reminder_intent);
+                */
+                Reminder next_reminder = handler.getNextReminder(task_id);
+                new AlarmTask(getActivity(), task_id, next_reminder.getId()).run();
                 getActivity().setResult(getActivity().RESULT_OK);
                 getActivity().finish();
                 break;

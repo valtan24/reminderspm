@@ -277,6 +277,9 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     public Reminder getNextReminder(long task_id){
         ArrayList<Reminder> reminder_list = getUnfiredReminders(task_id);
+        if(reminder_list.size() == 0){
+            return null;
+        }
         return reminder_list.get(0);
     }
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
+import com.reminders.valerie.reminders.model.Reminder;
 
 
 public class NotificationReceiver extends BroadcastReceiver{
@@ -35,10 +36,18 @@ public class NotificationReceiver extends BroadcastReceiver{
         context.startService(notify_intent);
 
         //mark reminder as fired and schedule next one
-        scheduleNextReminder();
+        scheduleNextReminder(context);
     }
 
-    private void scheduleNextReminder(){
-
+    private void scheduleNextReminder(Context context){
+        if(dbhandler!=null){
+            dbhandler.markReminderAsFired(reminder_id);
+            Log.i("reminder id to mark as fired", ""+reminder_id);
+            Reminder next_reminder = dbhandler.getNextReminder(task_id);
+            if(next_reminder != null){
+                new AlarmTask(context, task_id, next_reminder.getId()).run();
+            }
+            dbhandler.close();
+        }
     }
 }
