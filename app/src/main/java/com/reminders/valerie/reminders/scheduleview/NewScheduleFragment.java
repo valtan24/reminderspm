@@ -1,5 +1,6 @@
 package com.reminders.valerie.reminders.scheduleview;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,10 +10,8 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.R;
-import com.reminders.valerie.reminders.TaskInputActivity;
 import com.reminders.valerie.reminders.model.Reminder;
-import com.reminders.valerie.reminders.model.ReminderNotification;
-import com.reminders.valerie.reminders.scheduleservice.ScheduleClient;
+import com.reminders.valerie.reminders.notificationservice.QueueReminderService;
 
 import java.util.Calendar;
 
@@ -114,24 +113,11 @@ public class NewScheduleFragment extends ScheduleFragment{
                 TaskDBHandler handler = new TaskDBHandler(getActivity());
                 long task_id = handler.addNewTask(task);
                 handler.addReminders(reminder_list, task_id);
-                Calendar c = Calendar.getInstance();
-                Reminder first_reminder = reminder_list.get(0);
-                c.set(first_reminder.getYear(), first_reminder.getMonth(), first_reminder.getDay());
-                c.set(Calendar.HOUR_OF_DAY, first_reminder.getHour());
-                c.set(Calendar.MINUTE, first_reminder.getMinute());
-                c.set(Calendar.SECOND, 0);
-                //build reminder notifcation
-                ReminderNotification rem_notification = new ReminderNotification(handler.getNextReminder(task_id).getId());
-                rem_notification.setYear(task.getYear());
-                rem_notification.setMonth(task.getMonth());
-                rem_notification.setDay(task.getDay());
-                rem_notification.setHour(task.getHour());
-                rem_notification.setMinute(task.getMinute());
-                rem_notification.setTask_title(task.getTitle());
-                rem_notification.setTask_id(task_id);
-                //bind schedule service
-                ScheduleClient client = ((TaskInputActivity) getActivity()).getSchedule_client();
-                client.setAlarmForNotification(c, rem_notification);
+                Intent queue_reminder_intent = new Intent(getActivity(), QueueReminderService.class);
+                Reminder next_reminder = handler.getNextReminder(task_id);
+                queue_reminder_intent.putExtra("task_id", task_id);
+                queue_reminder_intent.putExtra("reminder_id", next_reminder.getId());
+                getActivity().startService(queue_reminder_intent);
                 getActivity().setResult(getActivity().RESULT_OK);
                 getActivity().finish();
                 break;
