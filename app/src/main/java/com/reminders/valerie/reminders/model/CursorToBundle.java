@@ -83,4 +83,36 @@ public class CursorToBundle {
 
         return args;
     }
+
+    public static DailyActivity getActivityFromCursor(Cursor cursor) {
+        DailyActivity activity = new DailyActivity();
+        int column_index = cursor.getColumnIndex(TaskDBHandler.KEY_ACTIVITYNAME);
+        activity.setName(cursor.getString(column_index));
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_ACT_CATEGORY);
+        activity.setCategory(cursor.getString(column_index));
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_COMPLEXITY);
+        activity.setComplexity(cursor.getDouble(column_index));
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_NOISY);
+        activity.setNoisy(cursor.getInt(column_index));
+
+        //parse times
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_START);
+        String start_time = cursor.getString(column_index);
+        int start_hour = Integer.parseInt(start_time.substring(0,2));
+        int start_minute = Integer.parseInt(start_time.substring(3,5));
+        activity.setStart_hour(start_hour);
+        activity.setStart_minute(start_minute);
+
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_END);
+        String end_time = cursor.getString(column_index);
+        int end_hour = Integer.parseInt(end_time.substring(0,2));
+        int end_minute = Integer.parseInt(end_time.substring(3,5));
+        activity.setEnd_hour(end_hour);
+        activity.setEnd_minute(end_minute);
+
+        column_index = cursor.getColumnIndex(TaskDBHandler.KEY_DAY);
+        activity.setDay(cursor.getInt(column_index));
+
+        return activity;
+    }
 }

@@ -3,10 +3,53 @@ package com.reminders.valerie.reminders.model;
 
 public class DailyActivity {
 
+    public static final double COMPLEXITY_HIGH = -1;
+    public static final double COMPLEXITY_MEDIUM = 0;
+    public static final double COMPLEXITY_LOW = 1;
+
     private int start_minute;
     private int end_minute;
     private int start_hour;
     private int end_hour;
+    private double complexity;
+    private String category;
+    private String name;
+    private int day;
+    private int noisy;
+
+    public int isNoisy(){
+        return noisy;
+    }
+
+    public void setNoisy(int noisy){
+        this.noisy = noisy;
+    }
+
+    public int getDay(){
+        return day;
+    }
+
+    public void setDay(int day){
+        this.day = day;
+    }
+
+    public double getComplexity() {
+        return complexity;
+    }
+
+    public void setComplexity(double complexity) {
+        this.complexity = complexity;
+    }
+
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
 
     public String getName() {
         return name;
@@ -15,8 +58,6 @@ public class DailyActivity {
     public void setName(String name) {
         this.name = name;
     }
-
-    private String name;
 
     public int getStart_hour() {
         return start_hour;
@@ -52,11 +93,22 @@ public class DailyActivity {
     }
 
     public String getTime(){
+        String time_text = getStartTime();
+        time_text = time_text + " - ";
+        time_text = time_text + getEndTime();
+        return time_text;
+    }
+
+    public String getStartTime(){
         String time_text = "";
         time_text = time_text + (start_hour < 10 ? "0" : "") + start_hour;
         time_text = time_text + ":";
         time_text = time_text + (start_minute < 10 ? "0":"") + start_minute;
-        time_text = time_text + " - ";
+        return time_text;
+    }
+
+    public String getEndTime(){
+        String time_text = "";
         time_text = time_text + (end_hour < 10 ? "0" : "") + end_hour;
         time_text = time_text + ":";
         time_text = time_text + (end_minute < 10 ? "0" : "") + end_minute;

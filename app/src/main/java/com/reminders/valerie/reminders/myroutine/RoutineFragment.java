@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.reminders.valerie.reminders.MainActivity;
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DailyActivity;
 
 import java.util.ArrayList;
@@ -43,10 +44,13 @@ public class RoutineFragment extends Fragment implements AdapterView.OnItemClick
         FragmentTransaction fragment_transaction = fragment_mgr.beginTransaction();
         DailyRoutineFragment daily_routine = new DailyRoutineFragment();
         daily_routine.setDay(days[position]);
-        ArrayList<DailyActivity> routine = setDummyData();
+        daily_routine.setDayInt(position+1);
+        TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        ArrayList<DailyActivity> routine = dbhandler.getActivitiesByDay(position+1);
         daily_routine.setRoutine_list(routine);
         fragment_transaction.addToBackStack(null);
         fragment_transaction.replace(R.id.content_frame, daily_routine);
+        dbhandler.close();
         fragment_transaction.commit();
 
     }

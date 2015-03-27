@@ -1,6 +1,5 @@
 package com.reminders.valerie.reminders.scheduleview;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +11,6 @@ import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.notificationservice.AlarmTask;
-import com.reminders.valerie.reminders.notificationservice.QueueReminderService;
 
 import java.util.Calendar;
 

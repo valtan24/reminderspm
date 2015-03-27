@@ -19,13 +19,15 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.MainActivity;
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DailyActivity;
 
 import java.util.ArrayList;
 
 
-public class DailyRoutineFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener{
+public class DailyRoutineFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, ActivityInputFragment.OnSaveActivityListener{
     private String day;
+    private int day_int;
     private TextView day_header;
     private ListView routine_listview;
     private DailyRoutineListAdapter list_adapter;
@@ -50,6 +52,12 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
     public String getDay() {
         return day;
     }
+
+    public void setDayInt(int day){
+        day_int = day;
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -87,9 +95,11 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
                 //add event
                 fragment_mgr = getActivity().getSupportFragmentManager();
                 fragment_transaction = fragment_mgr.beginTransaction();
-                Fragment new_event = new NewEventFragment();
+                Fragment new_event = new NewActivityFragment();
+                ((ActivityInputFragment)new_event).setDay(day_int);
+                ((ActivityInputFragment) new_event).setCallBack(this);
                 fragment_transaction.addToBackStack(null);
-                fragment_transaction.replace(R.id.content_frame, new NewEventFragment());
+                fragment_transaction.replace(R.id.content_frame, new_event);
                 fragment_transaction.commit();
                 break;
             case R.id.clear_all_button:
@@ -111,17 +121,27 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentManager fragment_mgr = getActivity().getSupportFragmentManager();
         FragmentTransaction fragment_transaction = fragment_mgr.beginTransaction();
-        Fragment edit_fragment = new EditEventFragment();
+        Fragment edit_fragment = new EditActivityFragment();
         Bundle args = new Bundle();
         DailyActivity event = (DailyActivity) list_adapter.getItem(position);
+        ((ActivityInputFragment)edit_fragment).setDay(day_int);
+        ((ActivityInputFragment) edit_fragment).setCallBack(this);
         args.putString("title", event.getName());
         args.putInt("start_hour", event.getStart_hour());
         args.putInt("start_minute", event.getStart_minute());
         args.putInt("end_hour", event.getEnd_hour());
         args.putInt("end_minute", event.getEnd_hour());
-        ((EditEventFragment) edit_fragment).setArgs(args);
+        ((EditActivityFragment) edit_fragment).setArgs(args);
         fragment_transaction.addToBackStack(null);
         fragment_transaction.replace(R.id.content_frame, edit_fragment).commit();
     }
 
+    @Override
+    public void onSaveActivity() {
+        TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+        routine_list = null;
+        routine_list = dbhandler.getActivitiesByDay(day_int);
+        list_adapter.notifyDataSetChanged();
+        dbhandler.close();
+    }
 }

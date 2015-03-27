@@ -1,6 +1,7 @@
 package com.reminders.valerie.reminders;
 
 
+import android.app.NotificationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,14 @@ public abstract class TaskInputActivity extends ActionBarActivity{
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            int notification_id = getIntent().getExtras().getInt("notification_id");
+            if(notification_id != -1){
+                NotificationManager notification_mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+                notification_mgr.cancel(notification_id);
+            }
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cud_task);
 

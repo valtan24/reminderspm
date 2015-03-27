@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,42 +27,65 @@ import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
+import com.reminders.valerie.reminders.myprofile.CategoryDialog;
 
-public abstract class EventInputFragment extends Fragment implements View.OnClickListener{
+public abstract class ActivityInputFragment extends Fragment implements View.OnClickListener{
 
 
-    private TextView action_header;
-    private EditText event_title, start_time, end_time;
-    private Button delete_button, save_button;
-    private View button_space;
-    private int start_hour, start_minute, end_hour, end_minute;
+    protected TextView action_header;
+    protected EditText event_title, start_time, end_time;
+    protected Button delete_button, save_button;
+    protected View button_space;
+    protected int start_hour, start_minute, end_hour, end_minute;
+    protected RadioGroup complexity_group;
+    protected RadioButton complexity_high, complexity_medium, complexity_low;
+    protected RadioGroup env_group;
+    protected RadioButton env_noisy, env_dnd;
 
-    private TimeEditTextManager time_et_mgr;
+    protected int day;
+
+
+    protected TimeEditTextManager time_et_mgr;
 
     public Spinner category_spinner;
     public String category;
+
+    OnSaveActivityListener list_listener;
 
     View.OnClickListener listener;
 
     TimePickerDialog.OnTimeSetListener start_listener = new TimePickerDialog.OnTimeSetListener(){
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            addTimeText(start_hour, start_minute, hourOfDay, minute, start_time);
+            start_hour = hourOfDay;
+            start_minute = minute;
+            addTimeText(start_time);
         }
     };
 
     TimePickerDialog.OnTimeSetListener end_listener = new TimePickerDialog.OnTimeSetListener(){
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            addTimeText(end_hour, end_minute, hourOfDay, minute, end_time);
+            end_hour = hourOfDay;
+            end_minute = minute;
+            addTimeText(end_time);
         }
     };
 
-    private void addTimeText(int hour_to_set, int minute_to_set, int hour, int minute, EditText time_edittext){
-        hour_to_set = hour;
-        minute_to_set = minute;
+    public interface OnSaveActivityListener{
+        public void onSaveActivity();
+    }
+
+    public void setCallBack(OnSaveActivityListener listener){
+        list_listener = listener;
+    }
+    public void setDay(int day){
+        this.day = day;
+    }
+
+    private void addTimeText(EditText time_edittext){
         if(time_et_mgr != null){
-            String time_text = time_et_mgr.buildText(hour_to_set, minute_to_set, 0);
+            String time_text = time_et_mgr.buildText(start_hour, start_minute, 0);
             time_edittext.setText(time_text);
         }
     }
@@ -103,6 +128,15 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
                 category = c.getString(c.getColumnIndex("_id"));
             }
         });
+
+        complexity_group = (RadioGroup) rootView.findViewById(R.id.complexity_radiogroup);
+        complexity_high = (RadioButton) rootView.findViewById(R.id.complexity_high);
+        complexity_medium = (RadioButton) rootView.findViewById(R.id.complexity_medium);
+        complexity_low = (RadioButton) rootView.findViewById(R.id.complexity_low);
+
+        env_group = (RadioGroup) rootView.findViewById(R.id.environment_radiogroup);
+        env_noisy = (RadioButton) rootView.findViewById(R.id.environment_noisy);
+        env_dnd = (RadioButton) rootView.findViewById(R.id.environment_dnd);
 
         setContents();
 
@@ -148,6 +182,7 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
                 break;
             case R.id.save_button:
                 Toast.makeText(getActivity().getApplicationContext(), "Event Added", Toast.LENGTH_SHORT).show();
+                list_listener.onSaveActivity();
                 if(fragment_mgr.getBackStackEntryCount() > 0){
                     fragment_mgr.popBackStack();
                 }
@@ -155,60 +190,6 @@ public abstract class EventInputFragment extends Fragment implements View.OnClic
         }
     }
 
-    public TextView getAction_header() {
-        return action_header;
-    }
 
-    public EditText getEvent_title() {
-        return event_title;
-    }
-
-    public Button getDelete_button() {
-        return delete_button;
-    }
-    public Button getSave_button() {
-        return save_button;
-    }
-
-    public void setSave_button(Button save_button) {
-        this.save_button = save_button;
-    }
-    public void setStart_hour(int start_hour) {
-        this.start_hour = start_hour;
-    }
-
-    public void setStart_minute(int start_minute) {
-        this.start_minute = start_minute;
-    }
-    public void setEnd_hour(int end_hour) {
-        this.end_hour = end_hour;
-    }
-    public void setEnd_minute(int end_minute) {
-        this.end_minute = end_minute;
-    }
-    public View getButton_space() {
-        return button_space;
-    }
-    public DateTimeEditTextMgr getTime_et_mgr(){
-        return time_et_mgr;
-    }
-    public EditText getStart_time(){
-        return start_time;
-    }
-    public EditText getEnd_time(){
-        return end_time;
-    }
-    public int getStart_hour(){
-        return start_hour;
-    }
-    public int getStart_minute(){
-        return start_minute;
-    }
-    public int getEnd_hour(){
-        return end_hour;
-    }
-    public int getEnd_minute(){
-        return end_minute;
-    }
 
 }

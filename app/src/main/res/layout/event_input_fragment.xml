@@ -125,18 +125,21 @@
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/complexity_high"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/radio_high"/>
 
         <RadioButton
+            android:id="@+id/complexity_medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/radio_medium"/>
 
         <RadioButton
+            android:id="@+id/complexity_low"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -168,12 +171,14 @@
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/environment_noisy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/noisy"/>
 
         <RadioButton
+            android:id="@+id/environment_dnd"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

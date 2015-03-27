@@ -46,12 +46,14 @@
         <service
             android:name="com.reminders.valerie.reminders.notificationservice.NotifyService"
             android:enabled="true" />
+
         <service
-            android:name="com.reminders.valerie.reminders.notificationservice.QueueReminderService"
+            android:name="com.reminders.valerie.reminders.notificationservice.DismissNotification"
             android:enabled="true"/>
 
         <receiver
-            android:name="com.reminders.valerie.reminders.notificationservice.NotificationReceiver" android:enabled="true"></receiver>
+            android:name="com.reminders.valerie.reminders.notificationservice.NotificationReceiver" android:enabled="true">
+        </receiver>
     </application>
 
 </manifest>

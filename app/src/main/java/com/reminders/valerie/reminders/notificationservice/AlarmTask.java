@@ -68,9 +68,9 @@ public class AlarmTask implements Runnable {
             receiver_intent.putExtra("task_id", task_id);
             receiver_intent.putExtra("reminder_id", reminder_id);
 
-            PendingIntent pending_intent = PendingIntent.getBroadcast(context, requestCode, receiver_intent, 0);
+            PendingIntent pending_intent = PendingIntent.getBroadcast(context, requestCode, receiver_intent, PendingIntent.FLAG_ONE_SHOT);
             alarm_mgr.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending_intent);
-            requestCode++;
+            requestCode = requestCode % Integer.MAX_VALUE + 1;
         }
         dbhandler.close();
     }

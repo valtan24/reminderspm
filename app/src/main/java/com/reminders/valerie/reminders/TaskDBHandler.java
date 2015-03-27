@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.reminders.valerie.reminders.model.Category;
+import com.reminders.valerie.reminders.model.DailyActivity;
 import com.reminders.valerie.reminders.model.DateTimeConverter;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.Task;
@@ -54,6 +55,8 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public static final String KEY_END = "end_time";
     public static final String KEY_COMPLEXITY = "complexity";
     public static final String KEY_ACT_CATEGORY = "category";
+    public static final String KEY_NOISY = "noisy";
+    public static final String KEY_ACTIVITYNAME = "activityname";
 
     public TaskDBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -85,8 +88,8 @@ public class TaskDBHandler extends SQLiteOpenHelper {
                 + ") REFERENCES " + TABLE_TASKS + "(_id))";
         db.execSQL(create_reminders_table);
 
-        String create_activities_table = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTIVITIES +  " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DAY + " INTEGER, "
-                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + " TEXT, FOREIGN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id))";
+        String create_activities_table = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTIVITIES +  " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ACTIVITYNAME + " TEXT, " + KEY_DAY + " INTEGER, "
+                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + " TEXT, " + KEY_NOISY + " INTEGER, FOREIGN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id))";
         db.execSQL(create_activities_table);
     }
 
@@ -120,7 +123,6 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         long row_id = db.insert(TABLE_TASKS, null, values);
         db.close();
         return row_id;
-
     }
 
     //for default categories
@@ -307,4 +309,33 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    public long addDailyActivity(DailyActivity daily_activity){
+        //return id of the activity
+        ContentValues values = new ContentValues();
+        values.put(KEY_ACTIVITYNAME, daily_activity.getName());
+        values.put(KEY_DAY, daily_activity.getDay());
+        values.put(KEY_START, daily_activity.getStartTime());
+        values.put(KEY_END, daily_activity.getEndTime());
+        values.put(KEY_COMPLEXITY, daily_activity.getComplexity());
+        values.put(KEY_ACT_CATEGORY, daily_activity.getCategory());
+        values.put(KEY_NOISY, daily_activity.isNoisy());
+
+        SQLiteDatabase db = getWritableDatabase();
+        long row_id = db.insert(TABLE_ACTIVITIES, null, values);
+        db.close();
+        return row_id;
+    }
+
+    public ArrayList<DailyActivity> getActivitiesByDay(int day){
+        ArrayList<DailyActivity> activity_list = new ArrayList<DailyActivity>();
+        String[] where_args = {""+day};
+        Cursor cursor = getReadableDatabase().query(TABLE_ACTIVITIES, null, KEY_DAY + " = ?", where_args, null, null, KEY_START);
+        cursor.moveToFirst();
+        while(!cursor.isAfterLast()){
+            activity_list.add(CursorToBundle.getActivityFromCursor(cursor));
+            cursor.moveToNext();
+        }
+        return activity_list;
+
+    }
 }
