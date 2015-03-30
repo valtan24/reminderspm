@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -44,13 +46,18 @@ public class NotifyService extends Service {
         String date = extras.getString("task_date");
         String time = extras.getString("task_time");
 
-
         NotificationCompat.Builder notification_builder = new NotificationCompat.Builder(this)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setAutoCancel(true)
                 .setContentTitle(title)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setSmallIcon(android.R.drawable.ic_dialog_alert);
+
+        if(extras.getString("audio_uri")!=null){
+            Log.i("have audio", "true");
+            String uri = extras.getString("audio_uri");
+            notification_builder.setSound(Uri.parse(uri), AudioAttributes.USAGE_NOTIFICATION_EVENT);
+        }
 
         NotificationCompat.InboxStyle inbox_style = new NotificationCompat.InboxStyle();
         inbox_style.addLine(date);

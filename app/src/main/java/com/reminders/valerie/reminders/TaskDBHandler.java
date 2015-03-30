@@ -101,7 +101,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
     public Cursor getUncompletedTasks(String ordered_by){
         String where_args[] = {"0"};
-        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM, KEY_CATEGORY, KEY_IMPORTANCE};
+        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM, KEY_CATEGORY, KEY_IMPORTANCE, KEY_COMPLETED};
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, ordered_by);
     }
 
@@ -338,4 +338,17 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return activity_list;
 
     }
+
+    public String getUriFromCategory(String category){
+        String[] where_args = {category};
+        Cursor cursor = getReadableDatabase().query(TABLE_CATEGORIES, null, "_id = ?", where_args, null, null, null);
+        cursor.moveToFirst();
+        if(!cursor.isAfterLast()){
+            int column_index = cursor.getColumnIndex(KEY_AUDIOURI);
+            String uri = cursor.getString(column_index);
+            return uri;
+        }
+        return null;
+    }
+
 }

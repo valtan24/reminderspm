@@ -276,6 +276,9 @@ public abstract class TaskInputFragment extends Fragment implements View.OnClick
                 throw new Exception("Please enter a time for your reminder");
             }
         }
+        if(importance_group.getCheckedRadioButtonId() == -1){
+            throw new Exception("Please give an importance level for your task");
+        }
         new_task.setTitle(task_title.getText().toString());
         new_task.setDay(task_day);
         new_task.setYear(task_year);

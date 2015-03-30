@@ -52,7 +52,9 @@
             android:enabled="true"/>
 
         <receiver
-            android:name="com.reminders.valerie.reminders.notificationservice.NotificationReceiver" android:enabled="true">
+            android:name="com.reminders.valerie.reminders.notificationservice.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
         </receiver>
     </application>
 

@@ -32,6 +32,9 @@ public class NotificationReceiver extends BroadcastReceiver{
         notify_intent.putExtra("task_date", extras.getString("task_date"));
         notify_intent.putExtra("task_time", extras.getString("task_time"));
         notify_intent.putExtra("task_id", task_id);
+        if(extras.getString("audio_uri") != null){
+            notify_intent.putExtra("audio_uri", extras.getString("audio_uri"));
+        }
 
         context.startService(notify_intent);
 
