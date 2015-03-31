@@ -120,7 +120,7 @@ public class NewScheduleFragment extends ScheduleFragment{
                 getActivity().startService(queue_reminder_intent);
                 */
                 Reminder next_reminder = handler.getNextReminder(task_id);
-                new AlarmTask(getActivity(), task_id, next_reminder.getId()).run();
+                new AlarmTask(getActivity().getApplicationContext(), task_id, next_reminder.getId()).run();
                 getActivity().setResult(getActivity().RESULT_OK);
                 getActivity().finish();
                 break;

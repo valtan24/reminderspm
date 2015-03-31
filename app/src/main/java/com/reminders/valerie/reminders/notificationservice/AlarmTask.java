@@ -23,7 +23,6 @@ public class AlarmTask implements Runnable {
     private AlarmManager alarm_mgr;
     private Context context;
 
-    private static int requestCode = 1;
 
     public AlarmTask(Context context, long task_id, long reminder_id){
         alarm_mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
@@ -78,7 +77,7 @@ public class AlarmTask implements Runnable {
                 receiver_intent.putExtra("audio_uri", uri);
             }
 
-            PendingIntent pending_intent = PendingIntent.getBroadcast(context, requestCode, receiver_intent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent pending_intent = PendingIntent.getBroadcast(context, IdGenerator.generateID(task_id, reminder_id), receiver_intent, PendingIntent.FLAG_ONE_SHOT);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
                 //see documentation: beginning from kitkat, setexact needs to be used if alarm is to be delivered at exact time
                 alarm_mgr.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pending_intent);
@@ -88,7 +87,6 @@ public class AlarmTask implements Runnable {
             }
             Log.i("time", cal.getTime().toString());
             Log.i("current", Calendar.getInstance().getTime().toString());
-            requestCode = requestCode % Integer.MAX_VALUE + 1;
         }
         dbhandler.close();
     }

@@ -35,6 +35,7 @@ public class NotificationReceiver extends BroadcastReceiver{
         if(extras.getString("audio_uri") != null){
             notify_intent.putExtra("audio_uri", extras.getString("audio_uri"));
         }
+        notify_intent.putExtra("notification_id", IdGenerator.generateID(task_id, reminder_id));
 
         context.startService(notify_intent);
 

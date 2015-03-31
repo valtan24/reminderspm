@@ -1,6 +1,8 @@
 package com.reminders.valerie.reminders.taskinputview;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -10,9 +12,12 @@ import android.widget.Toast;
 import android.widget.CheckBox;
 
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TodoFragment;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
+import com.reminders.valerie.reminders.notificationservice.IdGenerator;
+import com.reminders.valerie.reminders.notificationservice.NotificationReceiver;
 import com.reminders.valerie.reminders.scheduleview.ExistingScheduleFragment;
 import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
 import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
@@ -224,11 +229,28 @@ public class EditTaskFragment extends TaskInputFragment {
             case R.id.completed_button:
                 TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
                 task.setCompleted(1);
+                //remove pending intent
+                Reminder next_reminder = dbhandler.getNextReminder(task.getTask_id());
+                if(next_reminder!=null) {
+                    Intent notifcation_intent = new Intent(getActivity().getApplicationContext(), NotificationReceiver.class);
+                    PendingIntent pending_intent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), IdGenerator.generateID(task.getTask_id(), next_reminder.getId()), notifcation_intent, PendingIntent.FLAG_ONE_SHOT);
+                    if (pending_intent != null) {
+                        pending_intent.cancel();
+                    }
+                }
                 if(!dbhandler.markTaskAsComplete(task)){
                     Toast.makeText(getActivity().getApplicationContext(), "Failed to mark this task as complete", Toast.LENGTH_SHORT).show();
                     getActivity().setResult(Activity.RESULT_CANCELED);
                 }
                 else {
+                    TodoFragment todo_fragment = (TodoFragment)getActivity().getSupportFragmentManager().findFragmentById(R.layout.todo_fragment);
+                    if(todo_fragment != null){
+                        try {
+                            todo_fragment.updateTaskList();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                     getActivity().setResult(getActivity().RESULT_OK);
                 }
                 dbhandler.close();

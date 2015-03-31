@@ -42,7 +42,7 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
 
     }
 
-    private void updateTaskList() throws Exception{
+    public void updateTaskList() throws Exception{
         dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
         Cursor cursor = dbhandler.getUncompletedTasks(dbhandler.KEY_TASKDATE);
         String[] from = new String[]{dbhandler.KEY_TASKTITLE, dbhandler.KEY_TASKDATE, dbhandler.KEY_TASKTIME};

@@ -267,6 +267,11 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         String[] where_args = {""+task.getTask_id()};
         if(db.updateWithOnConflict(TABLE_TASKS, update_value, KEY_TASKID + " = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1){
             //TODO MARK REMINDERS AS FIRED
+            update_value = new ContentValues();
+            update_value.put(KEY_FIRED, 1);
+            if(db.updateWithOnConflict(TABLE_REMINDERS, update_value, KEY_TASKFK + " = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 0){
+                Log.e("TaskDBHandler mark task as complete", "failed to mark reminders");
+            }
             db.close();
             return true; //successful update
         }
@@ -346,9 +351,30 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         if(!cursor.isAfterLast()){
             int column_index = cursor.getColumnIndex(KEY_AUDIOURI);
             String uri = cursor.getString(column_index);
+            cursor.close();
             return uri;
         }
+        cursor.close();
         return null;
+    }
+
+    public boolean updateDailyActivity(DailyActivity daily_activity) {
+        String[] where_args = {"" + daily_activity.getId()};
+        ContentValues update_value = new ContentValues();
+        update_value.put(KEY_START, daily_activity.getStartTime());
+        update_value.put(KEY_END, daily_activity.getEndTime());
+        update_value.put(KEY_COMPLEXITY, daily_activity.getComplexity());
+        update_value.put(KEY_ACT_CATEGORY, daily_activity.getCategory());
+        update_value.put(KEY_NOISY, daily_activity.isNoisy());
+        update_value.put(KEY_ACTIVITYNAME, daily_activity.getName());
+        SQLiteDatabase db = getWritableDatabase();
+        if (db.updateWithOnConflict(TABLE_ACTIVITIES, update_value, "_id = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1) {
+            db.close();
+            return true;
+        } else {
+            Log.e("TaskDBHandler", "failed to update activity");
+            return false;
+        }
     }
 
 }

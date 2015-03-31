@@ -20,7 +20,6 @@ public class NotifyService extends Service {
 
     private NotificationManager n_mgr;
 
-    private static int notification_id=1;
 
     @Override
     public void onCreate(){
@@ -65,7 +64,7 @@ public class NotifyService extends Service {
         notification_builder.setStyle(inbox_style);
 
         Intent dismiss_intent = new Intent(this, DismissNotification.class);
-        dismiss_intent.putExtra("notification_id", notification_id);
+        dismiss_intent.putExtra("notification_id", extras.getInt("notification_id"));
         PendingIntent pending_dismiss = PendingIntent.getService(this.getApplicationContext(), 0, dismiss_intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notification_builder.addAction(android.R.drawable.ic_lock_idle_alarm, "Close", pending_dismiss);
 
@@ -74,13 +73,12 @@ public class NotifyService extends Service {
         Log.i("task id in notification", ""+extras.getLong("task_id"));
         Bundle args = dbhandler.getTaskById(extras.getLong("task_id"));
         open_task_intent.putExtra("arguments", args);
-        open_task_intent.putExtra("notification_id", notification_id);
+        open_task_intent.putExtra("notification_id", extras.getInt("notification_id"));
 
         PendingIntent pending_intent = PendingIntent.getActivity(this.getApplicationContext(),0, open_task_intent,PendingIntent.FLAG_UPDATE_CURRENT);
         notification_builder.addAction(android.R.drawable.ic_menu_edit, "Open Task", pending_intent);
         notification_builder.setContentIntent(pending_intent);
-        n_mgr.notify(notification_id, notification_builder.build()); //notification id should be unique as well
-        notification_id = notification_id % Integer.MAX_VALUE + 1;
+        n_mgr.notify(extras.getInt("notification_id"), notification_builder.build());
         dbhandler.close();
         stopSelf();
 

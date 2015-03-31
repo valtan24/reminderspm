@@ -113,6 +113,9 @@ public class CursorToBundle {
         column_index = cursor.getColumnIndex(TaskDBHandler.KEY_DAY);
         activity.setDay(cursor.getInt(column_index));
 
+        column_index = cursor.getColumnIndex("_id");
+        activity.setId(cursor.getLong(column_index));
+
         return activity;
     }
 }
