@@ -1,6 +1,7 @@
 package com.reminders.valerie.reminders.myprofile;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,13 @@ import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.scheduleview.DeleteDialogFragment;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -46,6 +54,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
     /*********Data attributes ***********/
     private int dob_year, dob_month, dob_day;
     private DateTimeEditTextMgr date_et_mgr;
+
+    private static final String INTERNAL_FILENAME = "reminders_pm_internal";
 
     TaskDBHandler dbhandler;
 
@@ -128,11 +138,42 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         save_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //save items
-                Toast.makeText(getActivity().getApplicationContext(), "Data saved", Toast.LENGTH_SHORT).show();
+                //TODO SAVE NAME AND AGE
+                try {
+                    FileOutputStream internal_file = getActivity().getApplicationContext().openFileOutput(INTERNAL_FILENAME, Context.MODE_PRIVATE);
+                    internal_file.write(profile_name.getText().toString().getBytes());
+                    internal_file.write(("\n").getBytes());
+                    internal_file.write((""+dob_year+"\n").getBytes());
+                    internal_file.write((""+dob_month+"\n").getBytes());
+                    internal_file.write((""+dob_day+"\n").getBytes());
+                    Toast.makeText(getActivity(), "Data saved", Toast.LENGTH_SHORT).show();
+                }
+                catch(FileNotFoundException e){
+                    Log.e("Profile fragment", "file not found");
+                }
+                catch(IOException e){
+                    Log.e("{Profile fragment", "Write error");
+                }
             }
         });
         profile_name = (EditText) rootView.findViewById(R.id.profile_name_edittext);
+        //get internal file
+        try{
+            FileInputStream internal_input = getActivity().getApplicationContext().openFileInput(INTERNAL_FILENAME);
+            BufferedReader input_br = new BufferedReader(new InputStreamReader(new DataInputStream(internal_input)));
+            String name_in = input_br.readLine();
+            profile_name.setText(name_in);
+            dob_year = Integer.parseInt(input_br.readLine());
+            dob_month = Integer.parseInt(input_br.readLine());
+            dob_day = Integer.parseInt(input_br.readLine());
+        }
+        catch(FileNotFoundException e){
+            Log.i("Profile fragment", "internal file don't exist");
+        }
+        catch(IOException e){
+            Log.e("Profile fragment", "unable to read from file");
+        }
+
         dob = (EditText) rootView.findViewById(R.id.profile_dob);
         dob.setClickable(true);
         dob.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +211,11 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         list_adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, cursor, from, to, 0);
         cat_list.setAdapter(list_adapter);
         cat_list.setOnItemClickListener(this);
+
+        if(dob_year != 0){
+            date_et_mgr.setText(dob, date_et_mgr.buildText(dob_year, dob_month, dob_day));
+        }
+
         return rootView;
     }
 
