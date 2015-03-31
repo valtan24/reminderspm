@@ -64,11 +64,13 @@
         android:background="#ff4f4f4f"/>
 
     <RadioGroup
+        android:id="@+id/motivation_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <RadioButton
+            android:id="@+id/motivation_high"
             android:textSize="13sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -76,6 +78,7 @@
             android:text="@string/radio_high"/>
 
         <RadioButton
+            android:id="@+id/motivation_medium"
             android:textSize="13sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -83,6 +86,7 @@
             android:text="@string/radio_medium"/>
 
         <RadioButton
+            android:id="@+id/motivation_low"
             android:textSize="13sp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

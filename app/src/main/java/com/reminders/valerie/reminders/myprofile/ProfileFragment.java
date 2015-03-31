@@ -57,6 +57,8 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
 
     private static final String INTERNAL_FILENAME = "reminders_pm_internal";
 
+    private String category_selected;
+
     TaskDBHandler dbhandler;
 
     //add category listener
@@ -83,8 +85,18 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
                     //TODO DELETE CANCELLED
                     break;
                 case 1:
-                    //TODO DELETE CATEGORY FROM DATABASE
-                    Toast.makeText(getActivity().getApplicationContext(), "Category deleted", Toast.LENGTH_SHORT).show();
+                    if(dbhandler != null){
+                        if(dbhandler.deleteCategory(category_selected)){
+                            Toast.makeText(getActivity().getApplicationContext(), "Category deleted", Toast.LENGTH_SHORT).show();
+                            Cursor cursor = dbhandler.getCategoryNames();
+                            list_adapter.changeCursor(cursor);
+                            category_selected = "";
+                        }
+                        else{
+                            Toast.makeText(getActivity().getApplicationContext(), "Sorry, category could not be deleted", Toast.LENGTH_SHORT).show();
+                            category_selected = "";
+                        }
+                    }
                     break;
                 default:
                     Log.d("Error", "invalid choice");
@@ -98,10 +110,12 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
             switch(choice){
                 case CategoryDialog.CANCEL:
                     //TODO EDIT CANCELED
+                    category_selected = "";
                     break;
                 case CategoryDialog.SAVE:
                     Cursor cursor = dbhandler.getCategoryNames();
                     list_adapter.changeCursor(cursor);
+                    category_selected = "";
                     break;
                 case CategoryDialog.DELETE:
                     DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
@@ -138,7 +152,6 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         save_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //TODO SAVE NAME AND AGE
                 try {
                     FileOutputStream internal_file = getActivity().getApplicationContext().openFileOutput(INTERNAL_FILENAME, Context.MODE_PRIVATE);
                     internal_file.write(profile_name.getText().toString().getBytes());
@@ -227,6 +240,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
         edit_cat.setCallBack(edit_listener);
         Category category = dbhandler.getCategory(position);
         Bundle args = new Bundle();
+        category_selected = category.getCategory_title();
         args.putString("category", category.getCategory_title());
         args.putString("uri", category.getAudio_uri());
         args.putDouble("motivation", category.getMotivation());

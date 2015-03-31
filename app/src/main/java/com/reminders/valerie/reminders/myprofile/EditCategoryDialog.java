@@ -9,13 +9,41 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.model.Category;
 
 
 public class EditCategoryDialog extends CategoryDialog {
 
     @Override
     public boolean savedata() {
-        return true;
+        category.setAudio_uri(ringtone_uri.toString());
+        category.setCategory_title(cat_name_edittext.getText().toString());
+        //get motivation value
+        switch(motivation_group.getCheckedRadioButtonId()){
+            case R.id.motivation_high:
+                category.setMotivation(Category.MOTIVATION_HIGH);
+                break;
+            case R.id.motivation_medium:
+                category.setMotivation(Category.MOTIVATION_MEDIUM);
+                break;
+            case R.id.motivation_low:
+                category.setMotivation(Category.MOTIVATION_LOW);
+                break;
+            default:
+                return false;
+        }
+        if(dbhandler != null){
+            try {
+                dbhandler.updateCategory(category);
+                return true;
+            }
+            catch(Exception e){
+                return false;
+            }
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
@@ -38,6 +66,14 @@ public class EditCategoryDialog extends CategoryDialog {
         Ringtone ringtone = ringtone_mgr.getRingtone(getActivity(), Uri.parse(args.getString("uri")));
         alert_text.setText(ringtone.getTitle(getActivity()));
 
-        //TODO SET MOTIVATION
+        if(category.getMotivation() == Category.MOTIVATION_HIGH){
+            motivation_high.setChecked(true);
+        }
+        else if(category.getMotivation() == Category.MOTIVATION_LOW){
+            motivation_medium.setChecked(true);
+        }
+        else{
+            motivation_medium.setChecked(true);
+        }
     }
 }

@@ -5,9 +5,13 @@ public class Category{
     private String audio_uri;
     private String category_title;
 
+    public static final double MOTIVATION_HIGH = 1.0;
+    public static final double MOTIVATION_MEDIUM = 0.0;
+    public static final double MOTIVATION_LOW = -1.0;
+
     public Category(){}
     public double getMotivation() {
-        return 0.5;
+        return motivation;
     }
 
     public void setMotivation(double motivation) {

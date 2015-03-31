@@ -12,6 +12,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ public abstract class CategoryDialog extends DialogFragment {
     public EditText cat_name_edittext;
     RelativeLayout alert_tone;
     public Category category;
+    public RadioGroup motivation_group;
+    public RadioButton motivation_high, motivation_medium, motivation_low;
 
     TaskDBHandler dbhandler;
 
@@ -82,8 +86,7 @@ public abstract class CategoryDialog extends DialogFragment {
                         listener.OnCategorySet(SAVE);
                     }
                     else{
-                        Toast.makeText(getActivity().getApplication(), "There was an error saving the category", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        Toast.makeText(getActivity().getApplicationContext(), "Please check your inputs", Toast.LENGTH_SHORT).show();
                     }
                 }
                 else{
@@ -124,6 +127,10 @@ public abstract class CategoryDialog extends DialogFragment {
         Ringtone ringtone = RingtoneManager.getRingtone(getActivity(), ringtone_uri);
         alert_text.setText(ringtone.getTitle(getActivity()));
         category = new Category();
+        motivation_group = (RadioGroup) dialog_content.findViewById(R.id.motivation_group);
+        motivation_high = (RadioButton) dialog_content.findViewById(R.id.motivation_high);
+        motivation_medium = (RadioButton) dialog_content.findViewById(R.id.motivation_medium);
+        motivation_low = (RadioButton) dialog_content.findViewById(R.id.motivation_low);
         setContents(builder);
         return builder.create();
     }

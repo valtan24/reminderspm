@@ -129,7 +129,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public void addNewCategory(Bundle args, SQLiteDatabase db){
         ContentValues cv = new ContentValues();
         cv.put("_id", args.getString("cat_name"));
-        cv.put(KEY_MOTIVATION, 0.5);
+        cv.put(KEY_MOTIVATION, Category.MOTIVATION_MEDIUM);
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         cv.put(KEY_AUDIOURI, alert.toString());
         db.insert(TABLE_CATEGORIES, null, cv);
@@ -375,6 +375,36 @@ public class TaskDBHandler extends SQLiteOpenHelper {
             Log.e("TaskDBHandler", "failed to update activity");
             return false;
         }
+    }
+
+    public boolean deleteCategory(String category){
+        SQLiteDatabase db = getWritableDatabase();
+        String[] where_args = {category};
+        if(db.delete(TABLE_CATEGORIES, "_id = ?", where_args) == 1){
+            db.close();
+            return true;
+        }
+        else{
+            db.close();
+            return false;
+        }
+    }
+
+    public boolean updateCategory(Category category){
+        String[] where_args = {category.getCategory_title()};
+        ContentValues update_value = new ContentValues();
+        update_value.put(KEY_AUDIOURI, category.getAudio_uri());
+        update_value.put(KEY_MOTIVATION, category.getMotivation());
+        SQLiteDatabase db = getWritableDatabase();
+        if(db.updateWithOnConflict(TABLE_CATEGORIES, update_value, "_id = ?", where_args, SQLiteDatabase.CONFLICT_ROLLBACK) == 1){
+            db.close();
+            return true;
+        }
+        else{
+            Log.e("TaskDBHandler", "Category could not be updated");
+        }
+        db.close();
+        return false;
     }
 
 }
