@@ -7,6 +7,9 @@ public class DailyActivity {
     public static final double COMPLEXITY_MEDIUM = 0;
     public static final double COMPLEXITY_LOW = 1;
 
+    public static final double ASSOCIATIVITY_HIGH = 1;
+    public static final double ASSOCIATIVITY_LOW = -1;
+
     private int start_minute;
     private int end_minute;
     private int start_hour;

@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
     private int dob_year, dob_month, dob_day;
     private DateTimeEditTextMgr date_et_mgr;
 
-    private static final String INTERNAL_FILENAME = "reminders_pm_internal";
+    public static final String INTERNAL_FILENAME = "reminders_pm_internal";
 
     private String category_selected;
 

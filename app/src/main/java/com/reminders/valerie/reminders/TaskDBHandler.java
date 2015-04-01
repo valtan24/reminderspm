@@ -413,4 +413,15 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, KEY_TASKDATE + ", " + KEY_TASKTIME);
     }
 
+    public double getMotivationFromCategory(String category){
+        String[] where_args = {category};
+        String[] select = {KEY_MOTIVATION};
+        Cursor cursor = getReadableDatabase().query(TABLE_CATEGORIES, select, "_id = ?", where_args, null, null, null);
+        cursor.moveToFirst();
+        int column_index = cursor.getColumnIndex(KEY_MOTIVATION);
+        double motivation = cursor.getDouble(column_index);
+        cursor.close();
+        return motivation;
+    }
+
 }

@@ -43,13 +43,16 @@ public class NewTaskFragment extends TaskInputFragment{
         switch (v.getId()) {
             case R.id.continue_task_button:
                 //call calculator open schedule fragment
+
                 NewScheduleFragment schedule_fragment = new NewScheduleFragment();
                 try{
                     Task task = buildTask();
                     Reminder reminder = buildReminder(task);
-                    ArrayList<Reminder> reminder_list = ScheduleCalculator.buildReminderList(task, reminder);
+                    ScheduleCalculator calculator = ScheduleCalculator.getInstance(getActivity().getApplicationContext());
+                    ArrayList<Reminder> reminder_list = calculator.buildReminderList(task, reminder);
                     schedule_fragment.setTask(task);
                     schedule_fragment.setReminderArrayList(reminder_list);
+                    calculator.killInstance();
                     FragmentTransaction fragment_transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     fragment_transaction.add(R.id.task_fragment_container, schedule_fragment, null);
                     fragment_transaction.addToBackStack(null);
