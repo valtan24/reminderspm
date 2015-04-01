@@ -407,4 +407,10 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return false;
     }
 
+    public Cursor getCompletedTasks(){
+        String[] where_args = {"1"};
+        String[] select_columns = {KEY_TASKTITLE, KEY_TASKTIME, KEY_TASKDATE, KEY_TASKID, KEY_SAMETASKREM, KEY_CATEGORY, KEY_IMPORTANCE, KEY_COMPLETED};
+        return getReadableDatabase().query(TABLE_TASKS, select_columns, KEY_COMPLETED + " = ? ", where_args, null, null, KEY_TASKDATE + ", " + KEY_TASKTIME);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.reminders.valerie.reminders;
+package com.reminders.valerie.reminders.taskinputview;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,6 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.reminders.valerie.reminders.EditTaskActivity;
+import com.reminders.valerie.reminders.NewTaskActivity;
+import com.reminders.valerie.reminders.R;
+import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.CursorToBundle;
 import com.reminders.valerie.reminders.model.DateEditTextManager;
 
@@ -23,8 +27,6 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
     private final static int TODO_FRAGMENT = 100;
     TaskDBHandler dbhandler;
 
-    //date picker items
-    String month_name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){

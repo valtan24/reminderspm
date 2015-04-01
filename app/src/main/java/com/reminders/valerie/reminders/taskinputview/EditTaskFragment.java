@@ -9,18 +9,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.CheckBox;
 
 import com.reminders.valerie.reminders.R;
-import com.reminders.valerie.reminders.TodoFragment;
 import com.reminders.valerie.reminders.model.Reminder;
-import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.notificationservice.IdGenerator;
 import com.reminders.valerie.reminders.notificationservice.NotificationReceiver;
 import com.reminders.valerie.reminders.scheduleview.ExistingScheduleFragment;
-import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
-import com.reminders.valerie.reminders.scheduleview.ScheduleFragment;
 import com.reminders.valerie.reminders.TaskDBHandler;
 
 import java.util.ArrayList;

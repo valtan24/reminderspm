@@ -14,8 +14,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.reminders.valerie.reminders.historyview.HistoryFragment;
 import com.reminders.valerie.reminders.myprofile.ProfileFragment;
 import com.reminders.valerie.reminders.myroutine.RoutineFragment;
+import com.reminders.valerie.reminders.taskinputview.TodoFragment;
 
 public class MainActivity extends ActionBarActivity {
     private String[] drawer_list_titles;
