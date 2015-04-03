@@ -340,6 +340,10 @@ public class TaskDBHandler extends SQLiteOpenHelper {
             activity_list.add(CursorToBundle.getActivityFromCursor(cursor));
             cursor.moveToNext();
         }
+        cursor.close();
+        if(activity_list.size() == 0){
+            return null;
+        }
         return activity_list;
 
     }

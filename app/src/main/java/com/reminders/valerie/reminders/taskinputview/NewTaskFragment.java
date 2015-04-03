@@ -49,6 +49,7 @@ public class NewTaskFragment extends TaskInputFragment{
                     Task task = buildTask();
                     Reminder reminder = buildReminder(task);
                     ScheduleCalculator calculator = ScheduleCalculator.getInstance(getActivity().getApplicationContext());
+                    calculator.setTask(task);
                     ArrayList<Reminder> reminder_list = calculator.buildReminderList(task, reminder);
                     schedule_fragment.setTask(task);
                     schedule_fragment.setReminderArrayList(reminder_list);
@@ -60,7 +61,7 @@ public class NewTaskFragment extends TaskInputFragment{
                     fragment_transaction.commit();
                 }
                 catch(Exception e){
-                    Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
                 }
                 break;
             default:

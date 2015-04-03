@@ -21,7 +21,7 @@ public class ScheduleCalculator {
     public static double W_DELAY_PM = -1;
     public static double W_ASSOC_PM = 1;
     public static double W_MOT_IMPT = 0.3f;
-    public static double LAMDA = 1;
+    public static double LAMDA = 2;
 
 
     private static ScheduleCalculator instance = null;
@@ -63,7 +63,7 @@ public class ScheduleCalculator {
             task_cal.set(task.getYear(), task.getMonth(), task.getDay(), task.getHour(), task.getMinute());
             Calendar reminder_cal = Calendar.getInstance();
             reminder_cal.set(reminder.getYear(), reminder.getMonth(), reminder.getDay(), reminder.getHour(), reminder.getMinute());
-            double t_w = (task_cal.getTimeInMillis() - reminder_cal.getTimeInMillis()) / (60 * 1000); //window in minutes
+            double t_w = (task_cal.getTimeInMillis() - reminder_cal.getTimeInMillis());
             int num_reminders = getNumReminders(pm_rating);
             double a = coefficientValue(num_reminders);
             long t_0 = reminder_cal.getTimeInMillis();
@@ -74,11 +74,11 @@ public class ScheduleCalculator {
                 next_cal.setTimeInMillis(t);
                 Reminder next_reminder = new Reminder();
                 next_reminder.setTask_id(task.getTask_id());
-                next_reminder.setYear(next_cal.YEAR);
-                next_reminder.setMonth(next_cal.MONTH);
-                next_reminder.setDay(next_cal.DAY_OF_MONTH);
-                next_reminder.setHour(next_cal.HOUR_OF_DAY);
-                next_reminder.setMinute(next_cal.MINUTE);
+                next_reminder.setYear(next_cal.get(Calendar.YEAR));
+                next_reminder.setMonth(next_cal.get(Calendar.MONTH));
+                next_reminder.setDay(next_cal.get(Calendar.DAY_OF_MONTH));
+                next_reminder.setHour(next_cal.get(Calendar.HOUR_OF_DAY));
+                next_reminder.setMinute(next_cal.get(Calendar.MINUTE));
                 next_reminder.setTask(task);
                 next_reminder.setIs_fired(0);
                 DailyActivity ongoing = getOngoingActivity(next_cal);
@@ -131,6 +131,7 @@ public class ScheduleCalculator {
         //concept values
         double c_delay, c_impt, c_motivation, c_age, c_complexity, c_assoc;
         c_delay = getDelayConceptValue(task, first_reminder);
+        Log.i("ScheduleCalculator.calculatePM", "Delay concept value = "+c_delay);
         c_impt = getImportanceConceptValue(task);
         Log.i("ScheduleCalculator.calculatePM", "Importance concept value = " + c_impt);
         c_motivation = getMotivationConceptValue(task);
@@ -170,11 +171,9 @@ public class ScheduleCalculator {
         Calendar task_cal = Calendar.getInstance();
         task_cal.set(task.getYear(), task.getMonth(), task.getDay(), task.getHour(), task.getMinute(), 0);
         Calendar reminder_cal = Calendar.getInstance();
-        Log.i("Schedule calculator", "task date is " + task_cal.getTimeInMillis());
-        Log.i("Schedule calculator", "reminder date is " + reminder_cal.getTimeInMillis()); //should be current time
         long time_diff_millis = task_cal.getTimeInMillis() - reminder_cal.getTimeInMillis();
         long time_diff_min = time_diff_millis / (60 * 1000);
-        double concept = (1.0 / Math.pow((5 * time_diff_min + 1),2)) + 1;
+        double concept = -(1.0 / Math.pow((0.01 * time_diff_min + 1),2)) + 1;
         Log.i("ScheduleCalculator.getDelayConcept", ""+concept);
         return concept;
     }
@@ -222,9 +221,13 @@ public class ScheduleCalculator {
             int day = Integer.parseInt(input_br.readLine());
             Calendar cal = Calendar.getInstance();
             cal.set(year, month, day);
+            Log.i("ScheduleCalculator.geAgeConceptValue", "dob = "+cal.getTime().toString());
             Calendar now_cal = Calendar.getInstance();
             long diff_millis = now_cal.getTimeInMillis() - cal.getTimeInMillis();
-            double diff_years = diff_millis / (60 * 1000 * 60 * 24 * 365);
+            Log.i("ScheduleCalculator.getAgeConceptValue", "age diff in millis = "+diff_millis);
+            long denom  = (long) 60*1000*60*24*365;
+            double diff_years = diff_millis / denom;
+            Log.i("ScheduleCalculator.getAgeConceptValue", "age = "+diff_years);
             //compression
             double concept = diff_years / 100;
             if(concept < 0.12 || concept > 1.0){
@@ -243,6 +246,7 @@ public class ScheduleCalculator {
 
     private double getComplexityConceptValue(Task task){
         Calendar cal = Calendar.getInstance();
+        Log.i("ScheduleCalculator.getComplexityConceptValue", "task month = "+task.getMonth());
         cal.set(task.getYear(), task.getMonth(), task.getDay(), task.getHour(), task.getMinute(), 0);
         DailyActivity ongoing = getOngoingActivity(cal);
         if(ongoing != null){
@@ -261,7 +265,7 @@ public class ScheduleCalculator {
 
     private  DailyActivity getOngoingActivity(Calendar cal){
         ArrayList<DailyActivity> activities = new ArrayList<DailyActivity>();
-        switch(cal.DAY_OF_WEEK) {
+        switch(cal.get(Calendar.DAY_OF_WEEK)) {
             case Calendar.MONDAY:
                 activities = dbhandler.getActivitiesByDay(1);
                 break;
@@ -288,13 +292,17 @@ public class ScheduleCalculator {
         start.set(task.getYear(), task.getMonth(), task.getDay());
         Calendar end = Calendar.getInstance();
         end.set(task.getYear(), task.getMonth(), task.getDay());
-        for(DailyActivity activity : activities){
-            start.set(Calendar.HOUR_OF_DAY, activity.getStart_hour());
-            start.set(Calendar.MINUTE, activity.getStart_minute());
-            end.set(Calendar.HOUR_OF_DAY, activity.getEnd_hour());
-            end.set(Calendar.MINUTE, activity.getEnd_minute());
-            if((cal.compareTo(start) == 1 || cal.compareTo(start) == 0) && cal.compareTo(end) == -1){
-                return activity;
+        if(activities != null) {
+            for (int i  = 0; i < activities.size(); i++) {
+                DailyActivity activity = activities.get(i);
+                start.set(Calendar.HOUR_OF_DAY, activity.getStart_hour());
+                start.set(Calendar.MINUTE, activity.getStart_minute());
+                end.set(Calendar.HOUR_OF_DAY, activity.getEnd_hour());
+                end.set(Calendar.MINUTE, activity.getEnd_minute());
+                if ((cal.compareTo(start) == 1 || cal.compareTo(start) == 0) && cal.compareTo(end) == -1) {
+                    Log.i("ScheduleCalculator.getOngoingActivity", "activity found");
+                    return activity;
+                }
             }
         }
         return null;
