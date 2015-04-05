@@ -18,10 +18,14 @@ import java.util.Calendar;
 
 public class ScheduleCalculator {
 
-    public static double W_DELAY_PM = -1;
-    public static double W_ASSOC_PM = 1;
-    public static double W_MOT_IMPT = 0.3f;
-    public static double LAMDA = 1.2;
+    public static final double W_DELAY_PM = -1;
+    public static final double W_ASSOC_PM = 0.5;
+    public static final double W_MOT_IMPT = 0.3f;
+    public static final double LAMDA = 1.2;
+    public static final double ALPHA = 0.5;
+    public static final double BETA = 0.5;
+    public static final double GAMMA = 0.5;
+    public static final double RHO = 0.001;
 
 
     private static ScheduleCalculator instance = null;
@@ -60,9 +64,9 @@ public class ScheduleCalculator {
         if(pm_rating >= 0) {
             Log.i("ScheduleCalculator.buildReminderList", ""+pm_rating);
             Calendar task_cal = Calendar.getInstance();
-            task_cal.set(task.getYear(), task.getMonth(), task.getDay(), task.getHour(), task.getMinute());
+            task_cal.set(task.getYear(), task.getMonth(), task.getDay(), task.getHour(), task.getMinute(), 0);
             Calendar reminder_cal = Calendar.getInstance();
-            reminder_cal.set(reminder.getYear(), reminder.getMonth(), reminder.getDay(), reminder.getHour(), reminder.getMinute());
+            reminder_cal.set(reminder.getYear(), reminder.getMonth(), reminder.getDay(), reminder.getHour(), reminder.getMinute(),0);
             double t_w = (task_cal.getTimeInMillis() - reminder_cal.getTimeInMillis());
             int num_reminders = getNumReminders(pm_rating);
             double a = coefficientValue(num_reminders);
@@ -145,10 +149,10 @@ public class ScheduleCalculator {
 
         //weights
         double w_age_pm, w_mot_pm, w_complexity_pm, w_impt_pm;
-        w_age_pm = -(tangentialWeight(c_age));
-        w_complexity_pm = -(tangentialWeight(c_age));
-        w_mot_pm = tangentialWeight(c_age);
-        w_impt_pm = (c_assoc / 2) + 0.5f;
+        w_age_pm = -(f_age(c_age));
+        w_complexity_pm = -((1-BETA)*f_age(c_age) + BETA);
+        w_mot_pm = (1-ALPHA)*f_age(c_age) + ALPHA;
+        w_impt_pm = ((1-GAMMA) / 2) *  c_assoc + 0.5;
 
         //new value for importance
         c_impt = c_impt + W_MOT_IMPT*c_motivation;
@@ -173,8 +177,8 @@ public class ScheduleCalculator {
         Calendar reminder_cal = Calendar.getInstance();
         long time_diff_millis = task_cal.getTimeInMillis() - reminder_cal.getTimeInMillis();
         long time_diff_min = time_diff_millis / (60 * 1000);
-        double concept = -(1.0 / Math.pow((0.001 * time_diff_min + 1),2)) + 1;
-        Log.i("ScheduleCalculator.getDelayConcept", ""+concept);
+        Log.i("ScheduleCalculator.getDelayConceptValue", ""+time_diff_min);
+        double concept = -(1.0 / Math.pow((RHO * time_diff_min + 1),2)) + 1;
         return concept;
     }
 
@@ -221,13 +225,10 @@ public class ScheduleCalculator {
             int day = Integer.parseInt(input_br.readLine());
             Calendar cal = Calendar.getInstance();
             cal.set(year, month, day);
-            Log.i("ScheduleCalculator.geAgeConceptValue", "dob = "+cal.getTime().toString());
             Calendar now_cal = Calendar.getInstance();
             long diff_millis = now_cal.getTimeInMillis() - cal.getTimeInMillis();
-            Log.i("ScheduleCalculator.getAgeConceptValue", "age diff in millis = "+diff_millis);
             long denom  = (long) 60*1000*60*24*365;
             double diff_years = diff_millis / denom;
-            Log.i("ScheduleCalculator.getAgeConceptValue", "age = "+diff_years);
             //compression
             double concept = diff_years / 100;
             if(concept < 0.12 || concept > 1.0){
@@ -246,7 +247,6 @@ public class ScheduleCalculator {
 
     private double getComplexityConceptValue(Task task){
         Calendar cal = Calendar.getInstance();
-        Log.i("ScheduleCalculator.getComplexityConceptValue", "task month = "+task.getMonth());
         cal.set(task.getYear(), task.getMonth(), task.getDay(), task.getHour(), task.getMinute(), 0);
         DailyActivity ongoing = getOngoingActivity(cal);
         if(ongoing != null){
@@ -255,7 +255,7 @@ public class ScheduleCalculator {
         return DailyActivity.COMPLEXITY_MEDIUM;
     }
 
-    private double tangentialWeight(double concept){
+    private double f_age(double concept){
         double tan_arg = 10 * (concept - 0.5);
         double value = Math.atan(tan_arg);
         value /= Math.PI;
@@ -296,10 +296,11 @@ public class ScheduleCalculator {
             DailyActivity activity = activities.get(i);
             start.set(Calendar.HOUR_OF_DAY, activity.getStart_hour());
             start.set(Calendar.MINUTE, activity.getStart_minute());
+            start.set(Calendar.SECOND, 0);
+            end.set(Calendar.SECOND, 0);
             end.set(Calendar.HOUR_OF_DAY, activity.getEnd_hour());
             end.set(Calendar.MINUTE, activity.getEnd_minute());
             if ((cal.compareTo(start) == 1 || cal.compareTo(start) == 0) && cal.compareTo(end) == -1) {
-                Log.i("ScheduleCalculator.getOngoingActivity", "activity found");
                 return activity;
             }
         }

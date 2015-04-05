@@ -50,7 +50,7 @@ public abstract class ActivityInputFragment extends Fragment implements View.OnC
     public Spinner category_spinner;
     public String category;
 
-    OnSaveActivityListener list_listener;
+    protected OnSaveActivityListener list_listener;
 
     View.OnClickListener listener;
 
@@ -175,7 +175,7 @@ public abstract class ActivityInputFragment extends Fragment implements View.OnC
         FragmentManager fragment_mgr = getActivity().getSupportFragmentManager();
         switch(v.getId()){
             case R.id.delete_button:
-                Toast.makeText(getActivity().getApplicationContext(), "delete", Toast.LENGTH_SHORT).show();
+                list_listener.onSaveActivity();
                 if(fragment_mgr.getBackStackEntryCount() > 0){
                     fragment_mgr.popBackStack();
                 }

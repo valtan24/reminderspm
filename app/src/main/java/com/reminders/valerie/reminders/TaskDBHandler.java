@@ -425,4 +425,17 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         return motivation;
     }
 
+    public boolean deleteActivity(long activity_id){
+        SQLiteDatabase db = getWritableDatabase();
+        String[] where_args = {""+activity_id};
+        if(db.delete(TABLE_ACTIVITIES, "_id = ?", where_args) == 1){
+            db.close();
+            return true;
+        }
+        else{
+            db.close();
+            return false;
+        }
+    }
+
 }

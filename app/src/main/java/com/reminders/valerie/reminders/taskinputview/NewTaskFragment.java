@@ -62,6 +62,7 @@ public class NewTaskFragment extends TaskInputFragment{
                 }
                 catch(Exception e){
                     e.printStackTrace();
+                    Toast.makeText(getActivity().getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:

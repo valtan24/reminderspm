@@ -3,9 +3,9 @@ package com.reminders.valerie.reminders.model;
 
 public class DailyActivity {
 
-    public static final double COMPLEXITY_HIGH = -1;
+    public static final double COMPLEXITY_HIGH = 1;
     public static final double COMPLEXITY_MEDIUM = 0;
-    public static final double COMPLEXITY_LOW = 1;
+    public static final double COMPLEXITY_LOW = -1;
 
     public static final double ASSOCIATIVITY_HIGH = 1;
     public static final double ASSOCIATIVITY_LOW = -1;

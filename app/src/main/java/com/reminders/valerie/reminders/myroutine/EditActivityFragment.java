@@ -3,13 +3,16 @@ package com.reminders.valerie.reminders.myroutine;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.DailyActivity;
 import com.reminders.valerie.reminders.model.Task;
+import com.reminders.valerie.reminders.scheduleview.DeleteDialogFragment;
 
 public class EditActivityFragment extends ActivityInputFragment {
 
@@ -19,6 +22,33 @@ public class EditActivityFragment extends ActivityInputFragment {
     public void setArgs(Bundle args){
         this.args = args;
     }
+
+    DeleteDialogFragment.OnDeleteSetListener delete_listener = new DeleteDialogFragment.OnDeleteSetListener() {
+        @Override
+        public void OnDeleteSet(int choice) {
+            switch(choice){
+                case 0:
+                    //cancelled, do nothing
+                    break;
+                case 1:
+                    //confirm, commit delete
+                    if(dbhandler.deleteActivity(args.getLong("activity_id"))){
+                        Toast.makeText(getActivity().getApplicationContext(), "Activity deleted", Toast.LENGTH_SHORT).show();
+                        dbhandler.close();
+                        list_listener.onSaveActivity();
+                        FragmentManager mgr = getActivity().getSupportFragmentManager();
+                        if(mgr.getBackStackEntryCount() > 0){
+                            mgr.popBackStack();
+                        }
+                    }
+                    else{
+                        Toast.makeText(getActivity().getApplicationContext(), "Failed to delete activity", Toast.LENGTH_SHORT).show();
+                        dbhandler.close();
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     public void setContents() {
@@ -73,35 +103,46 @@ public class EditActivityFragment extends ActivityInputFragment {
 
     @Override
     public void onClick(View v){
-        switch(v.getId()){
+        long activity_id = args.getLong("activity_id");
+        switch(v.getId()) {
             case R.id.save_button:
                 //TODO check details first
 
                 //update details
-                long activity_id = args.getLong("activity_id");
                 //create activity
                 DailyActivity daily_activity = new DailyActivity();
                 daily_activity.setStart_hour(start_hour);
                 daily_activity.setStart_minute(start_minute);
                 daily_activity.setEnd_hour(end_hour);
                 daily_activity.setEnd_minute(end_minute);
-                if(env_group.getCheckedRadioButtonId() == R.id.environment_noisy) daily_activity.setNoisy(1);
+                if (env_group.getCheckedRadioButtonId() == R.id.environment_noisy)
+                    daily_activity.setNoisy(1);
                 else daily_activity.setNoisy(0);
-                if(complexity_group.getCheckedRadioButtonId() == R.id.complexity_high) daily_activity.setComplexity(DailyActivity.COMPLEXITY_HIGH);
-                else if(complexity_group.getCheckedRadioButtonId() == R.id.complexity_medium) daily_activity.setComplexity(DailyActivity.COMPLEXITY_MEDIUM);
+                if (complexity_group.getCheckedRadioButtonId() == R.id.complexity_high)
+                    daily_activity.setComplexity(DailyActivity.COMPLEXITY_HIGH);
+                else if (complexity_group.getCheckedRadioButtonId() == R.id.complexity_medium)
+                    daily_activity.setComplexity(DailyActivity.COMPLEXITY_MEDIUM);
                 else daily_activity.setComplexity(DailyActivity.COMPLEXITY_LOW);
                 daily_activity.setCategory(category);
                 daily_activity.setId(activity_id);
                 daily_activity.setName(event_title.getText().toString());
                 daily_activity.setDay(day);
-                if(dbhandler.updateDailyActivity(daily_activity)){
+                if (dbhandler.updateDailyActivity(daily_activity)) {
                     Log.i("EditActivityFragment", "activity updated");
-                }
-                else{
+                } else {
                     Log.e("EditActivityFragment", "failed to update activity");
                 }
                 dbhandler.close();
                 super.onClick(v);
+                break;
+            case R.id.delete_button:
+                //delete activity
+
+                //confirmation dialog first
+                DeleteDialogFragment delete_fragment = new DeleteDialogFragment();
+                delete_fragment.setTitle("Delete Category");
+                delete_fragment.setCallBack(delete_listener);
+                delete_fragment.show(getActivity().getSupportFragmentManager(), "dialog");
                 break;
         }
     }

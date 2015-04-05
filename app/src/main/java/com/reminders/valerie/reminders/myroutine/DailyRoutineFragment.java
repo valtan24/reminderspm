@@ -58,7 +58,6 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         Log.d("view", "creating");
