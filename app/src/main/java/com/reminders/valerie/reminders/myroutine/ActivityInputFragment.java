@@ -59,7 +59,7 @@ public abstract class ActivityInputFragment extends Fragment implements View.OnC
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             start_hour = hourOfDay;
             start_minute = minute;
-            addTimeText(start_time);
+            addTimeText(start_time, start_hour, start_minute);
         }
     };
 
@@ -68,7 +68,7 @@ public abstract class ActivityInputFragment extends Fragment implements View.OnC
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             end_hour = hourOfDay;
             end_minute = minute;
-            addTimeText(end_time);
+            addTimeText(end_time, end_hour, end_minute);
         }
     };
 
@@ -83,9 +83,9 @@ public abstract class ActivityInputFragment extends Fragment implements View.OnC
         this.day = day;
     }
 
-    private void addTimeText(EditText time_edittext){
+    private void addTimeText(EditText time_edittext, int hour, int minute){
         if(time_et_mgr != null){
-            String time_text = time_et_mgr.buildText(start_hour, start_minute, 0);
+            String time_text = time_et_mgr.buildText(hour, minute, 0);
             time_edittext.setText(time_text);
         }
     }

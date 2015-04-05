@@ -341,9 +341,6 @@ public class TaskDBHandler extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         cursor.close();
-        if(activity_list.size() == 0){
-            return null;
-        }
         return activity_list;
 
     }

@@ -21,7 +21,7 @@ public class ScheduleCalculator {
     public static double W_DELAY_PM = -1;
     public static double W_ASSOC_PM = 1;
     public static double W_MOT_IMPT = 0.3f;
-    public static double LAMDA = 2;
+    public static double LAMDA = 1.2;
 
 
     private static ScheduleCalculator instance = null;
@@ -173,7 +173,7 @@ public class ScheduleCalculator {
         Calendar reminder_cal = Calendar.getInstance();
         long time_diff_millis = task_cal.getTimeInMillis() - reminder_cal.getTimeInMillis();
         long time_diff_min = time_diff_millis / (60 * 1000);
-        double concept = -(1.0 / Math.pow((0.01 * time_diff_min + 1),2)) + 1;
+        double concept = -(1.0 / Math.pow((0.001 * time_diff_min + 1),2)) + 1;
         Log.i("ScheduleCalculator.getDelayConcept", ""+concept);
         return concept;
     }
@@ -292,17 +292,15 @@ public class ScheduleCalculator {
         start.set(task.getYear(), task.getMonth(), task.getDay());
         Calendar end = Calendar.getInstance();
         end.set(task.getYear(), task.getMonth(), task.getDay());
-        if(activities != null) {
-            for (int i  = 0; i < activities.size(); i++) {
-                DailyActivity activity = activities.get(i);
-                start.set(Calendar.HOUR_OF_DAY, activity.getStart_hour());
-                start.set(Calendar.MINUTE, activity.getStart_minute());
-                end.set(Calendar.HOUR_OF_DAY, activity.getEnd_hour());
-                end.set(Calendar.MINUTE, activity.getEnd_minute());
-                if ((cal.compareTo(start) == 1 || cal.compareTo(start) == 0) && cal.compareTo(end) == -1) {
-                    Log.i("ScheduleCalculator.getOngoingActivity", "activity found");
-                    return activity;
-                }
+        for (int i  = 0; i < activities.size(); i++) {
+            DailyActivity activity = activities.get(i);
+            start.set(Calendar.HOUR_OF_DAY, activity.getStart_hour());
+            start.set(Calendar.MINUTE, activity.getStart_minute());
+            end.set(Calendar.HOUR_OF_DAY, activity.getEnd_hour());
+            end.set(Calendar.MINUTE, activity.getEnd_minute());
+            if ((cal.compareTo(start) == 1 || cal.compareTo(start) == 0) && cal.compareTo(end) == -1) {
+                Log.i("ScheduleCalculator.getOngoingActivity", "activity found");
+                return activity;
             }
         }
         return null;
