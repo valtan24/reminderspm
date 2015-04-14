@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment implements AdapterView.OnItemClick
                             category_selected = "";
                         }
                         else{
-                            Toast.makeText(getActivity().getApplicationContext(), "Sorry, category could not be deleted", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "Sorry, category could not be deleted. Do you have task or activity under this category?", Toast.LENGTH_LONG).show();
                             category_selected = "";
                         }
                     }

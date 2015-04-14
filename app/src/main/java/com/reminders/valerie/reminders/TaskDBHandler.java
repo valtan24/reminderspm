@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.model.CursorToBundle;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TaskDBHandler extends SQLiteOpenHelper {
@@ -63,6 +65,14 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     }
 
     @Override
+    public void onOpen(SQLiteDatabase db){
+        super.onOpen(db);
+        if(!db.isReadOnly()){
+            db.execSQL("PRAGMA foreign_keys=ON");
+        }
+    }
+
+    @Override
     public void onCreate(SQLiteDatabase db) {
         String create_category_table = "CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "( _id TEXT PRIMARY KEY, " + KEY_AUDIOURI + " TEXT, " + KEY_MOTIVATION + " REAL )";
         db.execSQL(create_category_table);
@@ -80,7 +90,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
 
         String create_tasks_table = "CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + " ( " + KEY_TASKID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_TASKTITLE + " TEXT, " + KEY_TASKDATE + " TEXT, " + KEY_TASKTIME + " TEXT, " + KEY_IMPORTANCE + " REAL, " + KEY_CATEGORY +" TEXT, "
-                + KEY_COMPLETED + " INTEGER, " + KEY_SAMETASKREM + " INTEGER, FOREIGN KEY(" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES +"(_id))";
+                + KEY_COMPLETED + " INTEGER, " + KEY_SAMETASKREM + " INTEGER, FOREIGN KEY(" + KEY_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES +"(_id) ON DELETE RESTRICT ON UPDATE CASCADE)";
         db.execSQL(create_tasks_table);
 
         String create_reminders_table = "CREATE TABLE IF NOT EXISTS " + TABLE_REMINDERS + " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_REMDATE + " TEXT, "
@@ -89,7 +99,7 @@ public class TaskDBHandler extends SQLiteOpenHelper {
         db.execSQL(create_reminders_table);
 
         String create_activities_table = "CREATE TABLE IF NOT EXISTS " + TABLE_ACTIVITIES +  " ( _id INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_ACTIVITYNAME + " TEXT, " + KEY_DAY + " INTEGER, "
-                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + " TEXT, " + KEY_NOISY + " INTEGER, FOREIGN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id))";
+                 + KEY_START + " TEXT, " + KEY_END + " TEXT, " + KEY_COMPLEXITY + " REAL, " + KEY_ACT_CATEGORY + " TEXT, " + KEY_NOISY + " INTEGER, FOREIGN KEY (" + KEY_ACT_CATEGORY + ") REFERENCES " + TABLE_CATEGORIES + "(_id) ON DELETE RESTRICT ON UPDATE CASCADE)";
         db.execSQL(create_activities_table);
     }
 
@@ -381,11 +391,18 @@ public class TaskDBHandler extends SQLiteOpenHelper {
     public boolean deleteCategory(String category){
         SQLiteDatabase db = getWritableDatabase();
         String[] where_args = {category};
-        if(db.delete(TABLE_CATEGORIES, "_id = ?", where_args) == 1){
-            db.close();
-            return true;
+        try{
+            if(db.delete(TABLE_CATEGORIES, "_id = ?", where_args) == 1){
+                db.close();
+                return true;
+            }
+            else{
+                db.close();
+                return false;
+            }
         }
-        else{
+        catch(SQLiteException e){
+            Log.i("TaskDBHandler.deleteCategory", e.getMessage());
             db.close();
             return false;
         }

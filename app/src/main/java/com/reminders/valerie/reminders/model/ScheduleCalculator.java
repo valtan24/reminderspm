@@ -21,12 +21,16 @@ public class ScheduleCalculator {
     public static final double W_DELAY_PM = -1;
     public static final double W_ASSOC_PM = 0.5;
     public static final double W_MOT_IMPT = 0.3f;
-    public static final double LAMDA = 1.2;
+    public static final double W_AGE_PM = 0.5;
+    public static final double MAX = 2.822079641;
+    public static final double MIN = -5.124146431;
     public static final double ALPHA = 0.5;
     public static final double BETA = 0.5;
     public static final double GAMMA = 0.5;
     public static final double RHO = 0.001;
-
+    public static final double R_C = 5;
+    public static final double Q_C = 5;
+    public static final double S_C = 5;
 
     private static ScheduleCalculator instance = null;
     private Task task;
@@ -140,7 +144,7 @@ public class ScheduleCalculator {
         Log.i("ScheduleCalculator.calculatePM", "Importance concept value = " + c_impt);
         c_motivation = getMotivationConceptValue(task);
         Log.i("ScheduleCalculator.calculatePM", "Motivation concept value = " + c_motivation);
-        c_age = getAgeConceptValue();
+        c_age = -2 * f_age_input(R_C);
         Log.i("ScheduleCalculator.calculatePM", "Age concept value = " + c_age);
         c_complexity = getComplexityConceptValue(task);
         Log.i("ScheduleCalculator.calculatePM", "Complexity concept value = " + c_complexity);
@@ -149,24 +153,23 @@ public class ScheduleCalculator {
 
         //weights
         double w_age_pm, w_mot_pm, w_complexity_pm, w_impt_pm;
-        w_age_pm = -(f_age(c_age));
-        w_complexity_pm = -((1-BETA)*f_age(c_age) + BETA);
-        w_mot_pm = (1-ALPHA)*f_age(c_age) + ALPHA;
-        w_impt_pm = ((1-GAMMA) / 2) *  c_assoc + 0.5;
+        w_complexity_pm = -(1-BETA)*(f_age_input(S_C) + 0.5) - BETA;
+        w_mot_pm = (1-ALPHA)*f_age_input(Q_C) + 0.5 + ALPHA;
+        w_impt_pm = ((1-GAMMA) / 2) *  (c_assoc + 1) + GAMMA;
 
         //new value for importance
         c_impt = c_impt + W_MOT_IMPT*c_motivation;
 
         //x
         double x = c_delay * W_DELAY_PM;
-        x += c_age * w_age_pm;
+        x += c_age * W_AGE_PM;
         x += c_assoc * W_ASSOC_PM;
         x += c_motivation * w_mot_pm;
         x += c_impt * w_impt_pm;
         x += c_complexity * w_complexity_pm;
 
         //compression
-        double c_pm = (1 / (1 + Math.exp(-(LAMDA * x))));
+        double c_pm = (x - MIN)/(MAX - MIN);
 
         return c_pm;
     }
@@ -215,7 +218,7 @@ public class ScheduleCalculator {
         }
     }
 
-    private double getAgeConceptValue(){
+    private double f_age_input(double coefficient){
         try{
             FileInputStream internal_input = context.openFileInput(ProfileFragment.INTERNAL_FILENAME);
             BufferedReader input_br = new BufferedReader(new InputStreamReader(new DataInputStream(internal_input)));
@@ -230,17 +233,17 @@ public class ScheduleCalculator {
             long denom  = (long) 60*1000*60*24*365;
             double diff_years = diff_millis / denom;
             //compression
-            double concept = diff_years / 100;
-            if(concept < 0.12 || concept > 1.0){
-                concept = 1.0;
-            }
-            return concept;
+            double compressed_age = diff_years / 100;
+            double tan_arg = coefficient * (compressed_age - 0.5);
+            double value = Math.atan(tan_arg);
+            value /= Math.PI;
+            return value;
         }
         catch(FileNotFoundException e){
-            Log.i("ScheduleCalculator.getAgeConceptValue", "internal file don't exist");
+            Log.i("ScheduleCalculator.f_age_input", "internal file don't exist");
         }
         catch(IOException e){
-            Log.e("ScheduleCalculator.getAgeConceptValue", "unable to read from file");
+            Log.e("ScheduleCalculator.f_age_input", "unable to read from file");
         }
         return 1.0f;
     }
@@ -253,14 +256,6 @@ public class ScheduleCalculator {
             return ongoing.getComplexity();
         }
         return DailyActivity.COMPLEXITY_MEDIUM;
-    }
-
-    private double f_age(double concept){
-        double tan_arg = 10 * (concept - 0.5);
-        double value = Math.atan(tan_arg);
-        value /= Math.PI;
-        value += 0.5;
-        return value;
     }
 
     private  DailyActivity getOngoingActivity(Calendar cal){
