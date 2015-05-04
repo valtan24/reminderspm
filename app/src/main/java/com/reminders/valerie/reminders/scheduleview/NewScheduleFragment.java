@@ -40,10 +40,6 @@ public class NewScheduleFragment extends ScheduleFragment{
                 reminder_list.add(new_reminder);
             }
             reminder_list = ReminderSorter.merge_sort(reminder_list, 0, reminder_list.size()-1); //arrange reminders
-            for(int i = 0; i < reminder_list.size(); i++){
-                Reminder rem = reminder_list.get(i);
-                Log.i("NewScheduleFragment update", "" + rem.getMonth() + "-" + rem.getDay() + " " + rem.getHour() + ":" + rem.getMinute());
-            }
             list_adapter.set_reminder_list(reminder_list);
             list_adapter.notifyDataSetChanged();
         }

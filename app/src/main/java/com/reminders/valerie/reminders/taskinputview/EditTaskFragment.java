@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderSorter;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.notificationservice.IdGenerator;
 import com.reminders.valerie.reminders.notificationservice.NotificationReceiver;
@@ -127,83 +128,31 @@ public class EditTaskFragment extends TaskInputFragment {
                     Reminder next_reminder = buildReminder(task);
                     next_reminder.setTask_id(task.getTask_id());
                     //TODO RETRIEVE REMAINING REMINDERS
-                    TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
                     ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
-                    if(reminder_list.size() > 0) {
-                        //TODO UPDATE REMINDER ARRAYLISTS
-                        if (same_datetime.isChecked()) {
-                            //update last reminder to task date and time, move remaining to deletion_list
-                            if (reminder_list == null) {
-                                reminder_list = new ArrayList<Reminder>();
-                                reminder_list.add(next_reminder);
-                            } else {
-                                reminder_list.remove(reminder_list.size() - 1);
-                                reminder_list.add(next_reminder);
-                                if (reminder_list.size() > 1) { //more than 1 reminder
-                                    while (reminder_list.size() > 1) {
-                                        deletion_list.add(reminder_list.remove(0));
-                                    }
-                                }
-                            }
-                        } else {
-                            //if task.getsame_rem_time is true, add new reminders into BOTH reminder_list and added_reminders
-                            if (taskDateTimeUnchanged()) {
-                                if (!reminderDateTimeUnchanged(reminder_list.get(0))) {
-                                    while (reminder_list.size() > 1) {
-                                        deletion_list.add(reminder_list.remove(0));
-                                    }
-                                    //TODO REPOPULATE LIST
-                                    reminder_list.add(0, next_reminder);
-                                    added_reminders.add(next_reminder);
-                                } else {
-                                    //re-retrieve list
-                                    reminder_list = null;
-                                    getReminders(task);
-                                    deletion_list = new ArrayList<Reminder>();
-                                    added_reminders = new ArrayList<Reminder>();
-                                }
-                            } else {
-                                while (reminder_list.size() > 1) {
-                                    deletion_list.add(reminder_list.remove(1));
-                                }
-                                if (!reminderDateTimeUnchanged(reminder_list.get(0))) {
-                                    deletion_list.add(reminder_list.remove(0));
-                                    reminder_list.add(next_reminder);
-                                    added_reminders.add(next_reminder);
-                                }
-                                //TODO REPOPULATE LIST
-                                Reminder last_reminder = new Reminder();
-                                last_reminder.setYear(task_year);
-                                last_reminder.setMonth(task_month);
-                                last_reminder.setDay(task_day);
-                                last_reminder.setHour(task_hour);
-                                last_reminder.setDay(task_day);
-                                last_reminder.setTask(task);
-                                last_reminder.setTask_id(task_id);
-                                last_reminder.setIs_fired(0);
-                                last_reminder.setWith_audio(0);
-                                reminder_list.add(last_reminder);
-                                added_reminders.add(last_reminder);
-                            }
+                    if(reminder_list.size() > 0){
+                        //get next reminder time
+                        while(ReminderSorter.is_after(reminder_list.get(0), next_reminder) == 1){
+                            deletion_list.add(reminder_list.get(0));
+                            reminder_list.remove(0);
                         }
-                    }
-                    else{
-                        reminder_list.add(next_reminder);
-                        added_reminders.add(next_reminder);
-                        //recalculate
-                        Reminder last_reminder = new Reminder();
-                        last_reminder.setYear(task_year);
-                        last_reminder.setMonth(task_month);
-                        last_reminder.setDay(task_day);
-                        last_reminder.setHour(task_hour);
-                        last_reminder.setDay(task_day);
-                        last_reminder.setTask(task);
-                        last_reminder.setTask_id(task_id);
-                        last_reminder.setIs_fired(0);
-                        last_reminder.setWith_audio(0);
-                        reminder_list.add(last_reminder);
-                        added_reminders.add(last_reminder);
-
+                        if(ReminderSorter.is_after(reminder_list.get(0), next_reminder) == -1){
+                            reminder_list.add(0, next_reminder);
+                            added_reminders.add(next_reminder);
+                        }
+                        //delete reminders after new task time
+                        int index = reminder_list.size()-1;
+                        //set last reminder to task time
+                        Reminder last_reminder = reminder_list.get(index);
+                        last_reminder.setYear(task.getYear());
+                        last_reminder.setMonth(task.getMonth());
+                        last_reminder.setDay(task.getDay());
+                        last_reminder.setHour(task.getHour());
+                        last_reminder.setMinute(task.getMinute());
+                        index--;
+                        while(ReminderSorter.is_after(last_reminder, reminder_list.get(index)) == 1){
+                            deletion_list.add(reminder_list.get(index));
+                            reminder_list.remove(index);
+                        }
                     }
                     //add all three lists to schedule_fragment
                     schedule_fragment.setReminderArrayList(reminder_list);

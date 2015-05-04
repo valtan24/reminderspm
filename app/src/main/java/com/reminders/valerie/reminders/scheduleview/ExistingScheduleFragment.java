@@ -12,6 +12,7 @@ import com.reminders.valerie.reminders.TaskDBHandler;
 
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderSorter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +58,8 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                 */
             }
             //TODO REARRANGE ARRAYLIST FIRST
+            reminder_list = ReminderSorter.merge_sort(reminder_list, 0, reminder_list.size()-1);
+            list_adapter.set_reminder_list(reminder_list);
             list_adapter.notifyDataSetChanged();
         }
     };
@@ -73,7 +76,9 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                         if(marked_for_deletion == null || marked_for_deletion.size() == 0){
                             marked_for_deletion = new ArrayList<Reminder>();
                         }
-                        marked_for_deletion.add(reminder_selected);
+                        if(reminder_selected.getId() != 0){ //existst in database
+                            marked_for_deletion.add(reminder_selected);
+                        }
                         reminder_list.remove(reminder_selected);
                         list_adapter.notifyDataSetChanged();
                         break;
@@ -106,6 +111,7 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                         args.putInt("day", reminder_selected.getDay());
                         args.putInt("hour", reminder_selected.getHour());
                         args.putInt("minute", reminder_selected.getMinute());
+                        args.putString("title", getActivity().getResources().getText(R.string.change_datetime_header).toString());
                         DateTimeDialogFragment datetime_fragment = new DateTimeDialogFragment();
                         datetime_fragment.setArguments(args);
                         datetime_fragment.setCallBack(datetime_listener);
@@ -133,23 +139,19 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                 if(dbhandler.updateTask(task)){
                     if(added_reminders.size() > 0) {
                         dbhandler.addReminders(added_reminders, task.getTask_id());
-                        //remove added_reminders from reminder_list
-                        for (int i = 0; i < added_reminders.size(); i++) {
-                            reminder_list.remove(added_reminders.get(i));
-                        }
                     }
                     //update reminders in reminder_list
                     for(int j = 0; j < reminder_list.size(); j++){
                         dbhandler.updateReminder(reminder_list.get(j));
                     }
                     //delete unwanted reminders
-                    for(int k = 0; k < reminder_list.size(); k++){
-                        dbhandler.deleteReminder(reminder_list.get(k));
+                    for(int k = 0; k < marked_for_deletion.size(); k++){
+                        dbhandler.deleteReminder(marked_for_deletion.get(k));
                     }
                     getActivity().setResult(getActivity().RESULT_OK);
                 }
                 else{
-                    Toast.makeText(getActivity().getApplicationContext(), "Failed to save editted details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Failed to save edited details", Toast.LENGTH_SHORT).show();
                     getActivity().setResult(getActivity().RESULT_CANCELED);
                 }
                 getActivity().finish();
@@ -162,6 +164,7 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                 args.putInt("day", cal.get(Calendar.DAY_OF_MONTH));
                 args.putInt("hour", cal.get(Calendar.HOUR_OF_DAY));
                 args.putInt("minute", cal.get(Calendar.MINUTE));
+                args.putString("title", getActivity().getResources().getText(R.string.new_reminder).toString());
                 DateTimeDialogFragment new_reminder_dialog = new DateTimeDialogFragment();
                 new_reminder_dialog.setArguments(args);
                 new_reminder_dialog.setCallBack(datetime_listener);
