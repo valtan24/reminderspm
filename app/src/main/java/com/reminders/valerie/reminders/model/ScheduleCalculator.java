@@ -22,10 +22,10 @@ public class ScheduleCalculator {
     public static final double W_ASSOC_PM = 0.5;
     public static final double W_MOT_IMPT = 0.3f;
     public static final double W_AGE_PM = 0.5;
-    public static final double MAX = 2.822079641;
-    public static final double MIN = -5.124146431;
-    public static final double ALPHA = 0.5;
-    public static final double BETA = 0.5;
+    public static final double MAX = 3.09180913;
+    public static final double MIN = -4.1304297;
+    public static final double ALPHA = 0.9;
+    public static final double BETA = 0.1;
     public static final double GAMMA = 0.5;
     public static final double RHO = 0.001;
     public static final double R_C = 5;

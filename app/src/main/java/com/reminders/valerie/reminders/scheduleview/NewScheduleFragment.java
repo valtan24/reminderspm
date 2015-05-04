@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderSorter;
 import com.reminders.valerie.reminders.notificationservice.AlarmTask;
 
 import java.util.Calendar;
@@ -38,7 +39,12 @@ public class NewScheduleFragment extends ScheduleFragment{
                 new_reminder.setTask(task);
                 reminder_list.add(new_reminder);
             }
-            //rearrange arraylist first
+            reminder_list = ReminderSorter.merge_sort(reminder_list, 0, reminder_list.size()-1); //arrange reminders
+            for(int i = 0; i < reminder_list.size(); i++){
+                Reminder rem = reminder_list.get(i);
+                Log.i("NewScheduleFragment update", "" + rem.getMonth() + "-" + rem.getDay() + " " + rem.getHour() + ":" + rem.getMinute());
+            }
+            list_adapter.set_reminder_list(reminder_list);
             list_adapter.notifyDataSetChanged();
         }
     };

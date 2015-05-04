@@ -78,4 +78,8 @@ public class ScheduleListAdapter extends BaseAdapter {
         }
         return list_row;
     }
+
+    public void set_reminder_list(ArrayList<Reminder> reminder_list){
+        this.reminder_list = reminder_list;
+    }
 }
