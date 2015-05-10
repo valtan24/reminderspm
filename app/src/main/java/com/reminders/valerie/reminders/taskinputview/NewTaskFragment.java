@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderSorter;
 import com.reminders.valerie.reminders.model.ScheduleCalculator;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.scheduleview.NewScheduleFragment;
@@ -48,6 +49,18 @@ public class NewTaskFragment extends TaskInputFragment{
                 try{
                     Task task = buildTask();
                     Reminder reminder = buildReminder(task);
+                    //check times first
+                    //build reminder for last task to compare
+                    Reminder last_reminder = new Reminder();
+                    last_reminder.setYear(task.getYear());
+                    last_reminder.setMonth(task.getMonth());
+                    last_reminder.setDay(task.getDay());
+                    last_reminder.setHour(task.getHour());
+                    last_reminder.setMinute(task.getMinute());
+                    if(ReminderSorter.is_after(reminder, last_reminder) == -1){
+                        throw new Exception("The first reminder should not be after your task");
+                    }
+
                     ScheduleCalculator calculator = ScheduleCalculator.getInstance(getActivity().getApplicationContext());
                     calculator.setTask(task);
                     ArrayList<Reminder> reminder_list = calculator.buildReminderList(task, reminder);

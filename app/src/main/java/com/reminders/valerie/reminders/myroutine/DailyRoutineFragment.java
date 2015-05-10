@@ -35,7 +35,7 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
 
     private ArrayList<DailyActivity> routine_list;
 
-    private Button clear_all_button, save_button;
+    private Button save_button;
 
     public ArrayList<DailyActivity> getRoutine_list() {
         return routine_list;
@@ -71,12 +71,11 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
         routine_listview = (ListView) rootView.findViewById(R.id.daily_routine_list);
         list_adapter = new DailyRoutineListAdapter(getActivity(), routine_list);
         routine_listview.setAdapter(list_adapter);
-        clear_all_button = (Button) rootView.findViewById(R.id.clear_all_button);
+
         save_button = (Button) rootView.findViewById(R.id.save_button);
         add_icon = (ImageView) rootView.findViewById(R.id.add_icon);
         add_icon.setClickable(true);
         add_icon.setOnClickListener(this);
-        clear_all_button.setOnClickListener(this);
         save_button.setOnClickListener(this);
         routine_listview.setOnItemClickListener(this);
         return rootView;
@@ -100,10 +99,6 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
                 fragment_transaction.addToBackStack(null);
                 fragment_transaction.replace(R.id.content_frame, new_event);
                 fragment_transaction.commit();
-                break;
-            case R.id.clear_all_button:
-                //open confirmation dialog
-                Toast.makeText(getActivity().getApplicationContext(), "Clearing all", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.save_button:
                 //save data and return
@@ -129,7 +124,7 @@ public class DailyRoutineFragment extends Fragment implements View.OnClickListen
         args.putInt("start_hour", daily_activity.getStart_hour());
         args.putInt("start_minute", daily_activity.getStart_minute());
         args.putInt("end_hour", daily_activity.getEnd_hour());
-        args.putInt("end_minute", daily_activity.getEnd_hour());
+        args.putInt("end_minute", daily_activity.getEnd_minute());
         args.putInt("is_noisy", daily_activity.isNoisy());
         args.putDouble("complexity", daily_activity.getComplexity());
         args.putString("category", daily_activity.getCategory());

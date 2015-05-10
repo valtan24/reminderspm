@@ -21,6 +21,17 @@ public class NewScheduleFragment extends ScheduleFragment{
     DateTimeDialogFragment.OnDateTimeSetListener datetime_listener = new DateTimeDialogFragment.OnDateTimeSetListener() {
         @Override
         public void OnDateTimeSet(Bundle args) {
+            Reminder tmp = new Reminder();
+            tmp.setHour(args.getInt("hour"));
+            tmp.setMinute(args.getInt("minute"));
+            tmp.setYear(args.getInt("year"));
+            tmp.setMonth(args.getInt("month"));
+            tmp.setDay(args.getInt("day"));
+            if(!notAfterTaskTime(tmp, task)){
+                Toast.makeText(getActivity().getApplicationContext(), "Reminders should not be after your task", Toast.LENGTH_SHORT).show();
+                tmp = null; //free memory
+                return;
+            }
             if(reminder_selected != null) {
                 reminder_selected.setHour(args.getInt("hour"));
                 reminder_selected.setMinute(args.getInt("minute"));

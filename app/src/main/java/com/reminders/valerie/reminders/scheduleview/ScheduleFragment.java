@@ -16,6 +16,7 @@ import com.reminders.valerie.reminders.model.DateEditTextManager;
 import com.reminders.valerie.reminders.model.DateTimeEditTextMgr;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
+import com.reminders.valerie.reminders.model.ReminderSorter;
 import com.reminders.valerie.reminders.model.Task;
 import com.reminders.valerie.reminders.model.TimeEditTextManager;
 
@@ -69,5 +70,18 @@ public abstract class ScheduleFragment extends Fragment implements View.OnClickL
 
     @Override
     public abstract void onItemClick(AdapterView<?> parent, View view, int position, long id);
+
+    protected boolean notAfterTaskTime(Reminder reminder, Task task){
+        Reminder last_reminder = new Reminder();
+        last_reminder.setYear(task.getYear());
+        last_reminder.setMonth(task.getMonth());
+        last_reminder.setDay(task.getDay());
+        last_reminder.setHour(task.getHour());
+        last_reminder.setMinute(task.getMinute());
+        if(ReminderSorter.is_after(reminder, last_reminder) == -1){
+            return false;
+        }
+        return true;
+    }
 
 }

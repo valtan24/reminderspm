@@ -127,6 +127,15 @@ public class EditTaskFragment extends TaskInputFragment {
                     setTaskContents();
                     Reminder next_reminder = buildReminder(task);
                     next_reminder.setTask_id(task.getTask_id());
+                    Reminder last_rem = new Reminder();
+                    last_rem.setYear(task.getYear());
+                    last_rem.setMonth(task.getMonth());
+                    last_rem.setDay(task.getDay());
+                    last_rem.setHour(task.getHour());
+                    last_rem.setMinute(task.getMinute());
+                    if(ReminderSorter.is_after(next_reminder, last_rem) == -1){
+                        throw new Exception("The first reminder should not be after your task");
+                    }
                     //TODO RETRIEVE REMAINING REMINDERS
                     ExistingScheduleFragment schedule_fragment = new ExistingScheduleFragment();
                     if(reminder_list.size() > 0){

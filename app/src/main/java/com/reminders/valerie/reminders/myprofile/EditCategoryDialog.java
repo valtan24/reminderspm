@@ -6,6 +6,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.reminders.valerie.reminders.R;
@@ -16,6 +17,9 @@ public class EditCategoryDialog extends CategoryDialog {
 
     @Override
     public boolean savedata() {
+        if(ringtone_uri != null){
+            category.setAudio_uri(ringtone_uri.toString());
+        }
         category.setAudio_uri(ringtone_uri.toString());
         category.setCategory_title(cat_name_edittext.getText().toString());
         //get motivation value
@@ -66,11 +70,13 @@ public class EditCategoryDialog extends CategoryDialog {
         Ringtone ringtone = ringtone_mgr.getRingtone(getActivity(), Uri.parse(args.getString("uri")));
         alert_text.setText(ringtone.getTitle(getActivity()));
 
-        if(category.getMotivation() == Category.MOTIVATION_HIGH){
+
+        Log.i("EditCategoryDialog.setContents", "" + args.getDouble("motivation"));
+        if(args.getDouble("motivation") == Category.MOTIVATION_HIGH){
             motivation_high.setChecked(true);
         }
-        else if(category.getMotivation() == Category.MOTIVATION_LOW){
-            motivation_medium.setChecked(true);
+        else if(args.getDouble("motivation") == Category.MOTIVATION_LOW){
+            motivation_low.setChecked(true);
         }
         else{
             motivation_medium.setChecked(true);

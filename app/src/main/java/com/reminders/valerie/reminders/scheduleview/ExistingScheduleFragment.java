@@ -1,5 +1,8 @@
 package com.reminders.valerie.reminders.scheduleview;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +16,10 @@ import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.TaskDBHandler;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.ReminderSorter;
+import com.reminders.valerie.reminders.notificationservice.AlarmTask;
+import com.reminders.valerie.reminders.notificationservice.DismissNotification;
+import com.reminders.valerie.reminders.notificationservice.IdGenerator;
+import com.reminders.valerie.reminders.notificationservice.NotificationReceiver;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +40,17 @@ public class ExistingScheduleFragment extends ScheduleFragment {
     DateTimeDialogFragment.OnDateTimeSetListener datetime_listener = new DateTimeDialogFragment.OnDateTimeSetListener() {
         @Override
         public void OnDateTimeSet(Bundle args) {
+            Reminder tmp = new Reminder();
+            tmp.setHour(args.getInt("hour"));
+            tmp.setMinute(args.getInt("minute"));
+            tmp.setYear(args.getInt("year"));
+            tmp.setMonth(args.getInt("month"));
+            tmp.setDay(args.getInt("day"));
+            if(!notAfterTaskTime(tmp, task)){
+                Toast.makeText(getActivity().getApplicationContext(), "Reminders should not be after your task", Toast.LENGTH_SHORT).show();
+                tmp = null; //free memory
+                return;
+            }
             if(reminder_selected != null) {
                 reminder_selected.setHour(args.getInt("hour"));
                 reminder_selected.setMinute(args.getInt("minute"));
@@ -52,12 +70,8 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                     added_reminders = new ArrayList<Reminder>();
                 }
                 added_reminders.add(new_reminder);
-                reminder_list.add(new_reminder); //needs to be added to be reflected in list
-                /* when committing into db, reminders in added_reminders should be removed from reminder_list first,
-                ** then reminder_list will undergo an UPDATE while added_reminders will undergo an INSERT
-                */
+                reminder_list.add(new_reminder);
             }
-            //TODO REARRANGE ARRAYLIST FIRST
             reminder_list = ReminderSorter.merge_sort(reminder_list, 0, reminder_list.size()-1);
             list_adapter.set_reminder_list(reminder_list);
             list_adapter.notifyDataSetChanged();
@@ -134,8 +148,15 @@ public class ExistingScheduleFragment extends ScheduleFragment {
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.save_task_button:
-                //TODO SAVE EXISTING TASK AND REMINDERS
                 TaskDBHandler dbhandler = new TaskDBHandler(getActivity().getApplicationContext());
+                Reminder next_reminder = dbhandler.getNextReminder(task.getTask_id());
+                if(next_reminder!=null) {
+                    Intent notifcation_intent = new Intent(getActivity().getApplicationContext(), NotificationReceiver.class);
+                    PendingIntent pending_intent = PendingIntent.getBroadcast(getActivity().getApplicationContext(), IdGenerator.generateID(task.getTask_id(), next_reminder.getId()), notifcation_intent, PendingIntent.FLAG_ONE_SHOT);
+                    if (pending_intent != null) {
+                        pending_intent.cancel();
+                    }
+                }
                 if(dbhandler.updateTask(task)){
                     if(added_reminders.size() > 0) {
                         dbhandler.addReminders(added_reminders, task.getTask_id());
@@ -148,6 +169,10 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                     for(int k = 0; k < marked_for_deletion.size(); k++){
                         dbhandler.deleteReminder(marked_for_deletion.get(k));
                     }
+
+                    //reschedule notification
+                    next_reminder = dbhandler.getNextReminder(task.getTask_id());
+                    new AlarmTask(getActivity().getApplicationContext(), task.getTask_id(), next_reminder.getId()).run();
                     getActivity().setResult(getActivity().RESULT_OK);
                 }
                 else{
