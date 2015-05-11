@@ -124,4 +124,5 @@ public class TodoFragment extends ListFragment implements View.OnClickListener {
         edit_task_intent.putExtra("arguments", args);
         startActivityForResult(edit_task_intent, TODO_FRAGMENT);
     }
+
 }

@@ -174,6 +174,7 @@ public class ExistingScheduleFragment extends ScheduleFragment {
                     next_reminder = dbhandler.getNextReminder(task.getTask_id());
                     new AlarmTask(getActivity().getApplicationContext(), task.getTask_id(), next_reminder.getId()).run();
                     getActivity().setResult(getActivity().RESULT_OK);
+                    getActivity().finish();
                 }
                 else{
                     Toast.makeText(getActivity().getApplicationContext(), "Failed to save edited details", Toast.LENGTH_SHORT).show();

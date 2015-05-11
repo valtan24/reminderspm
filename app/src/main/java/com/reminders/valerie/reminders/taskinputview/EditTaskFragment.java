@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.reminders.valerie.reminders.MainActivity;
 import com.reminders.valerie.reminders.R;
 import com.reminders.valerie.reminders.model.Reminder;
 import com.reminders.valerie.reminders.model.ReminderSorter;

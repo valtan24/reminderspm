@@ -65,6 +65,7 @@ public class AlarmTask implements Runnable {
             else time_text = time_text + hour;
             if(minute< 10) time_text = time_text + ":0" + minute;
             else time_text = time_text + ":" + minute;
+            Log.i("AlarmTask.run", "time is "+time_text);
             receiver_intent.putExtra("task_date", date_text);
             receiver_intent.putExtra("task_time", time_text);
             receiver_intent.putExtra("task_id", task_id);
