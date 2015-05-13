@@ -66,12 +66,12 @@ public abstract class ActivityInputFragment extends Fragment implements View.OnC
     TimePickerDialog.OnTimeSetListener end_listener = new TimePickerDialog.OnTimeSetListener(){
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            if(end_hour < start_hour){
+            if(hourOfDay < start_hour){
                 Toast.makeText(getActivity().getApplicationContext(),"The end time should be after the start time", Toast.LENGTH_SHORT).show();
                 return;
             }
-            else if(end_hour == start_hour){
-                if(end_minute <= start_minute){
+            else if(hourOfDay == start_hour){
+                if(minute <= start_minute){
                     Toast.makeText(getActivity().getApplicationContext(), "The end time should be after the start time", Toast.LENGTH_SHORT).show();
                     return;
                 }
